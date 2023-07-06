@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { m, AnimatePresence } from 'framer-motion';
 import { Dialog, Box, Paper } from '@mui/material';
-import { varFade } from './variants';
+import { varFade } from './varients';
 
 DialogAnimate.propTypes = {
   children: PropTypes.node.isRequired,
