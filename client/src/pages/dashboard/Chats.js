@@ -79,7 +79,7 @@ const Chats = () => {
         <Stack spacing={1}>
           <Stack direction="row" alignItems={'center'} spacing={1.5}>
             <ArchiveBox size={24} />
-            <Button>Archive</Button>
+            <Button sx={{ fontWeight: 500 }}>Archived</Button>
           </Stack>
           <Divider />
         </Stack>
