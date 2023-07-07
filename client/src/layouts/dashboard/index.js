@@ -24,7 +24,7 @@ const DashboardLayout = () => {
   const { onToggleMode } = useSettings(); // useSettings from custom hooks
 
   return (
-    <>
+    <Stack direction="row">
       {/* main sidebar */}
       <Box
         p={2}
@@ -32,7 +32,7 @@ const DashboardLayout = () => {
           backgroundColor: theme.palette.background.paper,
           boxShadow: '0px 0px 2px #00000040',
           height: '100vh',
-          width: 100,
+          width: 80,
         }}
       >
         {/* Stack provides flex properties in mui */}
@@ -48,8 +48,8 @@ const DashboardLayout = () => {
             <Box
               sx={{
                 backgroundColor: theme.palette.primary.main,
-                height: 64,
-                width: 64,
+                height: 54,
+                width: 54,
                 borderRadius: 1.5,
               }}
             >
@@ -70,7 +70,7 @@ const DashboardLayout = () => {
                 e.index === selected ? (
                   <Box
                     key={e.index}
-                    p={1}
+                    p={0.5}
                     sx={{
                       backgroundColor: theme.palette.primary.main,
                       borderRadius: 1.5,
@@ -85,7 +85,7 @@ const DashboardLayout = () => {
                     onClick={() => setSelected(e.index)}
                     key={e.index}
                     sx={{
-                      width: 'max-content',
+                      width: '80%',
                       color:
                         theme.palette.mode === 'dark'
                           ? theme.palette.text.primary
@@ -100,7 +100,7 @@ const DashboardLayout = () => {
               <Divider sx={{ width: '48px' }} />
               {selected === 3 ? (
                 <Box
-                  p={1}
+                  p={0.5}
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: 1.5,
@@ -114,7 +114,7 @@ const DashboardLayout = () => {
                 <IconButton
                   onClick={() => setSelected(3)}
                   sx={{
-                    width: 'max-content',
+                    width: '80%',
                     color:
                       theme.palette.mode === 'dark'
                         ? theme.palette.text.primary
@@ -138,7 +138,7 @@ const DashboardLayout = () => {
         </Stack>
       </Box>
       <Outlet />
-    </>
+    </Stack>
   );
 };
 
