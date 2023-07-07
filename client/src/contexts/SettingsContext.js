@@ -9,6 +9,7 @@ import getColorPresets, {
 const initialState = {
   ...defaultSettings,
 
+  // switch between light and dark mode
   onToggleMode: () => {},
   onChangeMode: () => {},
 
