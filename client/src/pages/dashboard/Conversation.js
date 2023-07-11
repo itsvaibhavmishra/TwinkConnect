@@ -22,7 +22,15 @@ function Conversation() {
         <ChatHeader />
 
         {/* Main Conversation */}
-        <Box sx={{ width: '100%', flexGrow: 1 }}>
+        <Box
+          sx={{
+            width: '100%',
+            flexGrow: 1,
+            height: '100%',
+            overflowY: 'scroll',
+          }}
+          className="scrollbar"
+        >
           <Message />
         </Box>
 
