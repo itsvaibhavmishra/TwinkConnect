@@ -128,11 +128,21 @@ const DashboardLayout = () => {
           </Stack>
 
           <Stack spacing={4} alignItems={'center'}>
-            <ThemeSwitch
-              onChange={() => {
-                onToggleMode();
-              }}
-            />
+            {theme.palette.mode === 'dark' ? (
+              <ThemeSwitch
+                onChange={() => {
+                  onToggleMode();
+                }}
+              />
+            ) : (
+              <ThemeSwitch
+                onChange={() => {
+                  onToggleMode();
+                }}
+                defaultChecked
+              />
+            )}
+
             <Avatar src={faker.image.avatar()} />
           </Stack>
         </Stack>
