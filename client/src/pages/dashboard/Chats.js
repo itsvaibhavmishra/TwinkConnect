@@ -21,7 +21,10 @@ import { ChatList } from '../../data';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
-  backgroundColor: alpha(theme.palette.background.paper, 1),
+  backgroundColor: alpha(
+    theme.palette.mode === 'light' ? '#F0F4FF' : theme.palette.background.paper,
+    1
+  ),
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
@@ -49,6 +52,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const ChatElement = ({ id, img, name, msg, time, unread, pinned, online }) => {
+  // using theme
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -81,7 +87,7 @@ const ChatElement = ({ id, img, name, msg, time, unread, pinned, online }) => {
             <Typography variant="subtitle2">{name}</Typography>
             <Typography
               variant="caption"
-              sx={{ color: '#637381', paddingTop: 0.8 }}
+              sx={{ color: theme.palette.text.secondary, paddingTop: 0.8 }}
             >
               {msg}
             </Typography>
@@ -92,7 +98,11 @@ const ChatElement = ({ id, img, name, msg, time, unread, pinned, online }) => {
         <Stack spacing={2} alignItems={'center'}>
           <Typography
             variant="caption"
-            sx={{ fontWeight: 600, color: '#637381', paddingBottom: 0.8 }}
+            sx={{
+              fontWeight: 600,
+              color: theme.palette.text.secondary,
+              paddingBottom: 0.8,
+            }}
           >
             {time}
           </Typography>
@@ -117,10 +127,7 @@ const Chats = () => {
       sx={{
         position: 'relative',
         width: 320,
-        backgroundColor:
-          theme.palette.mode === 'light'
-            ? '#F8FAFF'
-            : theme.palette.background.default,
+        backgroundColor: theme.palette.background.default,
         boxShadow: '0px 0px 2px #00000040',
       }}
     >

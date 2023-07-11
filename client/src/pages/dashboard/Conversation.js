@@ -1,6 +1,7 @@
 import { Box, Stack, useTheme } from '@mui/material';
 import React from 'react';
 import { ChatFooter, ChatHeader } from '../../components/Chat';
+import Message from '../../components/Chat/ChatsComponents/Message';
 
 function Conversation() {
   // using theme
@@ -18,14 +19,14 @@ function Conversation() {
       {/* Parent Stack */}
       <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
         {/* header */}
-
         <ChatHeader />
 
         {/* Main Conversation */}
-        <Box sx={{ width: '100%', flexGrow: 1 }}></Box>
+        <Box sx={{ width: '100%', flexGrow: 1 }}>
+          <Message />
+        </Box>
 
         {/* footer */}
-
         <ChatFooter />
       </Stack>
     </Box>
