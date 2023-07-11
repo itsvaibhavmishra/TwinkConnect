@@ -7,7 +7,7 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Nav_Buttons } from '../../data';
 import { Gear } from 'phosphor-react';
@@ -22,6 +22,14 @@ const DashboardLayout = () => {
 
   const [selected, setSelected] = useState(0);
   const { onToggleMode } = useSettings(); // useSettings from custom hooks
+
+  const [isSwitchChecked, setIsSwitchChecked] = useState(
+    theme.palette.mode === 'light'
+  );
+
+  useEffect(() => {
+    setIsSwitchChecked(theme.palette.mode === 'light');
+  }, [theme.palette.mode]);
 
   return (
     <Stack direction="row">
@@ -127,22 +135,14 @@ const DashboardLayout = () => {
             </Stack>
           </Stack>
 
+          {/*  theme switch button amd avatar */}
           <Stack spacing={4} alignItems={'center'}>
-            {theme.palette.mode === 'dark' ? (
-              <ThemeSwitch
-                onChange={() => {
-                  onToggleMode();
-                }}
-              />
-            ) : (
-              <ThemeSwitch
-                onChange={() => {
-                  onToggleMode();
-                }}
-                defaultChecked
-              />
-            )}
-
+            <ThemeSwitch
+              onChange={() => {
+                onToggleMode();
+              }}
+              checked={isSwitchChecked}
+            />
             <Avatar src={faker.image.avatar()} />
           </Stack>
         </Stack>

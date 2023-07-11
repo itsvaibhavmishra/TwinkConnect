@@ -12,7 +12,7 @@ function Conversation() {
       sx={{
         height: '100%',
         width: 'calc(100vw - 400px)',
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.paper,
       }}
     >
       {/* Parent Stack */}
