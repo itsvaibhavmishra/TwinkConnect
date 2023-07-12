@@ -70,7 +70,17 @@ const MsgMenu = ({ incoming }) => {
       >
         <Stack spacing={1} px={1}>
           {Message_options.map((e) => (
-            <MenuItem onClick={handleClick}>{e.title}</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Stack
+                direction={'row'}
+                spacing={2}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+              >
+                {e.icon}
+                <span>{e.title}</span>
+              </Stack>
+            </MenuItem>
           ))}
         </Stack>
       </Menu>

@@ -1,12 +1,18 @@
 import { faker } from '@faker-js/faker';
 import {
+  ArrowBendUpLeft,
+  ArrowBendUpRight,
   ChatCircleDots,
   Gear,
   GearSix,
   Phone,
   SignOut,
+  SmileyXEyes,
+  Star,
+  Trash,
   User,
   Users,
+  WarningCircle,
 } from 'phosphor-react';
 
 const Profile_Menu = [
@@ -202,21 +208,27 @@ const Chat_History = [
 const Message_options = [
   {
     title: 'Reply',
+    icon: <ArrowBendUpLeft />,
   },
   {
     title: 'React to message',
+    icon: <SmileyXEyes />,
   },
   {
     title: 'Forward message',
+    icon: <ArrowBendUpRight />,
   },
   {
     title: 'Star message',
+    icon: <Star />,
   },
   {
     title: 'Report',
+    icon: <WarningCircle />,
   },
   {
     title: 'Delete Message',
+    icon: <Trash />,
   },
 ];
 
