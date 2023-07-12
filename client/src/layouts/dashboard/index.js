@@ -161,6 +161,7 @@ const DashboardLayout = () => {
               aria-expanded={open ? 'true' : undefined}
               onClick={handleClick}
               src={faker.image.avatar()}
+              sx={{ cursor: 'pointer' }}
             />
             <Menu
               id="basic-menu"

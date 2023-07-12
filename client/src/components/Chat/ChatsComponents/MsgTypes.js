@@ -44,7 +44,7 @@ const MsgBox = ({ e, children }) => {
           </Box>
           {showEmojis && (
             <Fade in={showEmojis}>
-              <Stack>
+              <Stack sx={{ cursor: 'pointer' }}>
                 <MsgMenu incoming={e.incoming} />
               </Stack>
             </Fade>

@@ -3,7 +3,7 @@ import React from 'react';
 import { ChatFooter, ChatHeader } from '../../components/Chat';
 import Message from '../../components/Chat/ChatsComponents/Message';
 
-function Conversation() {
+function Conversation({ sidebar }) {
   // using theme
   const theme = useTheme();
 
@@ -12,7 +12,7 @@ function Conversation() {
     <Box
       sx={{
         height: '100%',
-        width: 'calc(100vw - 400px)',
+        width: sidebar.open ? 'calc(100vw - 720px)' : 'calc(100vw - 400px)',
         backgroundColor: theme.palette.background.paper,
       }}
     >
