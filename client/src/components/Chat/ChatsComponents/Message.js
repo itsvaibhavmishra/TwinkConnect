@@ -35,9 +35,8 @@ const Message = () => {
                 default:
                   return <TextMsg e={e} />;
               }
-              break;
             default:
-              break;
+              return null;
           }
         })}
       </Stack>

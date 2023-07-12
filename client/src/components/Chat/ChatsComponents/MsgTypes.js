@@ -1,14 +1,85 @@
 import {
   Box,
   Divider,
+  Fade,
   IconButton,
   Link,
   Stack,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
 import { DownloadSimple, Image } from 'phosphor-react';
-import React from 'react';
+import React, { useState } from 'react';
+import MsgMenu from './MsgMenu';
+
+const MsgBox = ({ e, children }) => {
+  const theme = useTheme();
+  const [showEmojis, setShowEmojis] = useState(false);
+
+  return (
+    <Stack
+      direction="row"
+      justifyContent={e.incoming ? 'start' : 'end'}
+      alignItems="center"
+      spacing={0.5}
+    >
+      {e.incoming ? (
+        <Stack
+          direction="row"
+          onMouseEnter={() => setShowEmojis(true)}
+          onMouseLeave={() => setShowEmojis(false)}
+          alignItems="center"
+          spacing={0.5}
+        >
+          <Box
+            p={1.5}
+            sx={{
+              width: 'max-content',
+              backgroundColor: theme.palette.background.default,
+              borderRadius: 1.5,
+            }}
+          >
+            {children}
+          </Box>
+          {showEmojis && (
+            <Fade in={showEmojis}>
+              <Stack>
+                <MsgMenu incoming={e.incoming} />
+              </Stack>
+            </Fade>
+          )}
+        </Stack>
+      ) : (
+        <Stack
+          direction="row"
+          onMouseEnter={() => setShowEmojis(true)}
+          onMouseLeave={() => setShowEmojis(false)}
+          alignItems="center"
+          spacing={0.5}
+        >
+          {showEmojis && (
+            <Fade in={showEmojis}>
+              <Stack>
+                <MsgMenu incoming={e.incoming} />
+              </Stack>
+            </Fade>
+          )}
+          <Box
+            p={1.5}
+            sx={{
+              width: 'max-content',
+              backgroundColor: theme.palette.primary.main,
+              borderRadius: 1.5,
+            }}
+          >
+            {children}
+          </Box>
+        </Stack>
+      )}
+    </Stack>
+  );
+};
 
 // Displaying Timelines
 const Timeline = ({ e }) => {
@@ -39,25 +110,14 @@ const TextMsg = ({ e }) => {
   const theme = useTheme();
 
   return (
-    <Stack direction={'row'} justifyContent={e.incoming ? 'start' : 'end'}>
-      <Box
-        p={1.5}
-        sx={{
-          width: 'max-content',
-          backgroundColor: e.incoming
-            ? theme.palette.background.default
-            : theme.palette.primary.main,
-          borderRadius: 1.5,
-        }}
+    <MsgBox e={e}>
+      <Typography
+        variant="body2"
+        color={e.incoming ? theme.palette.text : '#fff'}
       >
-        <Typography
-          variant="body2"
-          color={e.incoming ? theme.palette.text : '#fff'}
-        >
-          {e.message}
-        </Typography>
-      </Box>
-    </Stack>
+        {e.message}
+      </Typography>
+    </MsgBox>
   );
 };
 
@@ -66,32 +126,21 @@ const MediaMsg = ({ e }) => {
   const theme = useTheme();
 
   return (
-    <Stack direction={'row'} justifyContent={e.incoming ? 'start' : 'end'}>
-      <Box
-        p={1.5}
-        sx={{
-          width: 'max-content',
-          backgroundColor: e.incoming
-            ? theme.palette.background.default
-            : theme.palette.primary.main,
-          borderRadius: 1.5,
-        }}
-      >
-        <Stack spacing={1}>
-          <img
-            src={e.img}
-            alt={e.message}
-            style={{ maxHeight: 210, borderRadius: '10px' }}
-          />
-          <Typography
-            variant="body2"
-            color={e.incoming ? theme.palette.text : '#fff'}
-          >
-            {e.message}
-          </Typography>
-        </Stack>
-      </Box>
-    </Stack>
+    <MsgBox e={e}>
+      <Stack spacing={1}>
+        <img
+          src={e.img}
+          alt={e.message}
+          style={{ maxHeight: 210, borderRadius: '10px' }}
+        />
+        <Typography
+          variant="body2"
+          color={e.incoming ? theme.palette.text : '#fff'}
+        >
+          {e.message}
+        </Typography>
+      </Stack>
+    </MsgBox>
   );
 };
 
@@ -100,38 +149,31 @@ const ReplyMsg = ({ e }) => {
   const theme = useTheme();
 
   return (
-    <Stack direction={'row'} justifyContent={e.incoming ? 'start' : 'end'}>
-      <Box
-        p={1.5}
-        sx={{
-          width: 'max-content',
-          backgroundColor: e.incoming
-            ? theme.palette.background.default
-            : theme.palette.primary.main,
-          borderRadius: 1.5,
-        }}
-      >
-        <Stack spacing={2}>
-          <Stack
-            p={2}
-            direction={'column'}
-            alignItems={'center'}
-            spacing={3}
-            sx={{ background: theme.palette.background.paper, borderRadius: 1 }}
-          >
-            <Typography variant="body2" color={theme.palette.text}>
-              {e.message}
-            </Typography>
-          </Stack>
-          <Typography
-            variant="body2"
-            color={e.incoming ? theme.palette.text : '#fff'}
-          >
-            {e.reply}
+    <MsgBox e={e}>
+      <Stack spacing={2}>
+        <Stack
+          p={2}
+          direction={'column'}
+          alignItems={'center'}
+          spacing={3}
+          sx={{
+            background: theme.palette.background.paper,
+            borderRadius: 1,
+            borderLeft: `5px solid ${theme.palette.primary.lighter}`,
+          }}
+        >
+          <Typography variant="body2" color={theme.palette.text}>
+            {e.message}
           </Typography>
         </Stack>
-      </Box>
-    </Stack>
+        <Typography
+          variant="body2"
+          color={e.incoming ? theme.palette.text : '#fff'}
+        >
+          {e.reply}
+        </Typography>
+      </Stack>
+    </MsgBox>
   );
 };
 
@@ -140,53 +182,57 @@ const LinkMsg = ({ e }) => {
   const theme = useTheme();
 
   return (
-    <Stack direction={'row'} justifyContent={e.incoming ? 'start' : 'end'}>
-      <Box
-        p={1.5}
-        sx={{
-          width: 'max-content',
-          backgroundColor: e.incoming
-            ? theme.palette.background.default
-            : theme.palette.primary.main,
-          borderRadius: 1.5,
-        }}
-      >
-        <Stack spacing={2}>
-          <Stack
-            p={2}
-            spacing={3}
-            alignItems={'start'}
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              borderRadius: 1,
-            }}
-          >
-            <img
-              src={e.preview}
-              alt="e.message"
-              style={{ maxHeight: 210, borderRadius: '10px' }}
-            />
-            <Stack spacing={2}>
-              <Typography variant="subtitle2">Vaibhaw Mishra</Typography>
+    <MsgBox e={e}>
+      <Stack spacing={2}>
+        <Stack
+          spacing={1}
+          p={1}
+          alignItems={'center'}
+          direction={'row'}
+          sx={{
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: 1,
+          }}
+        >
+          <img
+            src={e.preview}
+            alt="e.message"
+            style={{ maxHeight: 100, borderRadius: '10px' }}
+          />
+          <Stack spacing={1}>
+            <Tooltip
+              title="Vaibhaw Mishra"
+              placement="bottom-start"
+              followCursor
+              arrow
+            >
               <Typography
                 variant="subtitle2"
-                component={Link}
-                to="//https://vaibhaw.netlify.app"
-                sx={{ color: theme.palette.primary.main }}
+                noWrap
+                sx={{ maxWidth: 200, overflow: 'hidden' }}
+                color={theme.palette.text.secondary}
               >
-                vaibhaw.netlify.app
+                Vaibhaw Mishra
               </Typography>
-            </Stack>
+            </Tooltip>
             <Typography
-              variant="body2"
-              color={e.incoming ? theme.palette.text : '#fff'}
+              variant="subtitle2"
+              component={Link}
+              to="//https://vaibhaw.netlify.app"
+              sx={{ color: theme.palette.primary.main }}
             >
-              {e.message}
+              vaibhaw.netlify.app
             </Typography>
           </Stack>
         </Stack>
-      </Box>
-    </Stack>
+        <Typography
+          variant="body2"
+          color={e.incoming ? theme.palette.text : '#fff'}
+        >
+          {e.message}
+        </Typography>
+      </Stack>
+    </MsgBox>
   );
 };
 
@@ -195,43 +241,32 @@ const DocMsg = ({ e }) => {
   const theme = useTheme();
 
   return (
-    <Stack direction={'row'} justifyContent={e.incoming ? 'start' : 'end'}>
-      <Box
-        p={1.5}
-        sx={{
-          width: 'max-content',
-          backgroundColor: e.incoming
-            ? theme.palette.background.default
-            : theme.palette.primary.main,
-          borderRadius: 1.5,
-        }}
-      >
-        <Stack spacing={2}>
-          <Stack
-            direction={'row'}
-            p={2}
-            spacing={3}
-            alignItems={'center'}
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              borderRadius: 1,
-            }}
-          >
-            <Image size={40} />
-            <Typography variant="caption">Abstract.png</Typography>
-            <IconButton>
-              <DownloadSimple />
-            </IconButton>
-          </Stack>
-          <Typography
-            variant="body2"
-            color={e.incoming ? theme.palette.text : '#fff'}
-          >
-            {e.message}
-          </Typography>
+    <MsgBox e={e}>
+      <Stack spacing={2}>
+        <Stack
+          direction={'row'}
+          p={2}
+          spacing={3}
+          alignItems={'center'}
+          sx={{
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: 1,
+          }}
+        >
+          <Image size={40} />
+          <Typography variant="caption">Abstract.png</Typography>
+          <IconButton>
+            <DownloadSimple />
+          </IconButton>
         </Stack>
-      </Box>
-    </Stack>
+        <Typography
+          variant="body2"
+          color={e.incoming ? theme.palette.text : '#fff'}
+        >
+          {e.message}
+        </Typography>
+      </Stack>
+    </MsgBox>
   );
 };
 

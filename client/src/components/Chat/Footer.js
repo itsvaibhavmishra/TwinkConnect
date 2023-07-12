@@ -34,31 +34,31 @@ const StyledInput = styled(TextField)(({ theme }) => ({
 
 const Actions = [
   {
-    color: '#4da5fe',
+    color: (theme) => theme.palette.primary.lighter, // theme => theme.palette.primary.main
     icon: <Image size={24} />,
     y: 102,
     title: 'Photo/Video',
   },
   {
-    color: '#1b8cfe',
+    color: (theme) => theme.palette.primary.light,
     icon: <Sticker size={24} />,
     y: 172,
     title: 'Stickers',
   },
   {
-    color: '#0172e4',
+    color: (theme) => theme.palette.primary.main,
     icon: <Camera size={24} />,
     y: 242,
     title: 'Image',
   },
   {
-    color: '#0159b2',
+    color: (theme) => theme.palette.primary.dark,
     icon: <File size={24} />,
     y: 312,
     title: 'Document',
   },
   {
-    color: '#013f7f',
+    color: (theme) => theme.palette.primary.darker,
     icon: <User size={24} />,
     y: 382,
     title: 'Contact',

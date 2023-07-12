@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 import {
   ChatCircleDots,
   Gear,
@@ -7,19 +7,19 @@ import {
   SignOut,
   User,
   Users,
-} from "phosphor-react";
+} from 'phosphor-react';
 
 const Profile_Menu = [
   {
-    title: "Profile",
+    title: 'Profile',
     icon: <User />,
   },
   {
-    title: "Settings",
+    title: 'Settings',
     icon: <Gear />,
   },
   {
-    title: "Profile",
+    title: 'Profile',
     icon: <SignOut />,
   },
 ];
@@ -52,7 +52,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "9:36",
+    time: '9:36',
     unread: 0,
     pinned: true,
     online: true,
@@ -62,7 +62,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "12:02",
+    time: '12:02',
     unread: 2,
     pinned: true,
     online: false,
@@ -72,7 +72,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "10:35",
+    time: '10:35',
     unread: 3,
     pinned: false,
     online: true,
@@ -82,7 +82,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "04:00",
+    time: '04:00',
     unread: 0,
     pinned: false,
     online: true,
@@ -92,7 +92,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "08:42",
+    time: '08:42',
     unread: 0,
     pinned: false,
     online: false,
@@ -102,7 +102,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "08:42",
+    time: '08:42',
     unread: 0,
     pinned: false,
     online: false,
@@ -112,7 +112,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "08:42",
+    time: '08:42',
     unread: 0,
     pinned: false,
     online: false,
@@ -122,7 +122,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: "08:42",
+    time: '08:42',
     unread: 0,
     pinned: false,
     online: false,
@@ -131,69 +131,69 @@ const ChatList = [
 
 const Chat_History = [
   {
-    type: "msg",
-    message: "Hi 👋🏻, How are ya ?",
+    type: 'msg',
+    message: 'Hi 👋🏻, How are ya ?',
     incoming: true,
     outgoing: false,
   },
   {
-    type: "divider",
-    text: "Today",
+    type: 'divider',
+    text: 'Today',
   },
   {
-    type: "msg",
-    message: "Hi 👋 Panda, not bad, u ?",
+    type: 'msg',
+    message: 'Hi 👋 Panda, not bad, u ?',
     incoming: false,
     outgoing: true,
   },
   {
-    type: "msg",
-    message: "Can you send me an abstarct image?",
+    type: 'msg',
+    message: 'Can you send me an abstarct image?',
     incoming: false,
     outgoing: true,
   },
   {
-    type: "msg",
-    message: "Ya sure, sending you a pic",
+    type: 'msg',
+    message: 'Ya sure, sending you a pic',
     incoming: true,
     outgoing: false,
   },
 
   {
-    type: "msg",
-    subtype: "img",
-    message: "Here You Go",
+    type: 'msg',
+    subtype: 'img',
+    message: 'Here You Go',
     img: faker.image.abstract(),
     incoming: true,
     outgoing: false,
   },
   {
-    type: "msg",
-    message: "Can you please send this in file format?",
+    type: 'msg',
+    message: 'Can you please send this in file format?',
     incoming: false,
     outgoing: true,
   },
 
   {
-    type: "msg",
-    subtype: "doc",
-    message: "Yes sure, here you go.",
+    type: 'msg',
+    subtype: 'doc',
+    message: 'Yes sure, here you go.',
     incoming: true,
     outgoing: false,
   },
   {
-    type: "msg",
-    subtype: "link",
+    type: 'msg',
+    subtype: 'link',
     preview: faker.image.cats(),
-    message: "Yep, I can also do that",
+    message: 'Yep, I can also do that',
     incoming: true,
     outgoing: false,
   },
   {
-    type: "msg",
-    subtype: "reply",
-    reply: "This is a reply",
-    message: "Yep, I can also do that",
+    type: 'msg',
+    subtype: 'reply',
+    reply: 'This is a reply',
+    message: 'Yep, I can also do that',
     incoming: false,
     outgoing: true,
   },
@@ -201,22 +201,22 @@ const Chat_History = [
 
 const Message_options = [
   {
-    title: "Reply",
+    title: 'Reply',
   },
   {
-    title: "React to message",
+    title: 'React to message',
   },
   {
-    title: "Forward message",
+    title: 'Forward message',
   },
   {
-    title: "Star message",
+    title: 'Star message',
   },
   {
-    title: "Report",
+    title: 'Report',
   },
   {
-    title: "Delete Message",
+    title: 'Delete Message',
   },
 ];
 
