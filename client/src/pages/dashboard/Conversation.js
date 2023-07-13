@@ -13,6 +13,7 @@ function Conversation({ sidebar }) {
       sx={{
         height: '100%',
         width: sidebar.open ? 'calc(100vw - 720px)' : 'calc(100vw - 400px)',
+        transition: sidebar.open ? '' : 'width 0.1s ease-in-out',
         backgroundColor: theme.palette.background.paper,
       }}
     >
