@@ -2,8 +2,8 @@ import React from 'react';
 import Chats from './Chats';
 import { Stack } from '@mui/material';
 import Conversation from './Conversation';
-import Contact from '../../components/Contact/Contact';
 import { useSelector } from 'react-redux';
+import { Contact, Shared, Starred } from '../../components/SidebarRight';
 
 const GeneralApp = () => {
   const { sidebar } = useSelector((store) => store.app);
@@ -16,10 +16,21 @@ const GeneralApp = () => {
       {/* Chats conversation area */}
       <Conversation sidebar={sidebar} />
 
-      {sidebar.open && (
-        // Contacts area
-        <Contact />
-      )}
+      {sidebar.open &&
+        (() => {
+          switch (sidebar.type) {
+            case 'CONTACT':
+              return <Contact />; // Contacts area
+
+            case 'STARRED':
+              return <Starred />;
+
+            case 'SHARED':
+              return <Shared />;
+            default:
+              break;
+          }
+        })()}
     </Stack>
   );
 };

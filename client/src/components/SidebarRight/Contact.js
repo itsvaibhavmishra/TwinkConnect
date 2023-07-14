@@ -1,6 +1,6 @@
 import { Box, Stack } from '@mui/material';
-import Header from './ContactComponents/Header';
-import Body from './ContactComponents/Body';
+import Header from './ContactComponents/ContactHeader';
+import Body from './ContactComponents/ContactBody';
 
 const Contact = () => {
   return (

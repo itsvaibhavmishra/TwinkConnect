@@ -11,9 +11,14 @@ import {
 import { Bell, CaretRight, Phone, Star, VideoCamera } from 'phosphor-react';
 import React from 'react';
 import AntSwitch from '../../AntSwitch';
-import Footer from './Footer';
+import Footer from './ContactFooter';
+import { useDispatch } from 'react-redux';
+import { UpdateSidebarType } from '../../../redux/slices/app';
 
 const Body = () => {
+  // redux
+  const dispatch = useDispatch();
+
   return (
     <Stack
       className="scrollbar"
@@ -78,7 +83,14 @@ const Body = () => {
         alignItems={'center'}
       >
         <Typography variant="subtitle2">Media, links and docs</Typography>
-        <Button endIcon={<CaretRight />}>201</Button>
+        <Button
+          onClick={() => {
+            dispatch(UpdateSidebarType('SHARED'));
+          }}
+          endIcon={<CaretRight />}
+        >
+          201
+        </Button>
       </Stack>
       <Stack direction={'row'} spacing={2} alignItems={'center'}>
         {[1, 2, 3].map((e) => (
@@ -99,7 +111,11 @@ const Body = () => {
           <Star size={21} />
           <Typography variant="subtitle2">Starred Messages</Typography>
         </Stack>
-        <IconButton>
+        <IconButton
+          onClick={() => {
+            dispatch(UpdateSidebarType('STARRED'));
+          }}
+        >
           <CaretRight />
         </IconButton>
       </Stack>
