@@ -1,5 +1,6 @@
 import { Stack, useTheme } from '@mui/material';
 import React from 'react';
+import Message from '../../Chat/ChatsComponents/Message';
 
 const Body = () => {
   const theme = useTheme();
@@ -23,7 +24,9 @@ const Body = () => {
         }}
         p={3}
         spacing={3}
-      ></Stack>
+      >
+        <Message value={true} />
+      </Stack>
     </Stack>
   );
 };

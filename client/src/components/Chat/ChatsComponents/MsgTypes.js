@@ -114,12 +114,12 @@ const Timeline = ({ e }) => {
 };
 
 // Displaying Text Messages
-const TextMsg = ({ e }) => {
+const TextMsg = ({ e, value }) => {
   // using theme
   const theme = useTheme();
 
   return (
-    <MsgBox e={e}>
+    <MsgBox e={e} value={value}>
       <Typography
         variant="body2"
         color={e.incoming ? theme.palette.text : '#fff'}
@@ -130,12 +130,12 @@ const TextMsg = ({ e }) => {
   );
 };
 
-const MediaMsg = ({ e }) => {
+const MediaMsg = ({ e, value }) => {
   // using theme
   const theme = useTheme();
 
   return (
-    <MsgBox e={e}>
+    <MsgBox e={e} value={value}>
       <Stack spacing={1}>
         <img
           src={e.img}
@@ -153,12 +153,12 @@ const MediaMsg = ({ e }) => {
   );
 };
 
-const ReplyMsg = ({ e }) => {
+const ReplyMsg = ({ e, value }) => {
   // using theme
   const theme = useTheme();
 
   return (
-    <MsgBox e={e}>
+    <MsgBox e={e} value={value}>
       <Stack spacing={2}>
         <Stack
           p={2}
