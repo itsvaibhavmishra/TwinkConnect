@@ -13,14 +13,23 @@ import { DownloadSimple, Image } from 'phosphor-react';
 import React, { useState } from 'react';
 import MsgMenu from './MsgMenu';
 
-const MsgBox = ({ e, children }) => {
+const MsgBox = ({ e, children, value }) => {
   const theme = useTheme();
   const [showEmojis, setShowEmojis] = useState(false);
+
+  let justifyContent;
+  if (value) {
+    justifyContent = 'center';
+  } else if (e.incoming) {
+    justifyContent = 'start';
+  } else {
+    justifyContent = 'end';
+  }
 
   return (
     <Stack
       direction="row"
-      justifyContent={e.incoming ? 'start' : 'end'}
+      justifyContent={justifyContent}
       alignItems="center"
       spacing={0.5}
     >
@@ -42,7 +51,7 @@ const MsgBox = ({ e, children }) => {
           >
             {children}
           </Box>
-          {showEmojis && (
+          {showEmojis && !value && (
             <Fade in={showEmojis}>
               <Stack sx={{ cursor: 'pointer' }}>
                 <MsgMenu incoming={e.incoming} />
@@ -58,7 +67,7 @@ const MsgBox = ({ e, children }) => {
           alignItems="center"
           spacing={0.5}
         >
-          {showEmojis && (
+          {showEmojis && !value && (
             <Fade in={showEmojis}>
               <Stack>
                 <MsgMenu incoming={e.incoming} />
@@ -177,28 +186,27 @@ const ReplyMsg = ({ e }) => {
   );
 };
 
-const LinkMsg = ({ e }) => {
-  // using theme
+const LinkMsg = ({ e, value }) => {
   const theme = useTheme();
 
+  const imageStyle = value
+    ? { maxHeight: 60, borderRadius: '10px' }
+    : { maxHeight: 100, borderRadius: '10px' };
+
   return (
-    <MsgBox e={e}>
+    <MsgBox e={e} value={value}>
       <Stack spacing={2}>
         <Stack
           spacing={1}
           p={1}
-          alignItems={'center'}
-          direction={'row'}
+          alignItems="center"
+          direction={value ? 'row' : 'row'}
           sx={{
             backgroundColor: theme.palette.background.paper,
             borderRadius: 1,
           }}
         >
-          <img
-            src={e.preview}
-            alt="e.message"
-            style={{ maxHeight: 100, borderRadius: '10px' }}
-          />
+          <img src={e.preview} alt="e.message" style={imageStyle} />
           <Stack spacing={1}>
             <Tooltip
               title="Vaibhaw Mishra"
@@ -215,14 +223,26 @@ const LinkMsg = ({ e }) => {
                 Vaibhaw Mishra
               </Typography>
             </Tooltip>
-            <Typography
-              variant="subtitle2"
-              component={Link}
-              to="//https://vaibhaw.netlify.app"
-              sx={{ color: theme.palette.primary.main }}
+            <Tooltip
+              title="vaibhaw.netlify.appdsdssdsdssd"
+              placement="bottom-start"
+              followCursor
+              arrow
             >
-              vaibhaw.netlify.app
-            </Typography>
+              <Typography
+                noWrap
+                variant="subtitle2"
+                component={Link}
+                to="//https://vaibhaw.netlify.app"
+                sx={{
+                  color: theme.palette.primary.main,
+                  maxWidth: 150,
+                  overflow: 'hidden',
+                }}
+              >
+                vaibhaw.netlify.appdsdssdsdssd
+              </Typography>
+            </Tooltip>
           </Stack>
         </Stack>
         <Typography
@@ -236,12 +256,12 @@ const LinkMsg = ({ e }) => {
   );
 };
 
-const DocMsg = ({ e }) => {
+const DocMsg = ({ e, value }) => {
   // using theme
   const theme = useTheme();
 
   return (
-    <MsgBox e={e}>
+    <MsgBox e={e} value={value}>
       <Stack spacing={2}>
         <Stack
           direction={'row'}

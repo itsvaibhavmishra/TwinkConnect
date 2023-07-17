@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { Grid, Stack, Tab, Tabs } from '@mui/material';
+import { Grid, Stack, Tab, Tabs, useTheme } from '@mui/material';
 import React from 'react';
+import { SHARED_DOCS, SHARED_LINKS } from '../../../data';
+import { DocMsg, LinkMsg } from '../../Chat/ChatsComponents/MsgTypes';
 
 // Media container
 const Media = () => {
@@ -24,8 +26,16 @@ const Body = () => {
     setValue(newValue);
   };
 
+  const theme = useTheme();
+
   return (
-    <>
+    <Stack
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        overflowY: 'scroll',
+      }}
+      className="scrollbar"
+    >
       <Tabs sx={{ pt: 2 }} value={value} onChange={handleChange} centered>
         <Tab label="Media" />
         <Tab label="Links" />
@@ -52,18 +62,18 @@ const Body = () => {
 
             case 1:
               // links section
-              return null;
+              return SHARED_LINKS.map((e) => <LinkMsg e={e} value={value} />);
 
             case 2:
               // docs section
-              return null;
+              return SHARED_DOCS.map((e) => <DocMsg e={e} value={value} />);
 
             default:
               break;
           }
         })()}
       </Stack>
-    </>
+    </Stack>
   );
 };
 
