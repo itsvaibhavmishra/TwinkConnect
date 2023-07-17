@@ -5,13 +5,17 @@ function createGradient(color1, color2) {
 }
 
 const PRIMARY = {
+  lighterFaded: '#1b8cfe40',
+  lighterFade: '#1b8cfeBF',
   lighter: '#72B5f7',
-  light: '#1b8cfe',
-  main: '#2176CC',
+  light: '#2176CC',
+  main: '#1b8cfe',
   dark: '#0159b2',
   darker: '#0754a3',
 };
 const SECONDARY = {
+  lighterFaded: '#84A9FF40',
+  lighterFade: '#84A9FFBF',
   lighter: '#D6E4FF',
   light: '#84A9FF',
   main: '#3366FF',
@@ -19,6 +23,8 @@ const SECONDARY = {
   darker: '#091A7A',
 };
 const INFO = {
+  lighterFaded: '#74CAFF40',
+  lighterFade: '#74CAFFBF',
   lighter: '#D0F2FF',
   light: '#74CAFF',
   main: '#1890FF',
@@ -26,6 +32,8 @@ const INFO = {
   darker: '#04297A',
 };
 const SUCCESS = {
+  lighterFaded: '#AAF27F40',
+  lighterFade: '#AAF27FBF',
   lighter: '#E9FCD4',
   light: '#AAF27F',
   main: '#54D62C',
@@ -33,6 +41,8 @@ const SUCCESS = {
   darker: '#08660D',
 };
 const WARNING = {
+  lighterFaded: '#FFE16A40',
+  lighterFade: '#FFE16ABF',
   lighter: '#FFF7CD',
   light: '#FFE16A',
   main: '#FFC107',
@@ -40,6 +50,8 @@ const WARNING = {
   darker: '#7A4F01',
 };
 const ERROR = {
+  lighterFaded: '#FFA48D40',
+  lighterFade: '#FFA48DBF',
   lighter: '#FFE7D9',
   light: '#FFA48D',
   main: '#FF4842',

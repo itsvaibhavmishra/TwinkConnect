@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  Badge,
   Box,
   Button,
   Divider,
@@ -14,8 +12,8 @@ import {
 } from '@mui/material';
 import { ArchiveBox, CircleDashed, MagnifyingGlass } from 'phosphor-react';
 import React from 'react';
-import StyledBadge from '../../components/StyledBadge';
 import { ChatList } from '../../data';
+import ChatElement from '../../components/Chat/ChatElement';
 
 // styles for search bar
 const Search = styled('div')(({ theme }) => ({
@@ -51,73 +49,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const ChatElement = ({ id, img, name, msg, time, unread, pinned, online }) => {
-  // using theme
-  const theme = useTheme();
-
-  return (
-    <Box
-      sx={{
-        width: '100%',
-        borderRadius: 1,
-      }}
-      p={2}
-    >
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'space-between'}
-      >
-        <Stack direction={'row'} spacing={2}>
-          {/* Avatar and online status badge */}
-          {online ? (
-            <StyledBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              variant="dot"
-            >
-              <Avatar src={img} />
-            </StyledBadge>
-          ) : (
-            <Avatar src={img} />
-          )}
-
-          {/* Name and message */}
-          <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{name}</Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: theme.palette.text.secondary, paddingTop: 0.8 }}
-            >
-              {msg}
-            </Typography>
-          </Stack>
-        </Stack>
-
-        {/* Time and message badge */}
-        <Stack spacing={2} alignItems={'center'}>
-          <Typography
-            variant="caption"
-            sx={{
-              fontWeight: 600,
-              color: theme.palette.text.secondary,
-              paddingBottom: 0.8,
-            }}
-          >
-            {time}
-          </Typography>
-          <Badge
-            color="primary"
-            badgeContent={unread}
-            max={9}
-            sx={{ paddingBottom: 1 }}
-          />
-        </Stack>
-      </Stack>
-    </Box>
-  );
-};
-
 const Chats = () => {
   // using theme
   const theme = useTheme();
@@ -126,6 +57,7 @@ const Chats = () => {
     <Box
       sx={{
         position: 'relative',
+        height: '100%',
         width: 320,
         backgroundColor: theme.palette.background.default,
         boxShadow: '0px 0px 2px #00000040',
