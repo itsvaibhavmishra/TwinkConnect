@@ -38,13 +38,17 @@ const Body = () => {
       className="scrollbar"
     >
       <Stack
+        className="scrollbar"
         sx={{
-          backgroundColor: theme.palette.background.paper,
           height: '100%',
+          position: 'relative',
+          flexGrow: 1,
+          overflowY: 'scroll',
+          backgroundColor: theme.palette.background.paper,
         }}
         ml={0.5}
-        mr={0.5}
         mb={0.5}
+        spacing={3}
       >
         <Tabs sx={{ pt: 2 }} value={value} onChange={handleChange} centered>
           <Tab label="Media" />

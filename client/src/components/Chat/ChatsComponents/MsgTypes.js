@@ -193,6 +193,9 @@ const LinkMsg = ({ e, value }) => {
     ? { maxHeight: 60, borderRadius: '10px' }
     : { maxHeight: 100, borderRadius: '10px' };
 
+  const linkAddress = 'vaibhaw.netlify.app';
+  const linkName = 'Vaibhaw Mishra';
+
   return (
     <MsgBox e={e} value={value}>
       <Stack spacing={2}>
@@ -209,7 +212,7 @@ const LinkMsg = ({ e, value }) => {
           <img src={e.preview} alt="e.message" style={imageStyle} />
           <Stack spacing={1}>
             <Tooltip
-              title="Vaibhaw Mishra"
+              title={linkName.length > 25 ? linkName : ''}
               placement="bottom-start"
               followCursor
               arrow
@@ -220,11 +223,11 @@ const LinkMsg = ({ e, value }) => {
                 sx={{ maxWidth: 200, overflow: 'hidden' }}
                 color={theme.palette.text.secondary}
               >
-                Vaibhaw Mishra
+                {linkName}
               </Typography>
             </Tooltip>
             <Tooltip
-              title="vaibhaw.netlify.appdsdssdsdssd"
+              title={linkAddress.length > 20 ? linkAddress : ''}
               placement="bottom-start"
               followCursor
               arrow
@@ -233,14 +236,14 @@ const LinkMsg = ({ e, value }) => {
                 noWrap
                 variant="subtitle2"
                 component={Link}
-                to="//https://vaibhaw.netlify.app"
+                to={linkAddress}
                 sx={{
                   color: theme.palette.primary.main,
                   maxWidth: 150,
                   overflow: 'hidden',
                 }}
               >
-                vaibhaw.netlify.appdsdssdsdssd
+                {linkAddress}
               </Typography>
             </Tooltip>
           </Stack>

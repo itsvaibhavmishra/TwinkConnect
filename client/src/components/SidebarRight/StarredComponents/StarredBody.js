@@ -8,12 +8,12 @@ const Body = () => {
   return (
     <Stack
       sx={{
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.default,
         overflowY: 'scroll',
+        height: '100%',
       }}
       className="scrollbar"
     >
-      {/* Changing component */}
       <Stack
         className="scrollbar"
         sx={{
@@ -21,7 +21,10 @@ const Body = () => {
           position: 'relative',
           flexGrow: 1,
           overflowY: 'scroll',
+          backgroundColor: theme.palette.background.paper,
         }}
+        ml={0.5}
+        mb={0.5}
         p={3}
         spacing={3}
       >
