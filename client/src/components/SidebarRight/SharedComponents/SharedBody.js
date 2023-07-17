@@ -44,6 +44,7 @@ const Body = () => {
         }}
         ml={0.5}
         mr={0.5}
+        mb={0.5}
       >
         <Tabs sx={{ pt: 2 }} value={value} onChange={handleChange} centered>
           <Tab label="Media" />
