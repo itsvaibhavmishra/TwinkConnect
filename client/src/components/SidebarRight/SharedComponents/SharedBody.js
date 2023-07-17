@@ -31,47 +31,57 @@ const Body = () => {
   return (
     <Stack
       sx={{
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.default,
         overflowY: 'scroll',
+        height: '100%',
       }}
       className="scrollbar"
     >
-      <Tabs sx={{ pt: 2 }} value={value} onChange={handleChange} centered>
-        <Tab label="Media" />
-        <Tab label="Links" />
-        <Tab label="Docs" />
-      </Tabs>
-
-      {/* Changing component */}
       <Stack
-        className="scrollbar"
         sx={{
+          backgroundColor: theme.palette.background.paper,
           height: '100%',
-          position: 'relative',
-          flexGrow: 1,
-          overflowY: 'scroll',
         }}
-        p={3}
-        spacing={3}
+        ml={0.5}
+        mr={0.5}
       >
-        {(() => {
-          switch (value) {
-            case 0:
-              // media section
-              return <Media />;
+        <Tabs sx={{ pt: 2 }} value={value} onChange={handleChange} centered>
+          <Tab label="Media" />
+          <Tab label="Links" />
+          <Tab label="Docs" />
+        </Tabs>
 
-            case 1:
-              // links section
-              return SHARED_LINKS.map((e) => <LinkMsg e={e} value={value} />);
+        {/* Changing component */}
+        <Stack
+          className="scrollbar"
+          sx={{
+            height: '100%',
+            position: 'relative',
+            flexGrow: 1,
+            overflowY: 'scroll',
+          }}
+          p={3}
+          spacing={3}
+        >
+          {(() => {
+            switch (value) {
+              case 0:
+                // media section
+                return <Media />;
 
-            case 2:
-              // docs section
-              return SHARED_DOCS.map((e) => <DocMsg e={e} value={value} />);
+              case 1:
+                // links section
+                return SHARED_LINKS.map((e) => <LinkMsg e={e} value={value} />);
 
-            default:
-              break;
-          }
-        })()}
+              case 2:
+                // docs section
+                return SHARED_DOCS.map((e) => <DocMsg e={e} value={value} />);
+
+              default:
+                break;
+            }
+          })()}
+        </Stack>
       </Stack>
     </Stack>
   );

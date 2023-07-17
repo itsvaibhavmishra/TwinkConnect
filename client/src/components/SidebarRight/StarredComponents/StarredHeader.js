@@ -2,7 +2,7 @@ import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { UpdateSidebarType } from '../../../redux/slices/app';
-import { ArrowCircleLeft, Export } from 'phosphor-react';
+import { ArrowCircleLeft, Star } from 'phosphor-react';
 
 const Header = () => {
   // using theme
@@ -28,8 +28,8 @@ const Header = () => {
         spacing={3}
       >
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          <Export />
-          <Typography variant="subtitle2">Shared Messages</Typography>
+          <Star />
+          <Typography variant="subtitle2">Starred Messages</Typography>
         </Stack>
         <IconButton
           onClick={() => {
