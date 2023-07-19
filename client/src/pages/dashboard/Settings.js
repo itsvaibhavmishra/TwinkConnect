@@ -162,7 +162,11 @@ const Settings = () => {
 
       {/* Keyboard shortcuts */}
       {openSortcuts && (
-        <Shortcuts open={openSortcuts} handleClose={handleShortcuts} />
+        <Shortcuts
+          open={openSortcuts}
+          handleClose={handleShortcuts}
+          theme={theme}
+        />
       )}
     </>
   );

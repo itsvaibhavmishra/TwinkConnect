@@ -97,7 +97,7 @@ const list = [
   },
 ];
 
-const Shortcuts = ({ open, handleClose }) => {
+const Shortcuts = ({ open, handleClose, theme }) => {
   return (
     <Dialog
       fullWidth
@@ -128,7 +128,10 @@ const Shortcuts = ({ open, handleClose }) => {
                       <Button
                         sx={{
                           p: 0.2,
-                          color: '#454545',
+                          color:
+                            theme.palette.mode === 'light'
+                              ? '#454545'
+                              : '#FFFC',
                           backgroundColor: '#919eab33',
                           cursor: 'default',
                         }}
