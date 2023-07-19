@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  ButtonBase,
   Divider,
   IconButton,
   Stack,
@@ -128,15 +129,27 @@ const Settings = () => {
             {/* Options */}
             <Stack spacing={3}>
               {list.map(({ key, icon, title, onclick }) => (
-                <Stack
-                  spacing={2}
-                  sx={{ cursor: 'pointer' }}
-                  onClick={onclick}
-                  key={key}
-                >
-                  <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                    {icon}
-                    <Typography variant="body2">{title}</Typography>
+                <Stack spacing={2} key={key}>
+                  <Stack alignItems={'start'}>
+                    <ButtonBase
+                      sx={{
+                        padding: 1,
+                        paddingRight: 1.5,
+                        borderRadius: 1,
+                        mx: -1,
+                        mb: -2,
+                      }}
+                      onClick={onclick}
+                    >
+                      <Stack
+                        direction={'row'}
+                        spacing={2}
+                        alignItems={'center'}
+                      >
+                        {icon}
+                        <Typography variant="body2">{title}</Typography>
+                      </Stack>
+                    </ButtonBase>
                   </Stack>
                   {key !== 7 && <Divider />}
                 </Stack>
