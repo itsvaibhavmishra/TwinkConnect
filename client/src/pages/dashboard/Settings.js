@@ -19,10 +19,19 @@ import {
   PencilCircle,
 } from 'phosphor-react';
 import { faker } from '@faker-js/faker';
+import Shortcuts from '../../sections/settings/Shortcuts';
+import { useState } from 'react';
 
 const Settings = () => {
   // using theme
   const theme = useTheme();
+
+  // handling keyboard shortcut dialog
+  const [openSortcuts, setOpenShortcuts] = useState(false);
+
+  const handleShortcuts = () => {
+    setOpenShortcuts(!openSortcuts);
+  };
 
   const list = [
     {
@@ -65,7 +74,7 @@ const Settings = () => {
       key: 6,
       icon: <Keyboard size={20} />,
       title: 'Keyboard Shortcuts',
-      onclick: () => {},
+      onclick: handleShortcuts,
     },
     {
       key: 7,
@@ -76,61 +85,73 @@ const Settings = () => {
   ];
 
   return (
-    <Stack direction={'row'} sx={{ width: '100%' }}>
-      {/* Settings menu */}
-      <Box
-        sx={{
-          overflowY: 'scroll',
-          height: '100vh',
-          width: 320,
-          backgroundColor: theme.palette.background,
-          boxShadow: '0px 0px 2px #00000040',
-        }}
-        className="scrollbar"
-      >
-        <Stack p={4} spacing={5}>
-          {/* Header */}
-          <Stack direction={'row'} alignItems={'center'} spacing={3}>
-            <IconButton>
-              <CaretLeft size={24} color="#4B4B4B" />
-            </IconButton>
-            <Typography variant="h6">Settings</Typography>
-          </Stack>
-          {/* Profile */}
-          <Stack direction={'row'} spacing={3}>
-            <Avatar
-              src={faker.image.avatar()}
-              alt={faker.name.fullName()}
-              sx={{ width: 56, height: 56 }}
-            />
-            <Stack spacing={0.5}>
-              <Typography variant="article">{faker.name.fullName()}</Typography>
-              <Typography variant="body2" color={theme.palette.text.secondary}>
-                {faker.random.words()}
-              </Typography>
+    <>
+      <Stack direction={'row'} sx={{ width: '100%' }}>
+        {/* Settings menu */}
+        <Box
+          sx={{
+            overflowY: 'scroll',
+            height: '100vh',
+            width: 320,
+            backgroundColor: theme.palette.background,
+            boxShadow: '0px 0px 2px #00000040',
+          }}
+          className="scrollbar"
+        >
+          <Stack p={4} spacing={5}>
+            {/* Header */}
+            <Stack direction={'row'} alignItems={'center'} spacing={3}>
+              <IconButton>
+                <CaretLeft size={24} color="#4B4B4B" />
+              </IconButton>
+              <Typography variant="h6">Settings</Typography>
+            </Stack>
+            {/* Profile */}
+            <Stack direction={'row'} spacing={3}>
+              <Avatar
+                src={faker.image.avatar()}
+                alt={faker.name.fullName()}
+                sx={{ width: 56, height: 56 }}
+              />
+              <Stack spacing={0.5}>
+                <Typography variant="article">
+                  {faker.name.fullName()}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color={theme.palette.text.secondary}
+                >
+                  {faker.random.words()}
+                </Typography>
+              </Stack>
+            </Stack>
+            {/* Options */}
+            <Stack spacing={3}>
+              {list.map(({ key, icon, title, onclick }) => (
+                <Stack
+                  spacing={2}
+                  sx={{ cursor: 'pointer' }}
+                  onClick={onclick}
+                  key={key}
+                >
+                  <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                    {icon}
+                    <Typography variant="body2">{title}</Typography>
+                  </Stack>
+                  {key !== 7 && <Divider />}
+                </Stack>
+              ))}
             </Stack>
           </Stack>
-          {/* Options */}
-          <Stack spacing={3}>
-            {list.map(({ key, icon, title, onclick }) => (
-              <Stack
-                spacing={2}
-                sx={{ cursor: 'pointer' }}
-                onClick={onclick}
-                key={key}
-              >
-                <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                  {icon}
-                  <Typography variant="body2">{title}</Typography>
-                </Stack>
-                {key !== 7 && <Divider />}
-              </Stack>
-            ))}
-          </Stack>
-        </Stack>
-      </Box>
-      {/* Settings panel right*/}
-    </Stack>
+        </Box>
+        {/* Settings panel right*/}
+      </Stack>
+
+      {/* Keyboard shortcuts */}
+      {openSortcuts && (
+        <Shortcuts open={openSortcuts} handleClose={handleShortcuts} />
+      )}
+    </>
   );
 };
 
