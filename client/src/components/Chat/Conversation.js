@@ -1,7 +1,7 @@
 import { Box, Stack, useTheme } from '@mui/material';
 import React from 'react';
-import { ChatFooter, ChatHeader } from '../../components/Chat';
-import Message from '../../components/Chat/ChatsComponents/Message';
+import { ChatFooter, ChatHeader } from '.';
+import Message from './ChatsComponents/Message';
 
 function Conversation({ sidebar }) {
   // using theme

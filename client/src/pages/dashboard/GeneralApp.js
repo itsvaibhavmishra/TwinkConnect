@@ -1,7 +1,7 @@
 import React from 'react';
 import Chats from './Chats';
 import { Stack } from '@mui/material';
-import Conversation from './Conversation';
+import Conversation from '../../components/Chat/Conversation';
 import { useSelector } from 'react-redux';
 import { Contact, Shared, Starred } from '../../components/SidebarRight';
 
