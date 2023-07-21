@@ -8,34 +8,33 @@ import { RHFTextField } from '../../components/hook-form';
 import { Eye, EyeSlash } from 'phosphor-react';
 import { LoadingButton } from '@mui/lab';
 
-const RegisterForm = () => {
+const NewPasswordForm = () => {
   // hide and show password controller
   const [showPassword, setShowPassword] = useState(false);
 
   //  Login Schema
-  const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required('First Name Required'),
-    lastName: Yup.string(),
-    email: Yup.string().required('Email Required').email('Invalid Email'),
-    password: Yup.string()
+  const NewPasswordSchema = Yup.object().shape({
+    newPassword: Yup.string()
       .required('Password Required')
       .min(8, 'Password must be 8 characters long')
       .matches(/[0-9]/, 'Password requires a number')
       .matches(/[a-z]/, 'Password requires a lowercase letter')
       .matches(/[A-Z]/, 'Password requires an uppercase letter')
       .matches(/[^\w]/, 'Password requires a symbol'),
+
+    confirmPassword: Yup.string()
+      .required('Password Required')
+      .oneOf([Yup.ref('newPassword'), null], 'Password does not match'),
   });
 
   //   Labels
   const defaultValues = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
+    newPassword: '',
+    confirmPassword: '',
   };
 
   const methods = useForm({
-    resolver: yupResolver(RegisterSchema),
+    resolver: yupResolver(NewPasswordSchema),
     defaultValues,
   });
 
@@ -66,13 +65,8 @@ const RegisterForm = () => {
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First Name" />
-          <RHFTextField name="lastName" label="Last Name" />
-        </Stack>
-        <RHFTextField name="email" label="Email" />
         <RHFTextField
-          name="password"
+          name="newPassword"
           label="Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
@@ -88,6 +82,11 @@ const RegisterForm = () => {
               </InputAdornment>
             ),
           }}
+        />
+        <RHFTextField
+          name="confirmPassword"
+          label="Confirm Password"
+          type={showPassword ? 'text' : 'password'}
         />
         <LoadingButton
           loading={isSubmitSuccessful || isSubmitting}
@@ -107,11 +106,11 @@ const RegisterForm = () => {
             },
           }}
         >
-          Register
+          Reset Password
         </LoadingButton>
       </Stack>
     </FormProvider>
   );
 };
 
-export default RegisterForm;
+export default NewPasswordForm;

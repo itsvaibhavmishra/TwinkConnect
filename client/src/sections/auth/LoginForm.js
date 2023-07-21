@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import FormProvider from '../../components/hook-form/FormProvider';
 import { Alert, IconButton, InputAdornment, Link, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -84,21 +85,32 @@ const LoginForm = () => {
       </Stack>
       <Stack alignItems={'flex-end'} sx={{ my: 2 }}>
         <Link
+          to="/auth/reset-password"
+          component={RouterLink}
           variant="body2"
           color="inherit"
           underline="hover"
-          sx={{ cursor: 'pointer' }}
         >
           Forgot Password?
         </Link>
       </Stack>
       <LoadingButton
+        loading={isSubmitSuccessful || isSubmitting}
         fullWidth
-        color="primary"
         size="large"
         type="submit"
         variant="contained"
-        loading={isSubmitSuccessful || isSubmitting}
+        sx={{
+          mt: 3,
+          bgcolor: 'text.primary',
+          color: (theme) =>
+            theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+          '&:hover': {
+            bgcolor: 'text.primary',
+            color: (theme) =>
+              theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+          },
+        }}
       >
         Login
       </LoadingButton>
