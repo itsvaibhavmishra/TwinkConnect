@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Nav_Buttons, Profile_Menu } from '../../data';
 import { Gear } from 'phosphor-react';
 import { faker } from '@faker-js/faker';
@@ -100,19 +100,21 @@ const DashboardLayout = () => {
                     </IconButton>
                   </Box>
                 ) : (
-                  <IconButton
-                    onClick={() => setSelected(e.index)}
-                    key={e.index}
-                    sx={{
-                      width: '80%',
-                      color:
-                        theme.palette.mode === 'dark'
-                          ? theme.palette.text.primary
-                          : '#000',
-                    }}
-                  >
-                    {e.icon}
-                  </IconButton>
+                  <Link to={e.address}>
+                    <IconButton
+                      onClick={() => setSelected(e.index)}
+                      key={e.index}
+                      sx={{
+                        width: '100%',
+                        color:
+                          theme.palette.mode === 'dark'
+                            ? theme.palette.text.primary
+                            : '#000',
+                      }}
+                    >
+                      {e.icon}
+                    </IconButton>
+                  </Link>
                 )
               )}
               {/* Adds a line like <hr> tag */}
@@ -130,18 +132,20 @@ const DashboardLayout = () => {
                   </IconButton>
                 </Box>
               ) : (
-                <IconButton
-                  onClick={() => setSelected(3)}
-                  sx={{
-                    width: '80%',
-                    color:
-                      theme.palette.mode === 'dark'
-                        ? theme.palette.text.primary
-                        : '#000',
-                  }}
-                >
-                  <Gear />
-                </IconButton>
+                <Link to={'settings'}>
+                  <IconButton
+                    onClick={() => setSelected(3)}
+                    sx={{
+                      width: '100%',
+                      color:
+                        theme.palette.mode === 'dark'
+                          ? theme.palette.text.primary
+                          : '#000',
+                    }}
+                  >
+                    <Gear />
+                  </IconButton>
+                </Link>
               )}
             </Stack>
           </Stack>
