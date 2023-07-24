@@ -4,10 +4,13 @@ const LoadingScreen = () => {
   // using theme
   const theme = useTheme();
 
+  // Check if /auth is present in the URL
+  const isAuthRoute = window.location.pathname.includes('/auth');
+
   return (
     <Stack
-      height={'100vh'}
-      width={'100vw'}
+      height={isAuthRoute ? '50vh' : '100vh'}
+      width={isAuthRoute ? '100%' : '100vw'}
       direction={'row'}
       justifyContent={'center'}
       alignItems={'center'}

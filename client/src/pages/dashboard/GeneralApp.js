@@ -1,5 +1,5 @@
 import React from 'react';
-import Chats from './Chats';
+import Chats from '../../components/Chat/Chats';
 import { Stack } from '@mui/material';
 import Conversation from '../../components/Chat/Conversation';
 import { useSelector } from 'react-redux';

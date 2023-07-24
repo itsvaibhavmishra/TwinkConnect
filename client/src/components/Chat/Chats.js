@@ -13,7 +13,7 @@ import {
 import { ArchiveBox, CircleDashed, MagnifyingGlass } from 'phosphor-react';
 import React from 'react';
 import { ChatList } from '../../data';
-import ChatElement from '../../components/Chat/ChatElement';
+import ChatElement from './ChatElement';
 
 // styles for search bar
 const Search = styled('div')(({ theme }) => ({
