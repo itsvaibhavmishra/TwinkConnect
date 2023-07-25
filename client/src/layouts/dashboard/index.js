@@ -95,9 +95,11 @@ const DashboardLayout = () => {
                       borderRadius: 1.5,
                     }}
                   >
-                    <IconButton sx={{ width: 'max-content', color: '#fff' }}>
-                      {e.icon}
-                    </IconButton>
+                    <Link to={e.address}>
+                      <IconButton sx={{ width: 'max-content', color: '#fff' }}>
+                        {e.icon}
+                      </IconButton>
+                    </Link>
                   </Box>
                 ) : (
                   <Link to={e.address}>
