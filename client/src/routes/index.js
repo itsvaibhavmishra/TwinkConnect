@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from '../layouts/dashboard';
-import { DEFAULT_PATH } from '../config';
+import { DEFAULT_AUTH, DEFAULT_PATH } from '../config';
 import LoadingScreen from '../components/LoadingScreen';
 import AuthLayout from '../layouts/auth';
 
@@ -19,10 +19,11 @@ export default function Router() {
       path: '/auth',
       element: <AuthLayout />,
       children: [
-        { element: <LoginPage />, path: 'login' },
-        { element: <RegisterPage />, path: 'register' },
-        { element: <ResetPasswordPage />, path: 'reset-password' },
-        { element: <NewPasswordPage />, path: 'new-password' },
+        { element: <Navigate to={DEFAULT_AUTH} replace />, index: true },
+        { path: 'login', element: <LoginPage /> },
+        { path: 'register', element: <RegisterPage /> },
+        { path: 'reset-password', element: <ResetPasswordPage /> },
+        { path: 'new-password', element: <NewPasswordPage /> },
       ],
     },
 

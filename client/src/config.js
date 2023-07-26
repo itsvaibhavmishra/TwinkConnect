@@ -1,6 +1,6 @@
 import { enUS, frFR, zhCN, viVN, arSD } from '@mui/material/locale';
 
-import { PATH_DASHBOARD } from './routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD } from './routes/paths';
 
 export const defaultSettings = {
   themeMode: 'light',
@@ -56,3 +56,5 @@ export const allLangs = [
 export const defaultLang = allLangs[0];
 
 export const DEFAULT_PATH = PATH_DASHBOARD.general.app;
+
+export const DEFAULT_AUTH = PATH_AUTH.general.login;
