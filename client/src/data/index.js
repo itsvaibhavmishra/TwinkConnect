@@ -44,7 +44,7 @@ const Nav_Buttons = [
   {
     index: 2,
     icon: <Phone />,
-    address: '', // route to /
+    address: 'call', // route to /call
   },
 ];
 

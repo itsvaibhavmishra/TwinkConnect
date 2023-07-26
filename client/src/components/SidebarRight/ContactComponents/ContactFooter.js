@@ -20,30 +20,28 @@ const BlockDialog = ({ open, handleClose, dialogText }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <div>
-      <Dialog
-        fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">{dialogText}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to {dialogText.toLowerCase()} this{' '}
-            {dialogText === 'Block' ? 'contact' : 'chat'}?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleClose} autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="responsive-dialog-title"
+    >
+      <DialogTitle id="responsive-dialog-title">{dialogText}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to {dialogText.toLowerCase()} this{' '}
+          {dialogText === 'Block' ? 'contact' : 'chat'}?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button onClick={handleClose} autoFocus>
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

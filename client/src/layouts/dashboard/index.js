@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Nav_Buttons, Profile_Menu } from '../../data';
 import { Gear } from 'phosphor-react';
 import { faker } from '@faker-js/faker';
@@ -22,12 +22,32 @@ const DashboardLayout = () => {
   // for getting color palattes from theme
   const theme = useTheme();
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState();
   const { onToggleMode } = useSettings(); // useSettings from custom hooks
 
   const [isSwitchChecked, setIsSwitchChecked] = useState(
     theme.palette.mode === 'light'
   );
+
+  const location = useLocation();
+
+  // function to determine the selected index based on the current path
+  const getSelectedIndex = (path) => {
+    if (path.startsWith('/app')) {
+      return 0;
+    } else if (path.startsWith('/group')) {
+      return 1;
+    } else if (path.startsWith('/call')) {
+      return 2;
+    } else {
+      return 3;
+    }
+  };
+
+  // Update the selected state based on the current location path
+  useEffect(() => {
+    setSelected(getSelectedIndex(location.pathname));
+  }, [location.pathname]);
 
   useEffect(() => {
     setIsSwitchChecked(theme.palette.mode === 'light');

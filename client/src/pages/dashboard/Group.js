@@ -7,7 +7,8 @@ const Group = () => {
     <Stack direction={'row'} sx={{ width: '100%' }}>
       {/* Group List Panel */}
       <Groups />
-      {/* Conversation Panel */}
+
+      {/* Group Conversation Panel */}
     </Stack>
   );
 };
