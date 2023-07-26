@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { MagnifyingGlass, Phone, PhoneCall } from 'phosphor-react';
+import { MagnifyingGlass, PhoneCall } from 'phosphor-react';
 import React from 'react';
 import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
 import { CallElement } from './CallElement';
@@ -36,7 +36,7 @@ const Calls = () => {
           <Stack sx={{ width: '100%' }}>
             <Search>
               <SearchIconWrapper>
-                <MagnifyingGlass color="#709CE6" />
+                <MagnifyingGlass color={theme.palette.primary.main} />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search..."
