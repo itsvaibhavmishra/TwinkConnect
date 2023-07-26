@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CircleDashed, MagnifyingGlass, Plus } from 'phosphor-react';
+import { MagnifyingGlass, Plus } from 'phosphor-react';
 import React, { useState } from 'react';
 import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
 import { ChatList } from '../../data';
@@ -41,16 +41,7 @@ const Groups = () => {
       >
         {/* Header */}
         <Stack p={3} spacing={2} sx={{ maxHeight: '100vh' }}>
-          <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'space-between'}
-          >
-            <Typography variant="h5">Groups</Typography>
-            <IconButton>
-              <CircleDashed />
-            </IconButton>
-          </Stack>
+          <Typography variant="h5">Groups</Typography>
 
           {/* Search stack */}
           <Stack sx={{ width: '100%' }}>
