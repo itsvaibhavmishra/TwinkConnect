@@ -6,8 +6,6 @@ import {
   IconButton,
   Stack,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -87,11 +85,10 @@ const CreateGroupForm = () => {
 };
 
 const CreateGroup = ({ open, handleClose }) => {
-  const theme = useTheme();
-
   return (
     <Dialog
       fullWidth
+      maxWidth={'xs'}
       open={open}
       onClose={handleClose}
       aria-labelledby="responsive-dialog-title"

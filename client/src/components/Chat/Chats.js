@@ -38,10 +38,12 @@ const Chats = () => {
             <CircleDashed />
           </IconButton>
         </Stack>
+
+        {/* Search section */}
         <Stack sx={{ width: '100%' }}>
           <Search>
             <SearchIconWrapper>
-              <MagnifyingGlass color="#709CE6" />
+              <MagnifyingGlass color={theme.palette.primary.main} />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search..."

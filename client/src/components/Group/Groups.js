@@ -20,10 +20,6 @@ const Groups = () => {
 
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -63,7 +59,7 @@ const Groups = () => {
             justifyContent={'space-between'}
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              handleClickOpen();
+              setOpen(true);
             }}
           >
             <Typography variant="subtitle2" component={Button}>

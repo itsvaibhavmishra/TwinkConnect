@@ -5,7 +5,7 @@ const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
   backgroundColor: alpha(
-    theme.palette.mode === 'light' ? '#F0F4FF' : theme.palette.background.paper,
+    theme.palette.mode === 'light' ? '#F0F4FF' : '#293445',
     1
   ),
   marginRight: theme.spacing(2),

@@ -8,20 +8,14 @@ import {
   DialogTitle,
   Stack,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { Prohibit, Trash } from 'phosphor-react';
 import { faker } from '@faker-js/faker';
 import React, { useState } from 'react';
 
 const BlockDialog = ({ open, handleClose, dialogText }) => {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
   return (
     <Dialog
-      fullScreen={fullScreen}
       open={open}
       onClose={handleClose}
       aria-labelledby="responsive-dialog-title"
