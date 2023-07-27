@@ -22,6 +22,7 @@ import {
 import { faker } from '@faker-js/faker';
 import Shortcuts from '../../sections/settings/Shortcuts';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Settings = () => {
   // using theme
@@ -102,9 +103,11 @@ const Settings = () => {
           <Stack p={4} spacing={5}>
             {/* Header */}
             <Stack direction={'row'} alignItems={'center'} spacing={3}>
-              <IconButton>
-                <CaretLeft size={24} color="#4B4B4B" />
-              </IconButton>
+              <Link to={'/'}>
+                <IconButton>
+                  <CaretLeft size={24} color="#4B4B4B" />
+                </IconButton>
+              </Link>
               <Typography variant="h6">Settings</Typography>
             </Stack>
             {/* Profile */}

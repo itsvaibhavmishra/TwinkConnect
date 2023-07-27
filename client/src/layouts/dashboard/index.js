@@ -8,15 +8,15 @@ import {
   MenuItem,
   Stack,
   useTheme,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Nav_Buttons, Profile_Menu } from '../../data';
-import { Gear } from 'phosphor-react';
-import { faker } from '@faker-js/faker';
-import TwinkLogo from '../../assets/Images/TwinkChat.png';
-import ThemeSwitch from '../../components/ThemeSwitch';
-import useSettings from '../../hooks/useSettings';
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { Nav_Buttons, Profile_Menu } from "../../data";
+import { Gear } from "phosphor-react";
+import { faker } from "@faker-js/faker";
+import TwinkLogo from "../../assets/Images/TwinkChat.png";
+import ThemeSwitch from "../../components/ThemeSwitch";
+import useSettings from "../../hooks/useSettings";
 
 const DashboardLayout = () => {
   // for getting color palattes from theme
@@ -26,18 +26,18 @@ const DashboardLayout = () => {
   const { onToggleMode } = useSettings(); // useSettings from custom hooks
 
   const [isSwitchChecked, setIsSwitchChecked] = useState(
-    theme.palette.mode === 'light'
+    theme.palette.mode === "light"
   );
 
   const location = useLocation();
 
   // function to determine the selected index based on the current path
   const getSelectedIndex = (path) => {
-    if (path.startsWith('/app')) {
+    if (path.startsWith("/app") || path.startsWith("/profile")) {
       return 0;
-    } else if (path.startsWith('/group')) {
+    } else if (path.startsWith("/group")) {
       return 1;
-    } else if (path.startsWith('/call')) {
+    } else if (path.startsWith("/call")) {
       return 2;
     } else {
       return 3;
@@ -50,7 +50,7 @@ const DashboardLayout = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    setIsSwitchChecked(theme.palette.mode === 'light');
+    setIsSwitchChecked(theme.palette.mode === "light");
   }, [theme.palette.mode]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -69,20 +69,20 @@ const DashboardLayout = () => {
         p={2}
         sx={{
           backgroundColor: theme.palette.background.paper,
-          boxShadow: '0px 0px 2px #00000040',
-          height: '100vh',
+          boxShadow: "0px 0px 2px #00000040",
+          height: "100vh",
           width: 80,
         }}
       >
         {/* Stack provides flex properties in mui */}
         <Stack
           direction="column"
-          sx={{ height: '100%' }}
+          sx={{ height: "100%" }}
           alignItems="center"
           spacing={3}
-          justifyContent={'space-between'}
+          justifyContent={"space-between"}
         >
-          <Stack alignItems={'center'} spacing={4}>
+          <Stack alignItems={"center"} spacing={4}>
             {/* App logo */}
             <Box
               sx={{
@@ -95,7 +95,7 @@ const DashboardLayout = () => {
               <img
                 src={TwinkLogo}
                 alt="TwinkChat_Logo"
-                style={{ padding: '2px 0px' }}
+                style={{ padding: "2px 0px" }}
               />
             </Box>
 
@@ -103,7 +103,7 @@ const DashboardLayout = () => {
             <Stack
               spacing={3}
               alignItems="center"
-              sx={{ width: 'max-content' }}
+              sx={{ width: "max-content" }}
             >
               {Nav_Buttons.map((e) =>
                 e.index === selected ? (
@@ -116,7 +116,7 @@ const DashboardLayout = () => {
                     }}
                   >
                     <Link to={e.address}>
-                      <IconButton sx={{ width: 'max-content', color: '#fff' }}>
+                      <IconButton sx={{ width: "max-content", color: "#fff" }}>
                         {e.icon}
                       </IconButton>
                     </Link>
@@ -127,11 +127,11 @@ const DashboardLayout = () => {
                       onClick={() => setSelected(e.index)}
                       key={e.index}
                       sx={{
-                        width: '100%',
+                        width: "100%",
                         color:
-                          theme.palette.mode === 'dark'
+                          theme.palette.mode === "dark"
                             ? theme.palette.text.primary
-                            : '#000',
+                            : "#000",
                       }}
                     >
                       {e.icon}
@@ -140,29 +140,31 @@ const DashboardLayout = () => {
                 )
               )}
               {/* Adds a line like <hr> tag */}
-              <Divider sx={{ width: '48px' }} />
+              <Divider sx={{ width: "48px" }} />
               {selected === 3 ? (
-                <Box
-                  p={0.5}
-                  sx={{
-                    backgroundColor: theme.palette.primary.main,
-                    borderRadius: 1.5,
-                  }}
-                >
-                  <IconButton sx={{ width: 'max-content', color: '#fff' }}>
-                    <Gear />
-                  </IconButton>
-                </Box>
+                <Link to={"settings"}>
+                  <Box
+                    p={0.5}
+                    sx={{
+                      backgroundColor: theme.palette.primary.main,
+                      borderRadius: 1.5,
+                    }}
+                  >
+                    <IconButton sx={{ width: "max-content", color: "#fff" }}>
+                      <Gear />
+                    </IconButton>
+                  </Box>
+                </Link>
               ) : (
-                <Link to={'settings'}>
+                <Link to={"settings"}>
                   <IconButton
                     onClick={() => setSelected(3)}
                     sx={{
-                      width: '100%',
+                      width: "100%",
                       color:
-                        theme.palette.mode === 'dark'
+                        theme.palette.mode === "dark"
                           ? theme.palette.text.primary
-                          : '#000',
+                          : "#000",
                     }}
                   >
                     <Gear />
@@ -173,7 +175,7 @@ const DashboardLayout = () => {
           </Stack>
 
           {/*  theme switch button amd avatar */}
-          <Stack spacing={4} alignItems={'center'}>
+          <Stack spacing={4} alignItems={"center"}>
             <ThemeSwitch
               onChange={() => {
                 onToggleMode();
@@ -182,12 +184,12 @@ const DashboardLayout = () => {
             />
             <Avatar
               id="basic-menu"
-              aria-controls={open ? 'basic-menu' : undefined}
+              aria-controls={open ? "basic-menu" : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
+              aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
               src={faker.image.avatar()}
-              sx={{ cursor: 'pointer' }}
+              sx={{ cursor: "pointer" }}
             />
             <Menu
               id="basic-menu"
@@ -195,25 +197,25 @@ const DashboardLayout = () => {
               open={open}
               onClose={handleClose}
               MenuListProps={{
-                'aria-labelledby': 'basic-button',
+                "aria-labelledby": "basic-button",
               }}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+                vertical: "bottom",
+                horizontal: "right",
               }}
               transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
             >
               <Stack spacing={1} px={1}>
                 {Profile_Menu.map((e) => (
                   <MenuItem onClick={handleClose}>
                     <Stack
-                      direction={'row'}
+                      direction={"row"}
                       sx={{ width: 100 }}
-                      alignItems={'center'}
-                      justifyContent={'space-between'}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
                     >
                       <span>{e.title}</span>
                       {e.icon}

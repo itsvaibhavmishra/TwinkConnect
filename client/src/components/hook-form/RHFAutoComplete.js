@@ -1,8 +1,8 @@
 // using React Hook Form
 
-import { Autocomplete, TextField } from '@mui/material';
-import PropTypes from 'prop-types';
-import { useFormContext, Controller } from 'react-hook-form';
+import { Autocomplete, TextField } from "@mui/material";
+import PropTypes from "prop-types";
+import { useFormContext, Controller } from "react-hook-form";
 
 // Props validation
 RHFAutoComplete.propTypes = {
@@ -23,8 +23,8 @@ export default function RHFAutoComplete({ name, label, helperText, ...other }) {
           {...field}
           fullWidth
           value={
-            typeof field.value === 'number' && field.value === 0
-              ? ''
+            typeof field.value === "number" && field.value === 0
+              ? ""
               : field.value
           }
           onChange={(event, newValue) =>
