@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 import {
   ArrowBendUpLeft,
   ArrowBendUpRight,
@@ -13,20 +13,23 @@ import {
   User,
   Users,
   WarningCircle,
-} from 'phosphor-react';
+} from "phosphor-react";
 
 const Profile_Menu = [
   {
-    title: 'Profile',
+    title: "Profile",
     icon: <User />,
+    address: "profile", // route to /profile
   },
   {
-    title: 'Settings',
+    title: "Settings",
     icon: <Gear />,
+    address: "settings",
   },
   {
-    title: 'Profile',
+    title: "Sign Out",
     icon: <SignOut />,
+    address: "",
   },
 ];
 
@@ -34,17 +37,17 @@ const Nav_Buttons = [
   {
     index: 0,
     icon: <ChatCircleDots />,
-    address: 'app', // route to /app
+    address: "app", // route to /app
   },
   {
     index: 1,
     icon: <Users />,
-    address: 'group', // route to /group
+    address: "group", // route to /group
   },
   {
     index: 2,
     icon: <Phone />,
-    address: 'call', // route to /call
+    address: "call", // route to /call
   },
 ];
 
@@ -113,7 +116,7 @@ const CallLogs = [
     name: faker.name.firstName(),
     missed: false,
     incoming: true,
-    time: '9:36',
+    time: "9:36",
     online: true,
   },
   {
@@ -122,7 +125,7 @@ const CallLogs = [
     name: faker.name.firstName(),
     missed: true,
     incoming: false,
-    time: '08:42',
+    time: "08:42",
     online: false,
   },
   {
@@ -131,7 +134,7 @@ const CallLogs = [
     name: faker.name.firstName(),
     missed: true,
     incoming: true,
-    time: '04:00',
+    time: "04:00",
     online: false,
   },
   {
@@ -140,7 +143,7 @@ const CallLogs = [
     name: faker.name.firstName(),
     missed: false,
     incoming: false,
-    time: '10:35',
+    time: "10:35",
     online: true,
   },
   {
@@ -149,7 +152,7 @@ const CallLogs = [
     name: faker.name.firstName(),
     missed: false,
     incoming: true,
-    time: '12:02',
+    time: "12:02",
     online: false,
   },
 ];
@@ -160,7 +163,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '9:36',
+    time: "9:36",
     unread: 0,
     pinned: true,
     online: true,
@@ -170,7 +173,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '12:02',
+    time: "12:02",
     unread: 2,
     pinned: true,
     online: false,
@@ -180,7 +183,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '10:35',
+    time: "10:35",
     unread: 3,
     pinned: false,
     online: true,
@@ -190,7 +193,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '04:00',
+    time: "04:00",
     unread: 0,
     pinned: false,
     online: true,
@@ -200,7 +203,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '08:42',
+    time: "08:42",
     unread: 0,
     pinned: false,
     online: false,
@@ -210,7 +213,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '08:42',
+    time: "08:42",
     unread: 0,
     pinned: false,
     online: false,
@@ -220,7 +223,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '08:42',
+    time: "08:42",
     unread: 0,
     pinned: false,
     online: false,
@@ -230,7 +233,7 @@ const ChatList = [
     img: faker.image.avatar(),
     name: faker.name.firstName(),
     msg: faker.music.songName(),
-    time: '08:42',
+    time: "08:42",
     unread: 0,
     pinned: false,
     online: false,
@@ -239,69 +242,69 @@ const ChatList = [
 
 const Chat_History = [
   {
-    type: 'msg',
-    message: 'Hi 👋🏻, How are ya ?',
+    type: "msg",
+    message: "Hi 👋🏻, How are ya ?",
     incoming: true,
     outgoing: false,
   },
   {
-    type: 'divider',
-    text: 'Today',
+    type: "divider",
+    text: "Today",
   },
   {
-    type: 'msg',
-    message: 'Hi 👋 Panda, not bad, u ?',
+    type: "msg",
+    message: "Hi 👋 Panda, not bad, u ?",
     incoming: false,
     outgoing: true,
   },
   {
-    type: 'msg',
-    message: 'Can you send me an abstarct image?',
+    type: "msg",
+    message: "Can you send me an abstarct image?",
     incoming: false,
     outgoing: true,
   },
   {
-    type: 'msg',
-    message: 'Ya sure, sending you a pic',
+    type: "msg",
+    message: "Ya sure, sending you a pic",
     incoming: true,
     outgoing: false,
   },
 
   {
-    type: 'msg',
-    subtype: 'img',
-    message: 'Here You Go',
+    type: "msg",
+    subtype: "img",
+    message: "Here You Go",
     img: faker.image.abstract(),
     incoming: true,
     outgoing: false,
   },
   {
-    type: 'msg',
-    message: 'Can you please send this in file format?',
+    type: "msg",
+    message: "Can you please send this in file format?",
     incoming: false,
     outgoing: true,
   },
 
   {
-    type: 'msg',
-    subtype: 'doc',
-    message: 'Yes sure, here you go.',
+    type: "msg",
+    subtype: "doc",
+    message: "Yes sure, here you go.",
     incoming: true,
     outgoing: false,
   },
   {
-    type: 'msg',
-    subtype: 'link',
+    type: "msg",
+    subtype: "link",
     preview: faker.image.cats(),
-    message: 'Yep, I can also do that',
+    message: "Yep, I can also do that",
     incoming: true,
     outgoing: false,
   },
   {
-    type: 'msg',
-    subtype: 'reply',
-    reply: 'This is a reply',
-    message: 'Yep, I can also do that',
+    type: "msg",
+    subtype: "reply",
+    reply: "This is a reply",
+    message: "Yep, I can also do that",
     incoming: false,
     outgoing: true,
   },
@@ -309,61 +312,61 @@ const Chat_History = [
 
 const Message_options = [
   {
-    title: 'Reply',
+    title: "Reply",
     icon: <ArrowBendUpLeft />,
   },
   {
-    title: 'React to message',
+    title: "React to message",
     icon: <SmileyXEyes />,
   },
   {
-    title: 'Forward message',
+    title: "Forward message",
     icon: <ArrowBendUpRight />,
   },
   {
-    title: 'Star message',
+    title: "Star message",
     icon: <Star />,
   },
   {
-    title: 'Report',
+    title: "Report",
     icon: <WarningCircle />,
   },
   {
-    title: 'Delete Message',
+    title: "Delete Message",
     icon: <Trash />,
   },
 ];
 
 const SHARED_LINKS = [
   {
-    type: 'msg',
-    subtype: 'link',
+    type: "msg",
+    subtype: "link",
     preview: faker.image.cats(),
-    message: 'Yep, I can also do that',
+    message: "Yep, I can also do that",
     incoming: false,
     outgoing: true,
   },
   {
-    type: 'msg',
-    subtype: 'link',
+    type: "msg",
+    subtype: "link",
     preview: faker.image.cats(),
     message: "Here's the link",
     incoming: true,
     outgoing: false,
   },
   {
-    type: 'msg',
-    subtype: 'link',
+    type: "msg",
+    subtype: "link",
     preview: faker.image.cats(),
-    message: 'Ok gotcha!',
+    message: "Ok gotcha!",
     incoming: false,
     outgoing: true,
   },
   {
-    type: 'msg',
-    subtype: 'link',
+    type: "msg",
+    subtype: "link",
     preview: faker.image.cats(),
-    message: 'Visit this link',
+    message: "Visit this link",
     incoming: true,
     outgoing: false,
   },
@@ -371,30 +374,30 @@ const SHARED_LINKS = [
 
 const SHARED_DOCS = [
   {
-    type: 'msg',
-    subtype: 'doc',
-    message: 'Yes sure, here you go.',
+    type: "msg",
+    subtype: "doc",
+    message: "Yes sure, here you go.",
     incoming: false,
     outgoing: true,
   },
   {
-    type: 'msg',
-    subtype: 'doc',
-    message: 'Go through this',
+    type: "msg",
+    subtype: "doc",
+    message: "Go through this",
     incoming: true,
     outgoing: false,
   },
   {
-    type: 'msg',
-    subtype: 'doc',
-    message: 'Is this the one?',
+    type: "msg",
+    subtype: "doc",
+    message: "Is this the one?",
     incoming: false,
     outgoing: true,
   },
   {
-    type: 'msg',
-    subtype: 'doc',
-    message: 'Here you go.',
+    type: "msg",
+    subtype: "doc",
+    message: "Here you go.",
     incoming: true,
     outgoing: false,
   },

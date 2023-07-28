@@ -1,5 +1,8 @@
 import {
+  Avatar,
+  Box,
   Button,
+  Chip,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -15,6 +18,7 @@ import FormProvider from "../../components/hook-form/FormProvider";
 import { RHFTextField } from "../../components/hook-form";
 import { XCircle } from "phosphor-react";
 import RHFAutoComplete from "../../components/hook-form/RHFAutoComplete";
+import { faker } from "@faker-js/faker";
 
 const CreateGroupForm = () => {
   const NewGroupSchema = Yup.object().shape({
@@ -55,7 +59,54 @@ const CreateGroupForm = () => {
   };
 
   // Dummy list of options for members
-  const MEMBERS = ["Name 1", "Name 2", "Name 3"];
+  const MEMBERS = [
+    { name: "Name 1", image: faker.image.avatar() },
+    { name: "Name 2", image: faker.image.avatar() },
+    { name: "Name 3", image: faker.image.avatar() },
+  ];
+
+  // Function to handle chip deletion
+  const handleChipDelete = (index) => {
+    const membersArray = methods.getValues("members");
+    const updatedMembers = [...membersArray];
+    updatedMembers.splice(index, 1);
+    methods.setValue("members", updatedMembers);
+  };
+
+  // Function to handle option selection
+  const handleOptionSelect = (option) => {
+    const membersArray = methods.getValues("members");
+    const isMemberSelected = membersArray.some(
+      (member) => member.name === option.name
+    );
+
+    if (!isMemberSelected) {
+      // If member is not selected and has a non-empty name, add it
+      if (option.name.trim() !== "") {
+        const isOptionPresent = MEMBERS.some(
+          (member) => member.name === option.name
+        );
+        if (isOptionPresent) {
+          const selectedMember = MEMBERS.find(
+            (member) => member.name === option.name
+          );
+          if (selectedMember) {
+            const updatedMembers = [...membersArray, selectedMember];
+            methods.setValue("members", updatedMembers);
+          }
+        } else {
+          // Clear the input field if the entered text is not present in the members list
+          methods.setValue("members", []);
+        }
+      }
+    } else {
+      // If member is already selected, remove it
+      const updatedMembers = membersArray.filter(
+        (member) => member.name !== option.name
+      );
+      methods.setValue("members", updatedMembers);
+    }
+  };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -66,7 +117,30 @@ const CreateGroupForm = () => {
           label="Add Members"
           multiple
           freeSolo
-          options={MEMBERS.map((option) => option)}
+          options={MEMBERS.map((option) => option)} // Pass the MEMBERS array as options
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip
+                avatar={<Avatar alt={option.name} src={option.image} />}
+                key={index}
+                variant="outlined"
+                label={option.name}
+                {...getTagProps({ index })}
+                onDelete={() => handleChipDelete(index)}
+              />
+            ))
+          }
+          renderOption={(props, option) => (
+            <Box
+              component="li"
+              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+              {...props}
+              onClick={() => handleOptionSelect(option)}
+            >
+              <Avatar src={option.image} />
+              {option.name}
+            </Box>
+          )}
           ChipProps={{ size: "medium" }}
         />
         <Stack

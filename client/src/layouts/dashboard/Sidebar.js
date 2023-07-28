@@ -210,15 +210,23 @@ const Sidebar = () => {
               <Stack spacing={1} px={1}>
                 {Profile_Menu.map((e) => (
                   <MenuItem onClick={handleClose}>
-                    <Stack
-                      direction={"row"}
-                      sx={{ width: 100 }}
-                      alignItems={"center"}
-                      justifyContent={"space-between"}
+                    <Link
+                      to={e.address}
+                      style={{
+                        textDecoration: "none",
+                        color: theme.palette.text.primary,
+                      }}
                     >
-                      <span>{e.title}</span>
-                      {e.icon}
-                    </Stack>
+                      <Stack
+                        direction={"row"}
+                        sx={{ width: 100 }}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                      >
+                        <span>{e.title}</span>
+                        {e.icon}
+                      </Stack>
+                    </Link>
                   </MenuItem>
                 ))}
               </Stack>
