@@ -6,6 +6,9 @@ import http from "http";
 import rateLimit from "express-rate-limit"; // limits rates of requests
 import helmet from "helmet"; // sets multiple HTTP headers
 import ExpressMongoSanitize from "express-mongo-sanitize"; // for sanitizing requests
+import xss from "xss";
+
+import cors from "cors";
 
 import bodyParser from "body-parser";
 
@@ -15,6 +18,13 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // middlewares
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "10kb" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,6 +42,8 @@ app.use(
     extended: true,
   })
 );
+app.use(ExpressMongoSanitize());
+app.use(xss);
 
 const server = http.createServer(app);
 
