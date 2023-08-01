@@ -6,7 +6,7 @@ import http from "http";
 import rateLimit from "express-rate-limit"; // limits rates of requests
 import helmet from "helmet"; // sets multiple HTTP headers
 import ExpressMongoSanitize from "express-mongo-sanitize"; // for sanitizing requests
-import xss from "xss";
+// import xss from "xss";
 
 import cors from "cors";
 

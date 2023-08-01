@@ -1,5 +1,6 @@
 // User database from DB
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   // Accepts objest as parameter that defines the fields of users
@@ -34,6 +35,13 @@ const userSchema = new mongoose.Schema(
     updatedAt: { type: Date },
   }
 );
+
+userSchema.method.correctPassword = async function (
+  canditatePassword, // provided by user
+  userPassword // from db
+) {
+  return await bcrypt.compare(canditatePassword, userPassword);
+};
 
 // creating model for schema
 const User = mongoose.model("User", userSchema);
