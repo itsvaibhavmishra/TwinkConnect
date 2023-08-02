@@ -1,8 +1,23 @@
 import jwt from "jsonwebtoken";
+import axios from "axios";
 import User from "../models/userModel";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_TOKEN);
 
+// Function to check if the email is disposable using Debounce API
+const isDisposableEmail = async (email) => {
+  try {
+    const response = await axios.get(
+      `https://disposable.debounce.io/?email=${email}`
+    );
+    return response.data.disposable;
+  } catch (error) {
+    console.error("Error while checking disposable email:", error);
+    return false;
+  }
+};
+
+// login auth
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -33,4 +48,29 @@ export const login = async (req, res, next) => {
     message: "Logged in successfully",
     token,
   });
+};
+
+// register auth
+export const register = async (req, res, next) => {
+  const { firstName, lastName, email, password } = req.body;
+
+  // Check if email is disposable
+  const isDisposable = await isDisposableEmail(email);
+
+  if (isDisposable) {
+    return res.status(400).json({
+      status: "error",
+      message: "Disposable email addresses are not allowed.",
+    });
+  }
+
+  // check if email exists and is verified in db
+  const existing_user = await User.findOne({ email: email });
+
+  if (existing_user && existing_user.verified) {
+    res.status(400).json({
+      status: "error",
+      message: "Email already exists",
+    });
+  }
 };
