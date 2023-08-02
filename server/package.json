@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.1",
+    "otp-generator": "^4.0.1",
     "xss": "^1.0.14"
   },
   "devDependencies": {
