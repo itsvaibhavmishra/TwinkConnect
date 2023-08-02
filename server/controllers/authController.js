@@ -157,8 +157,43 @@ export const verifyOTP = async (req, res, next) => {
   });
 };
 
+// Protected route
+export const protect = async (req, res, next) => {};
+
 // Forgot password
-export const forgotPassword = async (req, res, next) => {};
+export const forgotPassword = async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    res.status(400).json({
+      status: "error",
+      message: "Email is not registered",
+    });
+  }
+
+  const resetToken = user.createPasswordResetToken();
+
+  const resetURL = `https://twinkchat.netlify.app/auth/reset-password/?code=${resetToken}`;
+
+  try {
+    // send mail for verification
+    res.status(200).json({
+      status: "success",
+      message: "Reset Password link sent",
+    });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    // turn validator off for passing undefined values
+    await user.save({ validateBeforeSave: false });
+
+    res.status(500).json({
+      status: "error",
+      message: "Error sending Reset Password link",
+    });
+  }
+};
 
 // Reset password
 export const resetPassword = async (req, res, next) => {};

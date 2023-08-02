@@ -1,6 +1,7 @@
 // User database from DB
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 const userSchema = new mongoose.Schema(
   // Accepts objest as parameter that defines the fields of users
@@ -51,7 +52,7 @@ userSchema.pre("save", async function (next) {
 });
 
 // method for otp decrypt
-userSchema.method.correctOTP = async function (
+userSchema.methods.correctOTP = async function (
   canditateOTP, // provided by user
   userOTP // from db
 ) {
@@ -59,11 +60,26 @@ userSchema.method.correctOTP = async function (
 };
 
 // method for password decrypt
-userSchema.method.correctPassword = async function (
+userSchema.methods.correctPassword = async function (
   canditatePassword, // provided by user
   userPassword // from db
 ) {
   return await bcrypt.compare(canditatePassword, userPassword);
+};
+
+// method for reset password decrypt
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  // hashing passwordResetToken
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+    this.passwordResetExpires = Date.now() = 10*60*1000;
+
+  return resetToken;
 };
 
 // creating model for schema
