@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema(
 
     // Passwords schema
     password: { type: String, required: [true, "Password is required"] },
+    passwordConfirm: {type: String},
     passwordChangedAt: { type: Date },
     passwordResetToken: { type: String },
     passwordResetExpires: { type: Date },

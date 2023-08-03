@@ -3,6 +3,7 @@ import User from "../models/userModel";
 import { isDisposableEmail } from "../utils/checkDispose";
 import { filterObj } from "../utils/filterObj";
 import otpGenerator from "otp-generator";
+import crypto from "crypto";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_TOKEN);
 
@@ -196,4 +197,38 @@ export const forgotPassword = async (req, res, next) => {
 };
 
 // Reset password
-export const resetPassword = async (req, res, next) => {};
+export const resetPassword = async (req, res, next) => {
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    res.status(400).json({
+      status: "error",
+      message: "OTP Expired or Invalid Token",
+    });
+  }
+
+  // updating user password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  await user.save();
+
+  // logging back user after reseting password
+  const token = signToken(authUser._id);
+
+  res.status(200).json({
+    status: "success",
+    message: "Password Reset Successfully",
+    token,
+  });
+};
