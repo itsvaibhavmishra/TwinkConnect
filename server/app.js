@@ -1,6 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import http from "http";
 
 // Security packages
 import rateLimit from "express-rate-limit"; // limits rates of requests
@@ -9,8 +8,10 @@ import ExpressMongoSanitize from "express-mongo-sanitize"; // for sanitizing req
 // import xss from "xss";
 
 import cors from "cors";
-
 import bodyParser from "body-parser";
+
+// routes
+import router from "./routes/index.js";
 
 dotenv.config();
 
@@ -48,5 +49,8 @@ app.use(ExpressMongoSanitize());
 app.get("/", (req, res) => {
   res.send("Welcome to TwinkChat Backend😺");
 });
+
+// api routes
+app.use(router);
 
 export { app };

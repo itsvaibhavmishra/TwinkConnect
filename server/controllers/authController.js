@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import User from "../models/userModel";
-import { isDisposableEmail } from "../utils/checkDispose";
-import { filterObj } from "../utils/filterObj";
+import User from "../models/userModel.js";
+import { isDisposableEmail } from "../utils/checkDispose.js";
+import { filterObj } from "../utils/filterObj.js";
 import otpGenerator from "otp-generator";
 import crypto from "crypto";
 import { promisify } from "util";
