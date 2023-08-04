@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
 
     // Passwords schema
     password: { type: String, required: [true, "Password is required"] },
-    passwordConfirm: {type: String},
+    passwordConfirm: { type: String },
     passwordChangedAt: { type: Date },
     passwordResetToken: { type: String },
     passwordResetExpires: { type: Date },
@@ -50,6 +50,16 @@ userSchema.pre("save", async function (next) {
 
   // hasing otp
   this.otp = bcrypt.hash(this.otp, 14);
+  next();
+});
+
+// hook for password
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  // hasing password
+  this.password = bcrypt.hash(this.password, 14);
+  next();
 });
 
 // method for otp decrypt
@@ -78,9 +88,13 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest("hex");
 
-    this.passwordResetExpires = Date.now() = 10*60*1000;
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
+};
+
+userSchema.methods.changedPasswordAfter = function (timestamp) {
+  return timestamp < this.passwordChangedAt;
 };
 
 // creating model for schema

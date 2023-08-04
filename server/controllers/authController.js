@@ -4,10 +4,11 @@ import { isDisposableEmail } from "../utils/checkDispose";
 import { filterObj } from "../utils/filterObj";
 import otpGenerator from "otp-generator";
 import crypto from "crypto";
+import { promisify } from "util";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_TOKEN);
 
-// login auth
+// -------------------------- Login auth --------------------------
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -40,7 +41,7 @@ export const login = async (req, res, next) => {
   });
 };
 
-// register auth
+// -------------------------- Register auth --------------------------
 export const register = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
 
@@ -92,7 +93,7 @@ export const register = async (req, res, next) => {
   }
 };
 
-// Sending OTP
+// -------------------------- Sending OTP --------------------------
 export const sendOtp = async (req, res, next) => {
   const { userId } = req;
 
@@ -158,10 +159,55 @@ export const verifyOTP = async (req, res, next) => {
   });
 };
 
-// Protected route
-export const protect = async (req, res, next) => {};
+// -------------------------- Protected route --------------------------
+export const protect = async (req, res, next) => {
+  let token;
 
-// Forgot password
+  // getting token from headers
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.header.authorization.split(" ")[1];
+  }
+  // getting token from cookies
+  else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+  // error handling
+  else {
+    res.status(400).json({
+      status: "error",
+      message: "Please Login First",
+    });
+  }
+
+  // verifying token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  // check for existing user with same token
+  const this_user = await User.findById(decoded.userId);
+
+  if (!this_user) {
+    res.status(400).json({
+      status: "error",
+      message: "Unidentified User",
+    });
+  }
+
+  // check if user changed password after new token was created
+  if (this_user.changedPasswordAfter(decoded.iat)) {
+    res.status(400).json({
+      status: "error",
+      message: "Password updated, logging out! Please login again",
+    });
+  }
+
+  req.user = this_user;
+  next();
+};
+
+// -------------------------- Forgot password --------------------------
 export const forgotPassword = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
@@ -196,7 +242,7 @@ export const forgotPassword = async (req, res, next) => {
   }
 };
 
-// Reset password
+// -------------------------- Reset password --------------------------
 export const resetPassword = async (req, res, next) => {
   const hashedToken = crypto
     .createHash("sha256")
