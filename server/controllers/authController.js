@@ -51,7 +51,7 @@ export const login = catchAsync(async (req, res, next) => {
     status: "success",
     message: "Logged in successfully",
     token,
-    user_id: user._id,
+    // user_id: user._id,
   });
 });
 
@@ -84,7 +84,7 @@ export const register = async (req, res, next) => {
   if (existing_user && existing_user.verified) {
     res.status(400).json({
       status: "error",
-      message: "Email already exists",
+      message: "Email is already registered",
     });
   }
   // check of non verified users
@@ -263,6 +263,9 @@ export const forgotPassword = async (req, res, next) => {
   try {
     const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
 
+    // for testing
+    // console.log(resetToken);
+
     // send mail for verification
     res.status(200).json({
       status: "success",
@@ -303,6 +306,13 @@ export const resetPassword = async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
+
+  if (user.password !== user.passwordConfirm) {
+    return res.status(400).json({
+      status: "error",
+      message: "Password and Confirm Password does not match",
+    });
+  }
 
   await user.save();
 
