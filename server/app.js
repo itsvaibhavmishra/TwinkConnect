@@ -5,10 +5,14 @@ import dotenv from "dotenv";
 import rateLimit from "express-rate-limit"; // limits rates of requests
 import helmet from "helmet"; // sets multiple HTTP headers
 import ExpressMongoSanitize from "express-mongo-sanitize"; // for sanitizing requests
-// import xss from "xss";
+import xss from "xss-clean";
 
 import cors from "cors";
 import bodyParser from "body-parser";
+
+// cookies
+import cookieParser from "cookie-parser";
+import session from "cookie-session";
 
 // routes
 import router from "./routes/index.js";
@@ -25,25 +29,39 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
 app.use(express.json({ limit: "10kb" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(
+  session({
+    secret: "keyboard cat",
+    proxy: true,
+    resave: true,
+    saveUnintialized: true,
+    cookie: {
+      secure: false,
+    },
+  })
+);
+
 // security middlewares
-const limited = rateLimit({
+const limiter = rateLimit({
   max: 3000,
   windowMs: 60 * 60 * 1000, // in 1 hour
   message: "Too many requests was made, please try again after 1 hour",
 });
 app.use(helmet());
-app.use("/twinkchat", limited);
+app.use("/twinkchat", limiter);
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
 app.use(ExpressMongoSanitize());
-// app.use(xss);
+app.use(xss());
 
 // Index Route
 app.get("/", (req, res) => {

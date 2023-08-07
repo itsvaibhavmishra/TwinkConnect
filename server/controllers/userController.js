@@ -2,8 +2,6 @@ import User from "../models/userModel.js";
 import { filterObj } from "../utils/filterObj.js";
 
 export const upadteProfile = async (req, res, next) => {
-  const { user } = req;
-
   const filteredBody = filterObj(
     req.body,
     "firstName",
@@ -12,10 +10,8 @@ export const upadteProfile = async (req, res, next) => {
     "avatar"
   );
 
-  const updated_user = await User.findByIdAndUpdate(user._id, filteredBody, {
-    new: true,
-    validateModifiedOnly: true,
-  });
+  const updated_user = await User.create(filteredBody);
+
   res.status(200).json({
     status: "success",
     data: updated_user,

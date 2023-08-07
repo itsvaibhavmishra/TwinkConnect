@@ -5,6 +5,6 @@ import { upadteProfile } from "../controllers/userController.js";
 const userRouter = express.Router();
 
 // Login Route
-userRouter.post("/update-profile", protect, upadteProfile);
+userRouter.patch("/update-profile", protect, upadteProfile);
 
 export default userRouter;

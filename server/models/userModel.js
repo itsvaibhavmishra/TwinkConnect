@@ -28,12 +28,11 @@ const userSchema = new mongoose.Schema(
 
     // Passwords schema
     password: { type: String, required: [true, "Password is required"] },
-    passwordConfirm: { type: String },
     passwordChangedAt: { type: Date },
     passwordResetToken: { type: String },
     passwordResetExpires: { type: Date },
 
-    createdAt: { type: Date },
+    createdAt: { type: Date, default: Date.now() },
     updatedAt: { type: Date },
 
     verified: { type: Boolean, default: false },
@@ -46,21 +45,40 @@ const userSchema = new mongoose.Schema(
 
 // hook for otp
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("otp")) return next();
+  if (!this.isModified("otp") || !this.otp) return next();
 
   // hasing otp
-  this.otp = bcrypt.hash(this.otp, 14);
+  this.otp = await bcrypt.hash(this.otp.toString(), 14);
+
+  console.log(this.otp.toString(), "FROM PRE SAVE HOOK");
+
   next();
 });
 
 // hook for password
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || !this.password) return next();
 
   // hasing password
-  this.password = bcrypt.hash(this.password, 14);
+  this.password = await bcrypt.hash(this.password, 14);
   next();
 });
+
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password") || this.isNew || !this.password)
+    return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
+// method for password decrypt
+userSchema.methods.correctPassword = async function (
+  canditatePassword, // provided by user
+  userPassword // from db
+) {
+  return await bcrypt.compare(canditatePassword, userPassword);
+};
 
 // method for otp decrypt
 userSchema.methods.correctOTP = async function (
@@ -70,12 +88,18 @@ userSchema.methods.correctOTP = async function (
   return await bcrypt.compare(canditateOTP, userOTP);
 };
 
-// method for password decrypt
-userSchema.methods.correctPassword = async function (
-  canditatePassword, // provided by user
-  userPassword // from db
-) {
-  return await bcrypt.compare(canditatePassword, userPassword);
+// method for changed password
+userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return JWTTimeStamp < changedTimeStamp;
+  }
+
+  // FALSE MEANS NOT CHANGED
+  return false;
 };
 
 // method for reset password decrypt
@@ -91,10 +115,6 @@ userSchema.methods.createPasswordResetToken = function () {
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
-};
-
-userSchema.methods.changedPasswordAfter = function (timestamp) {
-  return timestamp < this.passwordChangedAt;
 };
 
 // creating model for schema

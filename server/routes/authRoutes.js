@@ -14,7 +14,7 @@ const authRouter = express.Router();
 authRouter.post("/login", loginAuth);
 
 // Register Route
-authRouter.post("/register", registerAuth);
+authRouter.post("/register", registerAuth, sendOtpAuth);
 
 // Forgot Password Route
 authRouter.post("/forgot-password", fPasswordAuth);

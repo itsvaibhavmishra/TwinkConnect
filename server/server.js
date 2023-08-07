@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 // exception handlers
 process.on("uncaughtException", (err) => {
   console.log(err);
+  console.log("UNCAUGHT Exception! Shutting down ...");
   process.exit(1);
 });
 
@@ -29,6 +30,7 @@ server.listen(port, () => {
 // rejection handler
 process.on("unhandledRejection", (err) => {
   console.log(err);
+  console.log("UNHANDLED REJECTION! Shutting down ...");
   server.close(() => {
     process.exit(1);
   });

@@ -4,7 +4,10 @@ import { isDisposableEmail } from "../utils/checkDispose.js";
 import { filterObj } from "../utils/filterObj.js";
 import otpGenerator from "otp-generator";
 import crypto from "crypto";
+import sendEmail from "../services/mailer.js";
+import otp from "../Templates/Mail/otp.js";
 import { promisify } from "util";
+import AppError from "../utils/AppError.js";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_TOKEN);
 
@@ -17,9 +20,20 @@ export const login = async (req, res, next) => {
       status: "error",
       message: "Email and Password are required",
     });
+    return;
   }
 
   const authUser = await User.findOne({ email: email }).select("+password");
+
+  // check for user and password
+  if (!authUser || !authUser.password) {
+    res.status(400).json({
+      status: "error",
+      message: "Incorrect Email or Password",
+    });
+
+    return;
+  }
 
   // check if user is present in DB
   if (
@@ -30,6 +44,7 @@ export const login = async (req, res, next) => {
       status: "error",
       message: "Incorrect Email or Password",
     });
+    return;
   }
 
   const token = signToken(authUser._id);
@@ -59,7 +74,7 @@ export const register = async (req, res, next) => {
   if (isDisposable) {
     return res.status(400).json({
       status: "error",
-      message: "Disposable email addresses are not allowed.",
+      message: "Disposable emails are not allowed.",
     });
   }
 
@@ -107,15 +122,37 @@ export const sendOtp = async (req, res, next) => {
   const otp_expiry_time = Date.now() + 10 * 60 * 1000; // expired in 10mins
 
   // updating otp and expiry time
-  await User.findByIdAndUpdate(userId, {
+  const user = await User.findByIdAndUpdate(userId, {
     otp: new_otp,
     otp_expiry_time,
   });
 
-  res.status(200).json({
-    status: "success",
-    message: "OTP Sent",
-  });
+  user.otp = new_otp.toString();
+
+  await user.save({ new: true, validateModifiedOnly: true });
+
+  console.log(new_otp);
+
+  // sending email
+  const emailDetails = {
+    from: process.env.MAIL_USER,
+    to: user.email,
+    subject: "Your TwinkChat OTP",
+    text: otp(user.firstName, new_otp),
+  };
+
+  try {
+    await sendEmail(emailDetails);
+    res.status(200).json({
+      status: "success",
+      message: "OTP Sent",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Failed to send OTP",
+    });
+  }
 };
 
 // Verifying OTP and updating verified status
@@ -135,12 +172,21 @@ export const verifyOTP = async (req, res, next) => {
     });
   }
 
+  // if user is already verified
+  if (user.verified) {
+    return res.status(400).json({
+      status: "error",
+      message: "Email is already verified",
+    });
+  }
+
   // method defined on userModel | Invalid OTP
   if (!(await user.correctOTP(otp, user.otp))) {
     res.status(400).json({
       status: "error",
       message: "Incorrect OTP",
     });
+    return;
   }
 
   //  updating verified status
@@ -174,33 +220,27 @@ export const protect = async (req, res, next) => {
   else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  // error handling
-  else {
-    res.status(400).json({
-      status: "error",
-      message: "Please Login First",
-    });
+
+  // token not found
+  if (!token) {
+    return next(new AppError(`Please Login First`, 401));
   }
 
   // verifying token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // check for existing user with same token
-  const this_user = await User.findById(decoded.userId);
+  const this_user = await User.findById(decoded.id);
 
   if (!this_user) {
-    res.status(400).json({
-      status: "error",
-      message: "Unidentified User",
-    });
+    return next(new AppError("Unidentified User", 401));
   }
 
   // check if user changed password after new token was created
   if (this_user.changedPasswordAfter(decoded.iat)) {
-    res.status(400).json({
-      status: "error",
-      message: "Password updated, logging out! Please login again",
-    });
+    return next(
+      new AppError("Password updated, logging out! Please login again", 401)
+    );
   }
 
   req.user = this_user;
@@ -212,33 +252,33 @@ export const forgotPassword = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    res.status(400).json({
+    return res.status(404).json({
       status: "error",
       message: "Email is not registered",
     });
   }
 
   const resetToken = user.createPasswordResetToken();
-
-  const resetURL = `https://twinkchat.netlify.app/auth/reset-password/?code=${resetToken}`;
+  await user.save({ validateBeforeSave: false });
 
   try {
+    const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
+
+    console.log(resetToken);
+
     // send mail for verification
     res.status(200).json({
       status: "success",
       message: "Reset Password link sent",
     });
-  } catch (error) {
+  } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
 
     // turn validator off for passing undefined values
     await user.save({ validateBeforeSave: false });
 
-    res.status(500).json({
-      status: "error",
-      message: "Error sending Reset Password link",
-    });
+    return next(new AppError("Error sending Reset Password link"), 500);
   }
 };
 
@@ -246,7 +286,7 @@ export const forgotPassword = async (req, res, next) => {
 export const resetPassword = async (req, res, next) => {
   const hashedToken = crypto
     .createHash("sha256")
-    .update(req.params.token)
+    .update(req.body.token)
     .digest("hex");
 
   const user = await User.findOne({
@@ -255,7 +295,7 @@ export const resetPassword = async (req, res, next) => {
   });
 
   if (!user) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "error",
       message: "OTP Expired or Invalid Token",
     });
@@ -269,8 +309,7 @@ export const resetPassword = async (req, res, next) => {
 
   await user.save();
 
-  // logging back user after reseting password
-  const token = signToken(authUser._id);
+  const token = signToken(user._id);
 
   res.status(200).json({
     status: "success",
