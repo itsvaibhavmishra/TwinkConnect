@@ -4,7 +4,7 @@ import { isDisposableEmail } from "../utils/checkDispose.js";
 import { filterObj } from "../utils/filterObj.js";
 import otpGenerator from "otp-generator";
 import crypto from "crypto";
-import sendEmail from "../services/mailer.js";
+import { transporter } from "../services/mailer.js";
 import otp from "../Templates/Mail/otp.js";
 import { promisify } from "util";
 import AppError from "../utils/AppError.js";
@@ -92,7 +92,7 @@ export const register = async (req, res, next) => {
   else if (existing_user) {
     await User.findOneAndUpdate({ email: email }, filteredBody, {
       new: true,
-      validateModifiedOnly,
+      runValidators: true,
     });
     req.userId = existing_user._id;
     next();
@@ -138,21 +138,23 @@ export const sendOtp = async (req, res, next) => {
     from: process.env.MAIL_USER,
     to: user.email,
     subject: "Your TwinkChat OTP",
-    text: otp(user.firstName, new_otp),
+    html: otp(user.firstName, new_otp),
   };
 
-  try {
-    await sendEmail(emailDetails);
-    res.status(200).json({
-      status: "success",
-      message: "OTP Sent",
+  await transporter
+    .sendMail(emailDetails)
+    .then(() => {
+      return res.status(200).json({
+        status: "success",
+        message: "OTP Sent",
+      });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        status: "error",
+        message: `Failed to send OTP: ${error}`,
+      });
     });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "Failed to send OTP",
-    });
-  }
 };
 
 // Verifying OTP and updating verified status
