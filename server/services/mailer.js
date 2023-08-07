@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-let config = {
+const config = {
   service: "gmail",
   auth: {
     user: process.env.MAIL_USER, // gmail email
