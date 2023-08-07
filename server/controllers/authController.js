@@ -90,10 +90,10 @@ export const register = async (req, res, next) => {
   }
   // check of non verified users
   else if (existing_user) {
-    await User.findOneAndUpdate({ email: email }, filteredBody, {
-      new: true,
-      runValidators: true,
-    });
+    // Update user instance with filteredBody and save to trigger pre-save hook
+    existing_user.set(filteredBody);
+    await existing_user.save();
+
     req.userId = existing_user._id;
     next();
   }
