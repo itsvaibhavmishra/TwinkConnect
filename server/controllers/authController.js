@@ -8,11 +8,12 @@ import { transporter } from "../services/mailer.js";
 import otp from "../Templates/Mail/otp.js";
 import { promisify } from "util";
 import AppError from "../utils/AppError.js";
+import catchAsync from "../utils/catchAsync.js";
 
-const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_TOKEN);
+const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET);
 
 // -------------------------- Login auth --------------------------
-export const login = async (req, res, next) => {
+export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -23,10 +24,10 @@ export const login = async (req, res, next) => {
     return;
   }
 
-  const authUser = await User.findOne({ email: email }).select("+password");
+  const user = await User.findOne({ email: email }).select("+password");
 
   // check for user and password
-  if (!authUser || !authUser.password) {
+  if (!user || !user.password) {
     res.status(400).json({
       status: "error",
       message: "Incorrect Email or Password",
@@ -36,10 +37,7 @@ export const login = async (req, res, next) => {
   }
 
   // check if user is present in DB
-  if (
-    !authUser ||
-    !(await authUser.correctPassword(password, authUser.password))
-  ) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     res.status(400).json({
       status: "error",
       message: "Incorrect Email or Password",
@@ -47,14 +45,15 @@ export const login = async (req, res, next) => {
     return;
   }
 
-  const token = signToken(authUser._id);
+  const token = signToken(user._id);
 
   res.status(200).json({
     status: "success",
     message: "Logged in successfully",
     token,
+    user_id: user._id,
   });
-};
+});
 
 // -------------------------- Register auth --------------------------
 export const register = async (req, res, next) => {

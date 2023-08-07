@@ -44,6 +44,7 @@ export default (name, otp) => {
       .logo {
         text-align: center;
         margin-bottom: 20px;
+        margin: 5px;
       }
 
       .logo img {
@@ -61,13 +62,13 @@ export default (name, otp) => {
       }
 
       .otp-number {
-        font-size: 26px;
+        font-size: 24px;
         color: #fff;
         background-color: rgba(0, 123, 255, 0.7);
         border-radius: 50%;
-        width: 45px;
-        height: 45px;
-        line-height: 45px;
+        width: 42px;
+        height: 42px;
+        line-height: 42px;
         margin: 2px;
         display: inline-block;
       }
@@ -95,7 +96,9 @@ export default (name, otp) => {
         <div class="container">
           <div class="header">Welcome to TwinkChat</div>
           <div class="logo">
-            <img src="https://i.imgur.com/bteRwiD.jpg" alt="App Logo" />
+            <a href="https://twinkchat.netlify.app/">
+              <img src="https://i.imgur.com/bteRwiD.jpg" alt="TwinkChat Logo" />
+            </a>
           </div>
           <div class="otp-content">
             <div class="note">
