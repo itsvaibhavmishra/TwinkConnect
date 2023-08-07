@@ -131,13 +131,11 @@ export const sendOtp = async (req, res, next) => {
 
   await user.save({ new: true, validateModifiedOnly: true });
 
-  console.log(new_otp);
-
   // sending email
   const emailDetails = {
-    from: process.env.MAIL_USER,
+    from: `TwinkChat <${process.env.MAIL_USER}>`,
     to: user.email,
-    subject: "Your TwinkChat OTP",
+    subject: "TwinkChat - Here's your OTP",
     html: otp(user.firstName, new_otp),
   };
 
@@ -265,8 +263,6 @@ export const forgotPassword = async (req, res, next) => {
 
   try {
     const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
-
-    console.log(resetToken);
 
     // send mail for verification
     res.status(200).json({
