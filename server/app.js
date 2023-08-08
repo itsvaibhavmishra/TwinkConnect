@@ -24,7 +24,7 @@ const app = express();
 // middlewares
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: process.env.FRONT_ORIGIN, // either set to * or add your frontend url for cors
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
   })

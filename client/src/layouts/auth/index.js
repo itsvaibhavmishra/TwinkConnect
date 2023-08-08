@@ -2,7 +2,7 @@ import { Container, Stack } from "@mui/material";
 import { Navigate, Outlet } from "react-router-dom";
 import Logo from "../../assets/Images/TwinkChat.png";
 
-const isAuthenticated = true;
+const isAuthenticated = false;
 
 const AuthLayout = () => {
   if (isAuthenticated) {

@@ -1,16 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { dispatch } from '../store';
+import { createSlice } from "@reduxjs/toolkit";
 
 // initial state for contacts menu
 const initialState = {
   sidebar: {
     open: false, // contacts menu visibility
-    type: 'CONTACT', // default: Contacts menu | other menus: Stared, Shared
+    type: "CONTACT", // default: Contacts menu | other menus: Stared, Shared
   },
 };
 
 const slice = createSlice({
-  name: 'app',
+  name: "app",
   initialState,
   reducers: {
     // toggle sidebar
@@ -24,13 +23,13 @@ const slice = createSlice({
 });
 
 export function ToggleSidebar() {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(slice.actions.toggleSidebar());
   };
 }
 
 export function UpdateSidebarType(type) {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(
       slice.actions.updateSidebarType({
         type,
