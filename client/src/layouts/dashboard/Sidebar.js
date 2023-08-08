@@ -16,8 +16,13 @@ import { faker } from "@faker-js/faker";
 import TwinkLogo from "../../assets/Images/TwinkChat.png";
 import ThemeSwitch from "../../components/ThemeSwitch";
 import useSettings from "../../hooks/useSettings";
+import { LogoutUser } from "../../redux/slices/auth";
+import { useDispatch } from "react-redux";
 
 const Sidebar = () => {
+  // from redux
+  const dispatch = useDispatch();
+
   // for getting color palattes from theme
   const theme = useTheme();
 
@@ -209,7 +214,14 @@ const Sidebar = () => {
             >
               <Stack spacing={1} px={1}>
                 {Profile_Menu.map((e) => (
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      if (!e.address) {
+                        dispatch(LogoutUser());
+                      }
+                    }}
+                  >
                     <Link
                       to={e.address}
                       style={{

@@ -24,12 +24,12 @@ const Profile_Menu = [
   {
     title: "Settings",
     icon: <Gear />,
-    address: "settings",
+    address: "settings", // route to /settings
   },
   {
     title: "Sign Out",
     icon: <SignOut />,
-    address: "",
+    address: "", // leave empty for logging out user
   },
 ];
 

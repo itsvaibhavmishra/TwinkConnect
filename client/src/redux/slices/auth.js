@@ -26,6 +26,7 @@ const slice = createSlice({
   },
 });
 
+// action for logging in user
 export function LoginUser(formValues) {
   // form values for logging in user
 
@@ -55,6 +56,13 @@ export function LoginUser(formValues) {
       .catch(function (error) {
         console.log(error);
       });
+  };
+}
+
+// action for signing out user
+export function LogoutUser(formValues) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.signOut());
   };
 }
 
