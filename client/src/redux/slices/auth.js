@@ -44,7 +44,13 @@ export function LoginUser(formValues) {
         }
       )
       .then(function (response) {
-        console.log(response);
+        // set login status to true
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
+        );
       })
       .catch(function (error) {
         console.log(error);

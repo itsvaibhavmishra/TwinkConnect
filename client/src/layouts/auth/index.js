@@ -1,11 +1,12 @@
 import { Container, Stack } from "@mui/material";
 import { Navigate, Outlet } from "react-router-dom";
 import Logo from "../../assets/Images/TwinkChat.png";
-
-const isAuthenticated = false;
+import { useSelector } from "react-redux";
 
 const AuthLayout = () => {
-  if (isAuthenticated) {
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
+  if (isLoggedIn) {
     return <Navigate to={"/"} />;
   }
 
