@@ -9,6 +9,7 @@ import otp from "../Templates/Mail/otp.js";
 import { promisify } from "util";
 import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
+import reset from "../Templates/Mail/reset.js";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET);
 
@@ -260,26 +261,36 @@ export const forgotPassword = async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  try {
-    const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
+  const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
 
-    // for testing
-    console.log(resetToken);
+  // for testing
+  // console.log(resetToken);
 
-    // send mail for verification
-    res.status(200).json({
-      status: "success",
-      message: "Reset Password link sent",
+  // sending email
+  const emailDetails = {
+    from: `TwinkChat <${process.env.MAIL_USER}>`,
+    to: user.email,
+    subject: "TwinkChat - Here's your Password Reset Link",
+    html: reset(user.firstName, resetURL),
+  };
+
+  await transporter
+    .sendMail(emailDetails)
+    .then(() => {
+      return res.status(200).json({
+        status: "success",
+        message: "Reset Password link sent",
+      });
+    })
+    .catch((error) => {
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+
+      // turn validator off for passing undefined values
+      user.save({ validateBeforeSave: false });
+
+      return next(new AppError("Error sending Reset Password link"), 500);
     });
-  } catch (err) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-
-    // turn validator off for passing undefined values
-    await user.save({ validateBeforeSave: false });
-
-    return next(new AppError("Error sending Reset Password link"), 500);
-  }
 };
 
 // -------------------------- Reset password --------------------------

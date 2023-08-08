@@ -102,7 +102,7 @@ export default (name, otp) => {
           </div>
           <div class="otp-content">
             <div class="note">
-              <p>Hey ${name}</p>
+              <p>Hey ${name},</p>
             </div>
             <div class="otp-text">Your One-Time Password (OTP):</div>
   
