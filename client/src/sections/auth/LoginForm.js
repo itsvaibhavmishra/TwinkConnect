@@ -4,15 +4,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import FormProvider from "../../components/hook-form/FormProvider";
-import { Alert, IconButton, InputAdornment, Link, Stack } from "@mui/material";
+import { IconButton, InputAdornment, Link, Stack } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
 import { LoginUser } from "../../redux/slices/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const LoginForm = () => {
   // dispatch from redux
+  const { isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   // hide and show password controller
@@ -41,12 +42,7 @@ const LoginForm = () => {
     defaultValues,
   });
 
-  const {
-    reset,
-    setError,
-    handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
     try {
@@ -54,21 +50,12 @@ const LoginForm = () => {
       dispatch(LoginUser(data));
     } catch (error) {
       console.error(error);
-      reset();
-      setError("afterSubmit", {
-        ...error,
-        message: error.message,
-      });
     }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && (
-          <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )}
-
         <RHFTextField name="email" label="Email address" />
         <RHFTextField
           name="password"
@@ -101,7 +88,7 @@ const LoginForm = () => {
         </Link>
       </Stack>
       <LoadingButton
-        loading={isSubmitSuccessful || isSubmitting}
+        loading={isLoading}
         fullWidth
         size="large"
         type="submit"

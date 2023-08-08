@@ -1,20 +1,26 @@
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import FormProvider from '../../components/hook-form/FormProvider';
-import { Alert, Stack } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { RHFTextField } from '../../components/hook-form';
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import FormProvider from "../../components/hook-form/FormProvider";
+import { Stack } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { RHFTextField } from "../../components/hook-form";
+import { ForgotPassword } from "../../redux/slices/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 const ResetPasswordForm = () => {
+  // from redux
+  const { isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   //  Login Schema
   const ResetPasswordSchema = Yup.object().shape({
-    email: Yup.string().required('Email Required').email('Invalid Email'),
+    email: Yup.string().required("Email Required").email("Invalid Email"),
   });
 
   //   Labels
   const defaultValues = {
-    email: '',
+    email: "",
   };
 
   const methods = useForm({
@@ -22,50 +28,37 @@ const ResetPasswordForm = () => {
     defaultValues,
   });
 
-  const {
-    reset,
-    setError,
-    handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
     try {
-      // submit data to backend
+      // reset-password api call using redux
+      dispatch(ForgotPassword(data));
     } catch (error) {
       console.error(error);
-      reset();
-      setError('afterSubmit', {
-        ...error,
-        message: error.message,
-      });
     }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && (
-          <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )}
-
         <RHFTextField name="email" label="Email address" />
 
         <LoadingButton
-          loading={isSubmitSuccessful || isSubmitting}
+          loading={isLoading}
           fullWidth
           size="large"
           type="submit"
           variant="contained"
           sx={{
             mt: 3,
-            bgcolor: 'text.primary',
+            bgcolor: "text.primary",
             color: (theme) =>
-              theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-            '&:hover': {
-              bgcolor: 'text.primary',
+              theme.palette.mode === "light" ? "common.white" : "grey.800",
+            "&:hover": {
+              bgcolor: "text.primary",
               color: (theme) =>
-                theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                theme.palette.mode === "light" ? "common.white" : "grey.800",
             },
           }}
         >

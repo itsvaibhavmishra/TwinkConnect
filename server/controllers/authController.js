@@ -264,7 +264,7 @@ export const forgotPassword = async (req, res, next) => {
     const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
 
     // for testing
-    // console.log(resetToken);
+    console.log(resetToken);
 
     // send mail for verification
     res.status(200).json({
