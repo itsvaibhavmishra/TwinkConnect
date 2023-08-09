@@ -261,7 +261,7 @@ export const forgotPassword = async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  const resetURL = `${process.env.FRONT_ORIGIN}/auth/reset-password/?code=${resetToken}`;
+  const resetURL = `${process.env.FRONT_ORIGIN}/auth/new-password/?code=${resetToken}`;
 
   // for testing
   // console.log(resetToken);
