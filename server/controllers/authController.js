@@ -308,7 +308,7 @@ export const resetPassword = async (req, res, next) => {
   if (!user) {
     return res.status(400).json({
       status: "error",
-      message: "OTP Expired or Invalid Token",
+      message: "Token Expired or Invalid Token",
     });
   }
 

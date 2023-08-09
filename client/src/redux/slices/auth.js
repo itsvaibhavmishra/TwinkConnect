@@ -123,5 +123,47 @@ export function ForgotPassword(formValues) {
       });
   };
 }
+// action for reset password
+export function NewPassword(formValues) {
+  return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    await axios
+      .post(
+        "/auth/reset-password",
+        {
+          ...formValues, // destructuring passwords
+        },
+        {
+          header: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        // setting status to logged in
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
+        );
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
 
 export default slice.reducer;
