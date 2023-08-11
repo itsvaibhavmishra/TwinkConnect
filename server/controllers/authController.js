@@ -46,6 +46,15 @@ export const login = catchAsync(async (req, res, next) => {
     return;
   }
 
+  // check if user is verified
+  if (!user.verified) {
+    res.status(200).json({
+      status: "success",
+      message: `Hello ${user.firstName}, please verify to login`,
+    });
+    return;
+  }
+
   const token = signToken(user._id);
 
   res.status(200).json({
