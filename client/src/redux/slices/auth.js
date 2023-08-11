@@ -228,43 +228,6 @@ export function RegisterUser(formValues) {
   };
 }
 
-// action for verify email
-export function VerifyOTP(formValues) {
-  return async (dispatch, getState) => {
-    // updating state for isLoading to true and error false
-    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
-
-    await axios
-      .post(
-        "/auth/verify-otp",
-        {
-          ...formValues,
-        },
-        {
-          header: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-
-        // updating isLoading back to false and error false
-        dispatch(
-          slice.actions.updateIsLoading({ isLoading: false, error: false })
-        );
-      })
-      .catch(function (error) {
-        console.log(error);
-
-        // setting loading to false and error to true
-        dispatch(
-          slice.actions.updateIsLoading({ isLoading: false, error: true })
-        );
-      });
-  };
-}
-
 // action for sending new otp
 export function SendOTP(formValues) {
   return async (dispatch, getState) => {
@@ -289,6 +252,51 @@ export function SendOTP(formValues) {
         // updating email state
         dispatch(
           slice.actions.updateRegisterEmail({ email: formValues.email })
+        );
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
+
+// action for verify email
+export function VerifyOTP(formValues) {
+  return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    await axios
+      .post(
+        "/auth/verify-otp",
+        {
+          ...formValues,
+        },
+        {
+          header: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+
+        // set login status to true
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
         );
 
         // updating isLoading back to false and error false
