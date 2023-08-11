@@ -57,7 +57,7 @@ export const login = catchAsync(async (req, res, next) => {
 
   const token = signToken(user._id);
 
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     message: "Logged in successfully",
     token,
@@ -99,7 +99,7 @@ export const register = async (req, res, next) => {
 
   // check of verified users
   if (existing_user && existing_user.verified) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "error",
       message: "Email is already registered",
     });
@@ -182,7 +182,7 @@ export const sendOtp = async (req, res, next) => {
   }
 };
 
-// Verifying OTP and updating verified status
+// -------------------------- Verifying OTP --------------------------
 export const verifyOTP = async (req, res, next) => {
   const { email, otp } = req.body;
 
@@ -193,7 +193,7 @@ export const verifyOTP = async (req, res, next) => {
 
   // error handling for OTP
   if (!user) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "error",
       message: "OTP Expired or Invalid Email",
     });
@@ -209,11 +209,10 @@ export const verifyOTP = async (req, res, next) => {
 
   // method defined on userModel | Invalid OTP
   if (!(await user.correctOTP(otp, user.otp))) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "error",
       message: "Incorrect OTP",
     });
-    return;
   }
 
   //  updating verified status
@@ -225,7 +224,7 @@ export const verifyOTP = async (req, res, next) => {
   // set user status to logged in
   const token = signToken(user._id);
 
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     message: "OTP verified",
     token,
@@ -356,7 +355,7 @@ export const resetPassword = async (req, res, next) => {
 
   const token = signToken(user._id);
 
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     message: "Password Reset Successfully",
     token,

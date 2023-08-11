@@ -4,9 +4,9 @@ import axios from "../../utils/axios";
 // initial state for logged in status
 const initialState = {
   isLoggedIn: false,
-  token: "",
   isLoading: false,
   error: false,
+  token: "",
   email: "",
 };
 
@@ -30,6 +30,11 @@ const slice = createSlice({
     updateIsLoading(state, action) {
       state.isLoading = action.payload.isLoading;
       state.error = action.payload.error;
+    },
+
+    // updating email state
+    updateRegisterEmail(state, action) {
+      state.email = action.payload.email;
     },
   },
 });
@@ -55,13 +60,21 @@ export function LoginUser(formValues) {
         }
       )
       .then(function (response) {
-        // set login status to true
-        dispatch(
-          slice.actions.logIn({
-            isLoggedIn: true,
-            token: response.data.token,
-          })
-        );
+        if (response.data.token) {
+          // set login status to true
+          dispatch(
+            slice.actions.logIn({
+              isLoggedIn: true,
+              token: response.data.token,
+            })
+          );
+        } else {
+          // updating email state
+          dispatch(
+            slice.actions.updateRegisterEmail({ email: formValues.email })
+          );
+          window.location.href = "/auth/verify";
+        }
 
         // updating isLoading back to false and error false
         dispatch(
@@ -188,6 +201,95 @@ export function RegisterUser(formValues) {
       )
       .then(function (response) {
         console.log(response);
+
+        // updating email state
+        dispatch(
+          slice.actions.updateRegisterEmail({ email: formValues.email })
+        );
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      })
+      .finally(() => {
+        if (!getState().auth.error) {
+          window.location.href = "/auth/verify";
+        }
+      });
+  };
+}
+
+// action for verify email
+export function VerifyOTP(formValues) {
+  return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    await axios
+      .post(
+        "/auth/verify-otp",
+        {
+          ...formValues,
+        },
+        {
+          header: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
+
+// action for sending new otp
+export function SendOTP(formValues) {
+  return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    await axios
+      .post(
+        "/auth/send-otp",
+        {
+          ...formValues,
+        },
+        {
+          header: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+
+        // updating email state
+        dispatch(
+          slice.actions.updateRegisterEmail({ email: formValues.email })
+        );
 
         // updating isLoading back to false and error false
         dispatch(

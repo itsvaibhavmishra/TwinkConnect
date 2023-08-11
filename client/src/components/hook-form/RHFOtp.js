@@ -21,7 +21,7 @@ export default function RHFOtp({
   const { control, setValue } = useFormContext();
 
   const handleChangeWithNextField = (event, handleChange) => {
-    const { maxLength, value, name } = event.target;
+    const { maxLength, name } = event.target;
     const fieldIndex = name.replace(keyName, "");
 
     const fieldIntIndex = Number(fieldIndex);
@@ -29,12 +29,14 @@ export default function RHFOtp({
       `input[name=${keyName}${fieldIntIndex - 1}]`
     );
 
+    let value = event.target.value.toUpperCase(); // Convert input value to uppercase
+
     if (value.length === 0 && prevField !== null) {
       event.preventDefault(); // Prevent the default behavior
       prevField.focus(); // Move focus to the previous field
       setValue(name, ""); // Clear the current field's value
     } else if (value.length > maxLength) {
-      event.target.value = value[0];
+      value = value[0];
     } else if (value.length >= maxLength && fieldIntIndex < 6) {
       const nextField = document.querySelector(
         `input[name=${keyName}${fieldIntIndex + 1}]`
@@ -43,6 +45,8 @@ export default function RHFOtp({
         nextField.focus();
       }
     }
+
+    setValue(name, value); // Set the uppercase value using setValue
 
     handleChange(event);
   };
@@ -55,7 +59,7 @@ export default function RHFOtp({
 
     otpArray.forEach((char, index) => {
       const fieldName = `${keyName}${index + 1}`;
-      setValue(fieldName, char); // Set the value using setValue
+      setValue(fieldName, char.toUpperCase()); // Set the uppercase value using setValue
     });
   };
 
@@ -65,7 +69,7 @@ export default function RHFOtp({
       justifyContent={"center"}
       spacing={2}
       ref={otpsRef}
-      onPaste={handlePaste} // Add the paste event handler
+      onPaste={handlePaste} // paste event handler
     >
       {inputs.map((name, index) => (
         <Controller
@@ -77,6 +81,10 @@ export default function RHFOtp({
               error={!!error}
               autoFocus={index === 0}
               placeholder={`-`}
+              onInput={(event) => {
+                event.target.value = event.target.value.toUpperCase();
+                handleChangeWithNextField(event, field.onChange);
+              }}
               onChange={(event) => {
                 handleChangeWithNextField(event, field.onChange);
               }}
@@ -88,7 +96,7 @@ export default function RHFOtp({
               }}
               inputProps={{
                 maxLength: 1,
-                type: "string",
+                type: "text", // Change type to "text" for uppercase input
               }}
               helperText={error ? error.message : helperText}
               {...other}

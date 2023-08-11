@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import FormProvider from "../../components/hook-form/FormProvider";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { RHFTextField } from "../../components/hook-form";
 import { LoadingButton } from "@mui/lab";
 import RHFOtp from "../../components/hook-form/RHFOtp";
+import { SendOTP, VerifyOTP } from "../../redux/slices/auth";
 
 // ---------------------- Email for OTP Form ----------------------
 export const EmailForm = () => {
@@ -22,7 +23,7 @@ export const EmailForm = () => {
 
   //   Labels
   const defaultValues = {
-    email: "",
+    email: email || "",
   };
 
   const methods = useForm({
@@ -35,7 +36,7 @@ export const EmailForm = () => {
   const onSubmit = async (data) => {
     try {
       // api request to backend for verifying email for otp using redux
-      console.log("OTP sent");
+      dispatch(SendOTP(data));
     } catch (error) {
       console.error(error);
     }
@@ -43,6 +44,16 @@ export const EmailForm = () => {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      {!email && (
+        <Typography
+          sx={{
+            pl: 1,
+            color: (theme) => theme.palette.error.main,
+          }}
+        >
+          Please enter email and click resend OTP first
+        </Typography>
+      )}
       <Stack
         direction={"row"}
         justifyContent={"center"}
@@ -62,7 +73,8 @@ export const EmailForm = () => {
                 sx={{
                   py: 1,
                   width: "9rem",
-                  color: "common.black",
+                  color: (theme) =>
+                    theme.palette.mode === "light" ? "common.black" : "",
                   "&:hover": {
                     bgcolor: "primary.main",
                     color: "common.white",
@@ -83,6 +95,7 @@ export const EmailForm = () => {
 const VerifyForm = () => {
   // dispatch from redux
   const { isLoading } = useSelector((state) => state.auth);
+  const { email } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   //  OTP Schema
@@ -116,7 +129,12 @@ const VerifyForm = () => {
   const onSubmit = async (data) => {
     try {
       // api request to backend for verifying otp using redux
-      dispatch(data);
+      dispatch(
+        VerifyOTP({
+          email: email,
+          otp: `${data.otp1}${data.otp2}${data.otp3}${data.otp4}${data.otp5}${data.otp6}`,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -127,6 +145,7 @@ const VerifyForm = () => {
       <Stack spacing={3}>
         {/* Custom OTP input */}
         <RHFOtp
+          disabled={!email}
           keyName="otp"
           inputs={["otp1", "otp2", "otp3", "otp4", "otp5", "otp6"]}
         />
@@ -137,6 +156,7 @@ const VerifyForm = () => {
           size="large"
           type="submit"
           variant="contained"
+          disabled={!email}
           sx={{
             mt: 3,
             bgcolor: "text.primary",
