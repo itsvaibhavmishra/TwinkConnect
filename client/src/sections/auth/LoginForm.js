@@ -38,6 +38,7 @@ const LoginForm = () => {
   };
 
   const methods = useForm({
+    mode: "onChange",
     resolver: yupResolver(LoginSchema),
     defaultValues,
   });

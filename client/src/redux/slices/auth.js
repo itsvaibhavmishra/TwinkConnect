@@ -7,6 +7,7 @@ const initialState = {
   token: "",
   isLoading: false,
   error: false,
+  email: "",
 };
 
 const slice = createSlice({

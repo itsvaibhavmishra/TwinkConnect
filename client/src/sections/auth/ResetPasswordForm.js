@@ -24,6 +24,7 @@ const ResetPasswordForm = () => {
   };
 
   const methods = useForm({
+    mode: "onChange",
     resolver: yupResolver(ResetPasswordSchema),
     defaultValues,
   });

@@ -127,7 +127,7 @@ export const sendOtp = async (req, res, next) => {
   if (!user) {
     return res.status(400).json({
       status: "error",
-      message: "User not found",
+      message: "User not found, Please register",
     });
   } else if (user.verified) {
     return res.status(400).json({

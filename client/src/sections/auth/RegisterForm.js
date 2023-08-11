@@ -41,6 +41,7 @@ const RegisterForm = () => {
   };
 
   const methods = useForm({
+    mode: "onChange",
     resolver: yupResolver(RegisterSchema),
     defaultValues,
   });
