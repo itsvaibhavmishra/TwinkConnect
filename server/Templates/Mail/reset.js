@@ -6,7 +6,12 @@ export default (name, reset) => {
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Reset Password Template</title>
-      <style>
+      <style type="text/css">
+
+        :root {
+          color-scheme: light only;
+        }
+
         body {
           font-family: Arial, sans-serif;
           background-color: #f2f2f2;
@@ -15,12 +20,13 @@ export default (name, reset) => {
         }
 
         .header {
+          color-scheme: light only;
           position: relative;
           background-image: url("https://i.imgur.com/jvSDsi9.jpg");
           background-size: contain;
           padding: 20px;
           text-align: center;
-          color: #000;
+          color: #000 !important;
           font-size: 36px;
           font-weight: bold;
           letter-spacing: 5px;

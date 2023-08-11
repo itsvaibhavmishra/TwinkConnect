@@ -60,6 +60,13 @@ export const login = catchAsync(async (req, res, next) => {
 export const register = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
 
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(400).json({
+      status: "error",
+      message: "please provide firstName, lastName, email and password",
+    });
+  }
+
   const filteredBody = filterObj(
     req.body,
     "firstName",
@@ -111,27 +118,40 @@ export const register = async (req, res, next) => {
 // -------------------------- Sending OTP --------------------------
 export const sendOtp = async (req, res, next) => {
   const { userId } = req;
+  const { email } = req.body;
 
-  // generating new otp
+  // getting user via email or userId
+  const user =
+    (await User.findOne({ email: email })) || (await User.findById(userId));
+
+  if (!user) {
+    return res.status(400).json({
+      status: "error",
+      message: "User not found",
+    });
+  } else if (user.verified) {
+    return res.status(400).json({
+      status: "error",
+      message: "User already verified, Please log in",
+    });
+  }
+
+  // Generating new OTP
   const new_otp = otpGenerator.generate(6, {
     lowerCaseAlphabets: false,
     specialChars: false,
   });
 
-  // otp expiry
-  const otp_expiry_time = Date.now() + 10 * 60 * 1000; // expired in 10mins
+  // OTP expiry
+  const otp_expiry_time = Date.now() + 10 * 60 * 1000; // Expires in 10 minutes
 
-  // updating otp and expiry time
-  const user = await User.findByIdAndUpdate(userId, {
-    otp: new_otp,
-    otp_expiry_time,
-  });
+  // Updating OTP and expiry time
+  user.otp = new_otp;
+  user.otp_expiry_time = otp_expiry_time;
 
-  user.otp = new_otp.toString();
+  await user.save();
 
-  await user.save({ new: true, validateModifiedOnly: true });
-
-  // sending email
+  // Sending email
   const emailDetails = {
     from: `TwinkChat <${process.env.MAIL_USER}>`,
     to: user.email,
@@ -139,20 +159,18 @@ export const sendOtp = async (req, res, next) => {
     html: otp(user.firstName, new_otp),
   };
 
-  await transporter
-    .sendMail(emailDetails)
-    .then(() => {
-      return res.status(200).json({
-        status: "success",
-        message: "OTP Sent",
-      });
-    })
-    .catch((error) => {
-      return res.status(500).json({
-        status: "error",
-        message: `Failed to send OTP: ${error}`,
-      });
+  try {
+    await transporter.sendMail(emailDetails);
+    return res.status(200).json({
+      status: "success",
+      message: "OTP Sent",
     });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: `Failed to send OTP: ${error}`,
+    });
+  }
 };
 
 // Verifying OTP and updating verified status

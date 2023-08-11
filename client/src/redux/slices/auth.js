@@ -123,7 +123,8 @@ export function ForgotPassword(formValues) {
       });
   };
 }
-// action for reset password
+
+// action for new password
 export function NewPassword(formValues) {
   return async (dispatch, getState) => {
     // updating state for isLoading to true and error false
@@ -149,6 +150,43 @@ export function NewPassword(formValues) {
             token: response.data.token,
           })
         );
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
+
+// action for create account
+export function RegisterUser(formValues) {
+  return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    await axios
+      .post(
+        "/auth/register",
+        {
+          ...formValues,
+        },
+        {
+          header: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
 
         // updating isLoading back to false and error false
         dispatch(

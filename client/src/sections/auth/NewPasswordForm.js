@@ -53,7 +53,7 @@ const NewPasswordForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      // api request to backend for login using redux
+      // api request to backend for new password using redux
       dispatch(NewPassword({ ...data, token: queryParameters.get("code") }));
     } catch (error) {
       console.error(error);
