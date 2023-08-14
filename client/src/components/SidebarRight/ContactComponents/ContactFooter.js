@@ -8,10 +8,10 @@ import {
   DialogTitle,
   Stack,
   Typography,
-} from '@mui/material';
-import { Prohibit, Trash } from 'phosphor-react';
-import { faker } from '@faker-js/faker';
-import React, { useState } from 'react';
+} from "@mui/material";
+import { Prohibit, Trash } from "phosphor-react";
+import { faker } from "@faker-js/faker";
+import React, { useState } from "react";
 
 const BlockDialog = ({ open, handleClose, dialogText }) => {
   return (
@@ -23,8 +23,8 @@ const BlockDialog = ({ open, handleClose, dialogText }) => {
       <DialogTitle id="responsive-dialog-title">{dialogText}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to {dialogText.toLowerCase()} this{' '}
-          {dialogText === 'Block' ? 'contact' : 'chat'}?
+          Are you sure you want to {dialogText.toLowerCase()} this{" "}
+          {dialogText === "Block" ? "contact" : "chat"}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -41,7 +41,7 @@ const BlockDialog = ({ open, handleClose, dialogText }) => {
 
 const Footer = () => {
   const [open, setOpen] = useState(false);
-  const [dialogText, setDialogText] = useState('');
+  const [dialogText, setDialogText] = useState("");
 
   const handleClickOpen = (text) => {
     setOpen(true);
@@ -50,28 +50,28 @@ const Footer = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setDialogText('');
+    setDialogText("");
   };
 
   return (
     <Stack spacing={3}>
       <Stack spacing={2}>
         <Typography variant="body2">1 group in common</Typography>
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <Avatar src={faker.image.avatar()} alt={faker.name.fullName} />
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <Avatar src={faker.image.avatar()} alt={faker.name.fullName()} />
           <Stack spacing={0.5}>
             <Typography variant="subtitle2">Friend's Group</Typography>
             <Typography variant="caption">Vipu, Dhananjay, You</Typography>
           </Stack>
         </Stack>
       </Stack>
-      <Stack direction={'row'} alignItems={'center'} spacing={2}>
+      <Stack direction={"row"} alignItems={"center"} spacing={2}>
         <Button
           startIcon={<Prohibit />}
           fullWidth
           variant="outlined"
           onClick={() => {
-            handleClickOpen('Block');
+            handleClickOpen("Block");
           }}
         >
           Block
@@ -81,7 +81,7 @@ const Footer = () => {
           fullWidth
           variant="outlined"
           onClick={() => {
-            handleClickOpen('Delete');
+            handleClickOpen("Delete");
           }}
         >
           Delete

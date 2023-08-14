@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 import {
   Avatar,
   Box,
@@ -7,13 +7,13 @@ import {
   IconButton,
   Stack,
   Typography,
-} from '@mui/material';
-import { Bell, CaretRight, Phone, Star, VideoCamera } from 'phosphor-react';
-import React from 'react';
-import AntSwitch from '../../AntSwitch';
-import Footer from './ContactFooter';
-import { useDispatch } from 'react-redux';
-import { UpdateSidebarType } from '../../../redux/slices/app';
+} from "@mui/material";
+import { Bell, CaretRight, Phone, Star, VideoCamera } from "phosphor-react";
+import React from "react";
+import AntSwitch from "../../AntSwitch";
+import Footer from "./ContactFooter";
+import { useDispatch } from "react-redux";
+import { UpdateSidebarType } from "../../../redux/slices/app";
 
 const Body = () => {
   // redux
@@ -23,16 +23,16 @@ const Body = () => {
     <Stack
       className="scrollbar"
       sx={{
-        height: '100%',
-        position: 'relative',
+        height: "100%",
+        position: "relative",
         flexGrow: 1,
-        overflowY: 'scroll',
+        overflowY: "scroll",
       }}
       p={3}
       spacing={3}
     >
       {/* User Info */}
-      <Stack direction={'row'} spacing={2} alignItems={'center'}>
+      <Stack direction={"row"} spacing={2} alignItems={"center"}>
         <Avatar
           src={faker.image.avatar()}
           alt={faker.name.firstName()}
@@ -43,24 +43,24 @@ const Body = () => {
             {faker.name.fullName()}
           </Typography>
           <Typography variant="body2" fontWeight={500}>
-            {faker.phone.number('+91 7#### #####')}
+            {faker.phone.number("+91 7#### #####")}
           </Typography>
         </Stack>
       </Stack>
 
       {/* Audio and Video call */}
       <Stack
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'space-evenly'}
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"space-evenly"}
       >
-        <Stack spacing={1} alignItems={'center'}>
+        <Stack spacing={1} alignItems={"center"}>
           <IconButton>
             <Phone />
           </IconButton>
           <Typography variant="over">Audio</Typography>
         </Stack>
-        <Stack spacing={1} alignItems={'center'}>
+        <Stack spacing={1} alignItems={"center"}>
           <IconButton>
             <VideoCamera />
           </IconButton>
@@ -78,24 +78,24 @@ const Body = () => {
 
       {/* Media links and docs */}
       <Stack
-        direction={'row'}
-        justifyContent={'space-between'}
-        alignItems={'center'}
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
       >
         <Typography variant="subtitle2">Media, links and docs</Typography>
         <Button
           onClick={() => {
-            dispatch(UpdateSidebarType('SHARED'));
+            dispatch(UpdateSidebarType("SHARED"));
           }}
           endIcon={<CaretRight />}
         >
           201
         </Button>
       </Stack>
-      <Stack direction={'row'} spacing={2} alignItems={'center'}>
-        {[1, 2, 3].map((e) => (
-          <Box>
-            <img src={faker.image.cats()} alt="faker.name.fullname" />
+      <Stack direction={"row"} spacing={2} alignItems={"center"}>
+        {[1, 2, 3].map((e, index) => (
+          <Box key={index}>
+            <img src={faker.image.cats()} alt={faker.name.firstName()} />
           </Box>
         ))}
       </Stack>
@@ -103,17 +103,17 @@ const Body = () => {
 
       {/* Starred Messages */}
       <Stack
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'space-between'}
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
       >
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Star size={21} />
           <Typography variant="subtitle2">Starred Messages</Typography>
         </Stack>
         <IconButton
           onClick={() => {
-            dispatch(UpdateSidebarType('STARRED'));
+            dispatch(UpdateSidebarType("STARRED"));
           }}
         >
           <CaretRight />
@@ -123,11 +123,11 @@ const Body = () => {
 
       {/* Mute Notifications */}
       <Stack
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'space-between'}
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
       >
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Bell size={21} />
           <Typography variant="subtitle2">Mute Notifications</Typography>
         </Stack>

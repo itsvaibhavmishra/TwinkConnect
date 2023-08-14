@@ -430,8 +430,8 @@ export function VerifyOTP(formValues) {
         // show snackbar for error
         dispatch(
           ShowSnackbar({
-            severity: error.data.status,
-            message: error.data.message,
+            severity: error.status,
+            message: error.message,
           })
         );
 

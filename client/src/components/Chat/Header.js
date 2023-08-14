@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Avatar,
   Badge,
@@ -11,39 +11,39 @@ import {
   Stack,
   styled,
   Typography,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from 'phosphor-react';
-import { faker } from '@faker-js/faker';
-import { useSearchParams } from 'react-router-dom';
-import useResponsive from '../../hooks/useResponsive';
-import { ToggleSidebar } from '../../redux/slices/app';
-import { useDispatch } from 'react-redux';
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from "phosphor-react";
+import { faker } from "@faker-js/faker";
+import { useSearchParams } from "react-router-dom";
+import useResponsive from "../../hooks/useResponsive";
+import { ToggleSidebar } from "../../redux/slices/app";
+import { useDispatch } from "react-redux";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    backgroundColor: '#44b700',
-    color: '#44b700',
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    color: "#44b700",
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    '&::after': {
-      position: 'absolute',
+    "&::after": {
+      position: "absolute",
       top: 0,
       left: 0,
-      width: '100%',
-      height: '100%',
-      borderRadius: '50%',
-      animation: 'ripple 1.2s infinite ease-in-out',
-      border: '1px solid currentColor',
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
       content: '""',
     },
   },
-  '@keyframes ripple': {
-    '0%': {
-      transform: 'scale(.8)',
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
       opacity: 1,
     },
-    '100%': {
-      transform: 'scale(2.4)',
+    "100%": {
+      transform: "scale(2.4)",
       opacity: 0,
     },
   },
@@ -51,21 +51,21 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Conversation_Menu = [
   {
-    title: 'Contact info',
+    title: "Contact info",
   },
   {
-    title: 'Mute notifications',
+    title: "Mute notifications",
   },
   {
-    title: 'Clear messages',
+    title: "Clear messages",
   },
   {
-    title: 'Delete chat',
+    title: "Delete chat",
   },
 ];
 
 const ChatHeader = () => {
-  const isMobile = useResponsive('between', 'md', 'xs', 'sm');
+  const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams, setSearchParams] = useSearchParams();
   const theme = useTheme();
 
@@ -84,33 +84,33 @@ const ChatHeader = () => {
   return (
     <Box
       p={2}
-      width={'100%'}
+      width={"100%"}
       sx={{
         backgroundColor: theme.palette.background.default,
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.25)',
+        boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
     >
       <Stack
-        alignItems={'center'}
-        direction={'row'}
-        sx={{ width: '100%', height: '100%' }}
+        alignItems={"center"}
+        direction={"row"}
+        sx={{ width: "100%", height: "100%" }}
         justifyContent="space-between"
       >
         <Stack
           onClick={() => {
             dispatch(ToggleSidebar());
-            searchParams.set('open', true);
+            searchParams.set("open", true);
             setSearchParams(searchParams);
           }}
           spacing={2}
           direction="row"
         >
-          <Box sx={{ cursor: 'pointer' }}>
+          <Box sx={{ cursor: "pointer" }}>
             <StyledBadge
               overlap="circular"
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+                vertical: "bottom",
+                horizontal: "right",
               }}
               variant="dot"
             >
@@ -122,7 +122,7 @@ const ChatHeader = () => {
             <Typography variant="caption">Online</Typography>
           </Stack>
         </Stack>
-        <Stack direction={'row'} alignItems="center" spacing={isMobile ? 1 : 3}>
+        <Stack direction={"row"} alignItems="center" spacing={isMobile ? 1 : 3}>
           <IconButton>
             <VideoCamera />
           </IconButton>
@@ -139,17 +139,17 @@ const ChatHeader = () => {
           <IconButton
             id="conversation-positioned-button"
             aria-controls={
-              openConversationMenu ? 'conversation-positioned-menu' : undefined
+              openConversationMenu ? "conversation-positioned-menu" : undefined
             }
             aria-haspopup="true"
-            aria-expanded={openConversationMenu ? 'true' : undefined}
+            aria-expanded={openConversationMenu ? "true" : undefined}
             onClick={handleClickConversationMenu}
           >
             <CaretDown />
           </IconButton>
           <Menu
             MenuListProps={{
-              'aria-labelledby': 'fade-button',
+              "aria-labelledby": "fade-button",
             }}
             TransitionComponent={Fade}
             id="conversation-positioned-menu"
@@ -158,26 +158,26 @@ const ChatHeader = () => {
             open={openConversationMenu}
             onClose={handleCloseConversationMenu}
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
+              vertical: "bottom",
+              horizontal: "right",
             }}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
+              vertical: "top",
+              horizontal: "right",
             }}
           >
             <Box p={1}>
               <Stack spacing={1}>
-                {Conversation_Menu.map((el) => (
-                  <MenuItem onClick={handleCloseConversationMenu}>
+                {Conversation_Menu.map((e, index) => (
+                  <MenuItem onClick={handleCloseConversationMenu} key={index}>
                     <Stack
                       sx={{ minWidth: 100 }}
                       direction="row"
-                      alignItems={'center'}
+                      alignItems={"center"}
                       justifyContent="space-between"
                     >
-                      <span>{el.title}</span>
-                    </Stack>{' '}
+                      <span>{e.title}</span>
+                    </Stack>{" "}
                   </MenuItem>
                 ))}
               </Stack>

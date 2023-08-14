@@ -6,7 +6,7 @@ import {
   Stack,
   TextField,
   Tooltip,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Camera,
   File,
@@ -16,19 +16,19 @@ import {
   Smiley,
   Sticker,
   User,
-} from 'phosphor-react';
-import { useTheme, styled } from '@mui/material/styles';
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import useResponsive from '../../hooks/useResponsive';
+} from "phosphor-react";
+import { useTheme, styled } from "@mui/material/styles";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
+import useResponsive from "../../hooks/useResponsive";
 
-import data from '@emoji-mart/data';
-import Picker from '@emoji-mart/react';
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
-  '& .MuiInputBase-input': {
-    paddingTop: '12px !important',
-    paddingBottom: '12px !important',
+  "& .MuiInputBase-input": {
+    paddingTop: "12px !important",
+    paddingBottom: "12px !important",
   },
 }));
 
@@ -37,31 +37,31 @@ const Actions = [
     color: (theme) => theme.palette.primary.lighter, // theme => theme.palette.primary.main
     icon: <Image size={24} />,
     y: 102,
-    title: 'Photo/Video',
+    title: "Photo/Video",
   },
   {
     color: (theme) => theme.palette.primary.light,
     icon: <Sticker size={24} />,
     y: 172,
-    title: 'Stickers',
+    title: "Stickers",
   },
   {
     color: (theme) => theme.palette.primary.main,
     icon: <Camera size={24} />,
     y: 242,
-    title: 'Image',
+    title: "Image",
   },
   {
     color: (theme) => theme.palette.primary.dark,
     icon: <File size={24} />,
     y: 312,
-    title: 'Document',
+    title: "Document",
   },
   {
     color: (theme) => theme.palette.primary.darker,
     icon: <User size={24} />,
     y: 382,
-    title: 'Contact',
+    title: "Contact",
   },
 ];
 
@@ -76,33 +76,33 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
       InputProps={{
         disableUnderline: true,
         startAdornment: (
-          <Stack sx={{ width: 'max-content' }}>
+          <Stack sx={{ width: "max-content" }}>
             <Stack
               sx={{
-                position: 'relative',
-                display: openActions ? 'inline-block' : 'none',
+                position: "relative",
+                display: openActions ? "inline-block" : "none",
               }}
             >
-              {Actions.map((el) => (
-                <Tooltip placement="right" title={el.title}>
+              {Actions.map((e, index) => (
+                <Tooltip placement="right" title={e.title} key={index}>
                   <Fab
                     onClick={() => {
                       setOpenActions(!openActions);
                     }}
                     sx={{
-                      position: 'absolute',
-                      top: -el.y,
-                      backgroundColor: el.color,
+                      position: "absolute",
+                      top: -e.y,
+                      backgroundColor: e.color,
                     }}
                     aria-label="add"
                   >
-                    {el.icon}
+                    {e.icon}
                   </Fab>
                 </Tooltip>
               ))}
             </Stack>
 
-            <InputAdornment>
+            <InputAdornment position="start">
               <IconButton
                 onClick={() => {
                   setOpenActions(!openActions);
@@ -114,8 +114,8 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
           </Stack>
         ),
         endAdornment: (
-          <Stack sx={{ position: 'relative' }}>
-            <InputAdornment>
+          <Stack sx={{ position: "relative" }}>
+            <InputAdornment position="end">
               <IconButton
                 onClick={() => {
                   setOpenPicker(!openPicker);
@@ -134,7 +134,7 @@ const ChatInput = ({ openPicker, setOpenPicker }) => {
 const Footer = () => {
   const theme = useTheme();
 
-  const isMobile = useResponsive('between', 'md', 'xs', 'sm');
+  const isMobile = useResponsive("between", "md", "xs", "sm");
 
   const [searchParams] = useSearchParams();
 
@@ -142,29 +142,29 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        position: 'relative',
-        backgroundColor: 'transparent !important',
+        position: "relative",
+        backgroundColor: "transparent !important",
       }}
     >
       <Box
         p={isMobile ? 1 : 2}
-        width={'100%'}
+        width={"100%"}
         sx={{
           backgroundColor: theme.palette.background.default,
-          boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.25)',
+          boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
         }}
       >
-        <Stack direction="row" alignItems={'center'} spacing={isMobile ? 1 : 3}>
-          <Stack sx={{ width: '100%' }}>
+        <Stack direction="row" alignItems={"center"} spacing={isMobile ? 1 : 3}>
+          <Stack sx={{ width: "100%" }}>
             <Box
               style={{
                 zIndex: 10,
-                position: 'fixed',
-                display: openPicker ? 'inline' : 'none',
+                position: "fixed",
+                display: openPicker ? "inline" : "none",
                 bottom: 81,
                 right: isMobile
                   ? 20
-                  : searchParams.get('open') === 'true'
+                  : searchParams.get("open") === "true"
                   ? 420
                   : 100,
               }}
@@ -186,8 +186,8 @@ const Footer = () => {
             }}
           >
             <Stack
-              sx={{ height: '100%' }}
-              alignItems={'center'}
+              sx={{ height: "100%" }}
+              alignItems={"center"}
               justifyContent="center"
             >
               <IconButton>

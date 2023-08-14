@@ -1,16 +1,16 @@
-import { faker } from '@faker-js/faker';
-import { Grid, Stack, Tab, Tabs, useTheme } from '@mui/material';
-import React from 'react';
-import { SHARED_DOCS, SHARED_LINKS } from '../../../data';
-import { DocMsg, LinkMsg } from '../../Chat/ChatsComponents/MsgTypes';
+import { faker } from "@faker-js/faker";
+import { Grid, Stack, Tab, Tabs, useTheme } from "@mui/material";
+import React from "react";
+import { SHARED_DOCS, SHARED_LINKS } from "../../../data";
+import { DocMsg, LinkMsg } from "../../Chat/ChatsComponents/MsgTypes";
 
 // Media container
 const Media = () => {
   return (
     <Grid container spacing={2}>
-      {[0, 1, 2, 3, 4, 5, 6, 7, 9].map((e) => {
+      {[0, 1, 2, 3, 4, 5, 6, 7, 9].map((e, index) => {
         return (
-          <Grid item xs={4}>
+          <Grid item xs={4} key={index}>
             <img src={faker.image.avatar()} alt={faker.name.fullName()} />
           </Grid>
         );
@@ -32,18 +32,18 @@ const Body = () => {
     <Stack
       sx={{
         backgroundColor: theme.palette.background.default,
-        overflowY: 'scroll',
-        height: '100%',
+        overflowY: "scroll",
+        height: "100%",
       }}
       className="scrollbar"
     >
       <Stack
         className="scrollbar"
         sx={{
-          height: '100%',
-          position: 'relative',
+          height: "100%",
+          position: "relative",
           flexGrow: 1,
-          overflowY: 'scroll',
+          overflowY: "scroll",
           backgroundColor: theme.palette.background.paper,
         }}
         ml={0.5}
@@ -60,10 +60,10 @@ const Body = () => {
         <Stack
           className="scrollbar"
           sx={{
-            height: '100%',
-            position: 'relative',
+            height: "100%",
+            position: "relative",
             flexGrow: 1,
-            overflowY: 'scroll',
+            overflowY: "scroll",
           }}
           p={3}
           spacing={3}
@@ -76,11 +76,15 @@ const Body = () => {
 
               case 1:
                 // links section
-                return SHARED_LINKS.map((e) => <LinkMsg e={e} value={value} />);
+                return SHARED_LINKS.map((e, index) => (
+                  <LinkMsg key={index} e={e} value={value} />
+                ));
 
               case 2:
                 // docs section
-                return SHARED_DOCS.map((e) => <DocMsg e={e} value={value} />);
+                return SHARED_DOCS.map((e, index) => (
+                  <DocMsg key={index} e={e} value={value} />
+                ));
 
               default:
                 break;

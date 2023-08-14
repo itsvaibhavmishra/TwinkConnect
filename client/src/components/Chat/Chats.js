@@ -84,7 +84,7 @@ const Chats = () => {
               }}
             >
               {ChatList.filter((e) => e.pinned).map((e) => {
-                return <ChatElement {...e} />;
+                return <ChatElement {...e} key={e.id} />;
               })}
             </Stack>
           </Stack>
@@ -101,7 +101,7 @@ const Chats = () => {
               }}
             >
               {ChatList.filter((e) => !e.pinned).map((e) => {
-                return <ChatElement {...e} />;
+                return <ChatElement {...e} key={e.id} />;
               })}
             </Stack>
           </Stack>

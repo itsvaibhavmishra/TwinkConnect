@@ -126,7 +126,7 @@ const Sidebar = () => {
                     </Link>
                   </Box>
                 ) : (
-                  <Link to={e.address}>
+                  <Link to={e.address} key={e.index}>
                     <IconButton
                       onClick={() => setSelected(e.index)}
                       key={e.index}
@@ -213,8 +213,9 @@ const Sidebar = () => {
               }}
             >
               <Stack spacing={1} px={1}>
-                {Profile_Menu.map((e) => (
+                {Profile_Menu.map((e, index) => (
                   <MenuItem
+                    key={index}
                     onClick={() => {
                       handleClose();
                       if (!e.address) {
