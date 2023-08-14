@@ -1,4 +1,4 @@
-#TwinkChat 😺
+# TwinkChat 😺
 
 A Real-Time web-based Chat App built using MERN Stack.
 { Development in Progress }
