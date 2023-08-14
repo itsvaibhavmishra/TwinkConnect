@@ -6,13 +6,13 @@ import {
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
-import { MagnifyingGlass, PhoneCall } from 'phosphor-react';
-import React, { useState } from 'react';
-import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
-import { CallElement } from './CallElement';
-import { CallLogs } from '../../data';
-import StartCall from '../../sections/main/StartCall';
+} from "@mui/material";
+import { MagnifyingGlass, PhoneCall } from "phosphor-react";
+import React, { useState } from "react";
+import { Search, SearchIconWrapper, StyledInputBase } from "../Search";
+import { CallElement } from "./CallElement";
+import { CallLogs } from "../../data";
+import StartCall from "../../sections/main/StartCall";
 
 const Calls = () => {
   // using theme
@@ -29,36 +29,36 @@ const Calls = () => {
       <Stack>
         <Box
           sx={{
-            position: 'relative',
-            height: '100%',
+            position: "relative",
+            height: "100%",
             width: 320,
             backgroundColor: theme.palette.background.default,
-            boxShadow: '0px 0px 2px #00000040',
+            boxShadow: "0px 0px 2px #00000040",
           }}
         >
           {/* Header */}
-          <Stack p={3} spacing={2} sx={{ maxHeight: '100vh' }}>
+          <Stack p={3} spacing={2} sx={{ maxHeight: "100vh" }}>
             <Typography variant="h5">Call Log</Typography>
 
             {/* Search stack */}
-            <Stack sx={{ width: '100%' }}>
+            <Stack sx={{ width: "100%" }}>
               <Search>
                 <SearchIconWrapper>
                   <MagnifyingGlass color={theme.palette.primary.main} />
                 </SearchIconWrapper>
                 <StyledInputBase
                   placeholder="Search..."
-                  inputProps={{ 'aria-label': 'search' }}
+                  inputProps={{ "aria-label": "search" }}
                 />
               </Search>
             </Stack>
 
             {/* Create new call stack */}
             <Stack
-              direction={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              sx={{ cursor: 'pointer' }}
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              sx={{ cursor: "pointer" }}
               onClick={() => setOpen(true)}
             >
               <Typography variant="subtitle2" component={Button}>
@@ -72,20 +72,20 @@ const Calls = () => {
 
             {/* Call Logs starts here */}
             <Stack
-              direction={'column'}
+              direction={"column"}
               sx={{
                 flexGrow: 1,
-                overflow: 'scroll',
-                height: '100%',
-                overflowY: 'auto',
-                overflowX: 'hidden',
+                overflow: "scroll",
+                height: "100%",
+                overflowY: "auto",
+                overflowX: "hidden",
               }}
               spacing={2}
               className="scrollbar"
             >
               <Stack>
                 {CallLogs.map((e) => {
-                  return <CallElement {...e} />;
+                  return <CallElement key={e.id} {...e} />;
                 })}
               </Stack>
             </Stack>

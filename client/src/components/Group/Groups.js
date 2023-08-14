@@ -6,13 +6,13 @@ import {
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
-import { MagnifyingGlass, Plus } from 'phosphor-react';
-import React, { useState } from 'react';
-import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
-import { ChatList } from '../../data';
-import ChatElement from '../Chat/ChatElement';
-import CreateGroup from '../../sections/main/CreateGroup';
+} from "@mui/material";
+import { MagnifyingGlass, Plus } from "phosphor-react";
+import React, { useState } from "react";
+import { Search, SearchIconWrapper, StyledInputBase } from "../Search";
+import { ChatList } from "../../data";
+import ChatElement from "../Chat/ChatElement";
+import CreateGroup from "../../sections/main/CreateGroup";
 
 const Groups = () => {
   // using theme
@@ -28,36 +28,36 @@ const Groups = () => {
     <Stack>
       <Box
         sx={{
-          position: 'relative',
-          height: '100%',
+          position: "relative",
+          height: "100%",
           width: 320,
           backgroundColor: theme.palette.background.default,
-          boxShadow: '0px 0px 2px #00000040',
+          boxShadow: "0px 0px 2px #00000040",
         }}
       >
         {/* Header */}
-        <Stack p={3} spacing={2} sx={{ maxHeight: '100vh' }}>
+        <Stack p={3} spacing={2} sx={{ maxHeight: "100vh" }}>
           <Typography variant="h5">Groups</Typography>
 
           {/* Search stack */}
-          <Stack sx={{ width: '100%' }}>
+          <Stack sx={{ width: "100%" }}>
             <Search>
               <SearchIconWrapper>
                 <MagnifyingGlass color="#709CE6" />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search..."
-                inputProps={{ 'aria-label': 'search' }}
+                inputProps={{ "aria-label": "search" }}
               />
             </Search>
           </Stack>
 
           {/* Create new group stack */}
           <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            sx={{ cursor: 'pointer' }}
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            sx={{ cursor: "pointer" }}
             onClick={() => {
               setOpen(true);
             }}
@@ -73,20 +73,20 @@ const Groups = () => {
 
           {/* Group Chat section starts here */}
           <Stack
-            direction={'column'}
+            direction={"column"}
             sx={{
               flexGrow: 1,
-              overflow: 'scroll',
-              height: '100%',
-              overflowY: 'auto',
-              overflowX: 'hidden',
+              overflow: "scroll",
+              height: "100%",
+              overflowY: "auto",
+              overflowX: "hidden",
             }}
             spacing={2}
             className="scrollbar"
           >
             {/* Pinned Group Messages */}
             <Stack spacing={2.4}>
-              <Typography variant="subtitle2" sx={{ color: '#676767' }}>
+              <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                 Pinned
               </Typography>
               <Stack
@@ -96,14 +96,14 @@ const Groups = () => {
                 }}
               >
                 {ChatList.filter((e) => e.pinned).map((e) => {
-                  return <ChatElement {...e} />;
+                  return <ChatElement key={e.id} {...e} />;
                 })}
               </Stack>
             </Stack>
 
             {/* All Group Chats */}
             <Stack spacing={2.4}>
-              <Typography variant="subtitle2" sx={{ color: '#676767' }}>
+              <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                 All Groups
               </Typography>
               <Stack
@@ -113,7 +113,7 @@ const Groups = () => {
                 }}
               >
                 {ChatList.filter((e) => !e.pinned).map((e) => {
-                  return <ChatElement {...e} />;
+                  return <ChatElement key={e.id} {...e} />;
                 })}
               </Stack>
             </Stack>

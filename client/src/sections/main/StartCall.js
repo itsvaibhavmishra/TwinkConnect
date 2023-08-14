@@ -7,16 +7,16 @@ import {
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
-import { MagnifyingGlass, XCircle } from 'phosphor-react';
-import React from 'react';
+} from "@mui/material";
+import { MagnifyingGlass, XCircle } from "phosphor-react";
+import React from "react";
 import {
   Search,
   SearchIconWrapper,
   StyledInputBase,
-} from '../../components/Search';
-import { NewCall } from '../../components/Call/CallElement';
-import { MembersList } from '../../data';
+} from "../../components/Search";
+import { NewCall } from "../../components/Call/CallElement";
+import { MembersList } from "../../data";
 
 const StartCall = ({ open, handleClose }) => {
   // using theme
@@ -27,7 +27,7 @@ const StartCall = ({ open, handleClose }) => {
       open={open}
       onClose={handleClose}
       fullWidth
-      maxWidth={'xs'}
+      maxWidth={"xs"}
       aria-labelledby="responsive-dialog-title"
       keepMounted
       sx={{ p: 4 }}
@@ -35,12 +35,12 @@ const StartCall = ({ open, handleClose }) => {
       {/* Header for Dialog */}
       <DialogTitle sx={{ mb: 3 }} id="responsive-dialog-title">
         <Stack
-          direction={'row'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
           mb={1}
         >
-          <Typography variant="h5" textAlign={'center'} p={1.5}>
+          <Typography variant="h5" textAlign={"center"} p={1.5}>
             Start A New Call
           </Typography>
           {/* Close Button */}
@@ -48,16 +48,16 @@ const StartCall = ({ open, handleClose }) => {
             <XCircle weight="fill" />
           </IconButton>
         </Stack>
-        <Stack justifyContent={'center'} alignItems={'center'}>
+        <Stack justifyContent={"center"} alignItems={"center"}>
           {/* Search */}
-          <Stack sx={{ width: '100%' }}>
+          <Stack sx={{ width: "100%" }}>
             <Search>
               <SearchIconWrapper>
                 <MagnifyingGlass color={theme.palette.primary.main} />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search..."
-                inputProps={{ 'aria-label': 'search' }}
+                inputProps={{ "aria-label": "search" }}
               />
             </Search>
           </Stack>
@@ -66,12 +66,12 @@ const StartCall = ({ open, handleClose }) => {
 
       {/* Form */}
       <DialogContent
-        sx={{ overflowY: 'scroll', maxHeight: '25rem' }}
+        sx={{ overflowY: "scroll", maxHeight: "25rem" }}
         className="scrollbar"
       >
         {/* Call list */}
         {MembersList.map((e) => (
-          <NewCall {...e} />
+          <NewCall key={e.id} {...e} />
         ))}
       </DialogContent>
     </Dialog>

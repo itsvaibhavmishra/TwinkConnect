@@ -83,13 +83,7 @@ const ProfileForm = () => {
           label="Name"
           helperText={"This name will be visible to your contacts"}
         />
-        <RHFTextField
-          multiline
-          rows={3}
-          maxRow={5}
-          name="about"
-          label="About"
-        />
+        <RHFTextField multiline rows={3} name="about" label="About" />
         <Stack direction={"row"} justifyContent={"end"}>
           <LoadingButton
             color="primary"
