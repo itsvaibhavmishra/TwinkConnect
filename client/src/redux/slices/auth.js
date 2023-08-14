@@ -228,6 +228,31 @@ export function RegisterUser(formValues) {
   };
 }
 
+// action for adding email to redux store
+export function AddEmail(formValues) {
+  return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    try {
+      // updating email state
+      dispatch(slice.actions.updateRegisterEmail({ email: formValues.email }));
+
+      // updating isLoading back to false and error false
+      dispatch(
+        slice.actions.updateIsLoading({ isLoading: false, error: false })
+      );
+    } catch (error) {
+      console.log(error);
+
+      // setting loading to false and error to true
+      dispatch(
+        slice.actions.updateIsLoading({ isLoading: false, error: true })
+      );
+    }
+  };
+}
+
 // action for sending new otp
 export function SendOTP(formValues) {
   return async (dispatch, getState) => {

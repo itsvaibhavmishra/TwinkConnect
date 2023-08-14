@@ -7,7 +7,7 @@ import { Stack, Typography } from "@mui/material";
 import { RHFTextField } from "../../components/hook-form";
 import { LoadingButton } from "@mui/lab";
 import RHFOtp from "../../components/hook-form/RHFOtp";
-import { SendOTP, VerifyOTP } from "../../redux/slices/auth";
+import { AddEmail, SendOTP, VerifyOTP } from "../../redux/slices/auth";
 
 // ---------------------- Email for OTP Form ----------------------
 export const EmailForm = () => {
@@ -31,14 +31,23 @@ export const EmailForm = () => {
     defaultValues,
   });
 
-  const { handleSubmit, formState } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    try {
-      // api request to backend for verifying email for otp using redux
-      dispatch(SendOTP(data));
-    } catch (error) {
-      console.error(error);
+    if (email) {
+      try {
+        // api request to backend for verifying email for otp using redux
+        dispatch(SendOTP(data));
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        // api request to add email to redux store
+        dispatch(AddEmail(data));
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -51,7 +60,7 @@ export const EmailForm = () => {
             color: (theme) => theme.palette.error.main,
           }}
         >
-          Please enter email and click resend OTP first
+          Please enter email and click Add Email first
         </Typography>
       )}
       <Stack
@@ -65,24 +74,47 @@ export const EmailForm = () => {
           label="Email address"
           InputProps={{
             endAdornment: (
-              <LoadingButton
-                loading={isLoading}
-                size="small"
-                type="submit"
-                variant="outlined"
-                sx={{
-                  py: 1,
-                  width: "9rem",
-                  color: (theme) =>
-                    theme.palette.mode === "light" ? "common.black" : "",
-                  "&:hover": {
-                    bgcolor: "primary.main",
-                    color: "common.white",
-                  },
-                }}
-              >
-                Resend OTP
-              </LoadingButton>
+              <>
+                {!email ? (
+                  <LoadingButton
+                    loading={isLoading}
+                    size="small"
+                    type="submit"
+                    variant="outlined"
+                    sx={{
+                      py: 1,
+                      width: "9rem",
+                      color: (theme) =>
+                        theme.palette.mode === "light" ? "common.black" : "",
+                      "&:hover": {
+                        bgcolor: "primary.main",
+                        color: "common.white",
+                      },
+                    }}
+                  >
+                    Add Email
+                  </LoadingButton>
+                ) : (
+                  <LoadingButton
+                    loading={isLoading}
+                    size="small"
+                    type="submit"
+                    variant="outlined"
+                    sx={{
+                      py: 1,
+                      width: "9rem",
+                      color: (theme) =>
+                        theme.palette.mode === "light" ? "common.black" : "",
+                      "&:hover": {
+                        bgcolor: "primary.main",
+                        color: "common.white",
+                      },
+                    }}
+                  >
+                    Resend OTP
+                  </LoadingButton>
+                )}
+              </>
             ),
           }}
         />
@@ -124,7 +156,7 @@ const VerifyForm = () => {
     defaultValues,
   });
 
-  const { handleSubmit, formState } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
     try {
