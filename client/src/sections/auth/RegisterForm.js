@@ -21,7 +21,7 @@ const RegisterForm = () => {
   //  Login Schema
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name Required"),
-    lastName: Yup.string(),
+    lastName: Yup.string().required("Last Name Required"),
     email: Yup.string().required("Email Required").email("Invalid Email"),
     password: Yup.string()
       .required("Password Required")

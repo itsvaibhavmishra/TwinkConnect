@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
+import { ShowSnackbar } from "./app";
 
 // initial state for logged in status
 const initialState = {
@@ -73,8 +74,18 @@ export function LoginUser(formValues) {
           dispatch(
             slice.actions.updateRegisterEmail({ email: formValues.email })
           );
-          window.location.href = "/auth/verify";
+          setTimeout(() => {
+            window.location.href = "/auth/verify";
+          }, 2000);
         }
+
+        // show snackbar for login action
+        dispatch(
+          ShowSnackbar({
+            severity: response.data.status,
+            message: response.data.message,
+          })
+        );
 
         // updating isLoading back to false and error false
         dispatch(
@@ -82,7 +93,13 @@ export function LoginUser(formValues) {
         );
       })
       .catch(function (error) {
-        console.log(error);
+        // show error snackbar
+        dispatch(
+          ShowSnackbar({
+            severity: error.status,
+            message: error.message,
+          })
+        );
 
         // setting loading to false and error to true
         dispatch(
@@ -96,6 +113,14 @@ export function LoginUser(formValues) {
 export function LogoutUser() {
   return async (dispatch, getState) => {
     dispatch(slice.actions.signOut());
+
+    // show snackbar for logout action
+    dispatch(
+      ShowSnackbar({
+        severity: "success",
+        message: "Logged Out",
+      })
+    );
   };
 }
 
@@ -120,7 +145,13 @@ export function ForgotPassword(formValues) {
       )
       .then(function (response) {
         // reset link sent response
-        console.log(response);
+        // show snackbar for reset password action
+        dispatch(
+          ShowSnackbar({
+            severity: response.data.status,
+            message: response.data.message,
+          })
+        );
 
         // updating isLoading back to false and error false
         dispatch(
@@ -128,7 +159,13 @@ export function ForgotPassword(formValues) {
         );
       })
       .catch(function (error) {
-        console.log(error);
+        // show snackbar for error
+        dispatch(
+          ShowSnackbar({
+            severity: error.status,
+            message: error.message,
+          })
+        );
 
         // setting loading to false and error to true
         dispatch(
@@ -157,6 +194,14 @@ export function NewPassword(formValues) {
         }
       )
       .then(function (response) {
+        // show snackbar for new password action
+        dispatch(
+          ShowSnackbar({
+            severity: response.data.status,
+            message: response.data.message,
+          })
+        );
+
         // setting status to logged in
         dispatch(
           slice.actions.logIn({
@@ -171,7 +216,13 @@ export function NewPassword(formValues) {
         );
       })
       .catch(function (error) {
-        console.log(error);
+        // show snackbar for error
+        dispatch(
+          ShowSnackbar({
+            severity: error.status,
+            message: error.message,
+          })
+        );
 
         // setting loading to false and error to true
         dispatch(
@@ -200,7 +251,13 @@ export function RegisterUser(formValues) {
         }
       )
       .then(function (response) {
-        console.log(response);
+        // show snackbar for register action
+        dispatch(
+          ShowSnackbar({
+            severity: response.data.status,
+            message: response.data.message,
+          })
+        );
 
         // updating email state
         dispatch(
@@ -213,7 +270,13 @@ export function RegisterUser(formValues) {
         );
       })
       .catch(function (error) {
-        console.log(error);
+        // show snackbar for error
+        dispatch(
+          ShowSnackbar({
+            severity: error.status,
+            message: error.message,
+          })
+        );
 
         // setting loading to false and error to true
         dispatch(
@@ -222,7 +285,9 @@ export function RegisterUser(formValues) {
       })
       .finally(() => {
         if (!getState().auth.error) {
-          window.location.href = "/auth/verify";
+          setTimeout(() => {
+            window.location.href = "/auth/verify";
+          }, 2000);
         }
       });
   };
@@ -238,12 +303,26 @@ export function AddEmail(formValues) {
       // updating email state
       dispatch(slice.actions.updateRegisterEmail({ email: formValues.email }));
 
+      // show snackbar for add email action
+      dispatch(
+        ShowSnackbar({
+          severity: "success",
+          message: "Email Added Successfully",
+        })
+      );
+
       // updating isLoading back to false and error false
       dispatch(
         slice.actions.updateIsLoading({ isLoading: false, error: false })
       );
     } catch (error) {
-      console.log(error);
+      // show snackbar for error
+      dispatch(
+        ShowSnackbar({
+          severity: error,
+          message: "Could not add email",
+        })
+      );
 
       // setting loading to false and error to true
       dispatch(
@@ -272,7 +351,13 @@ export function SendOTP(formValues) {
         }
       )
       .then(function (response) {
-        console.log(response);
+        // show snackbar for send otp action
+        dispatch(
+          ShowSnackbar({
+            severity: response.data.status,
+            message: response.data.message,
+          })
+        );
 
         // updating email state
         dispatch(
@@ -285,7 +370,13 @@ export function SendOTP(formValues) {
         );
       })
       .catch(function (error) {
-        console.log(error);
+        // show snackbar for error
+        dispatch(
+          ShowSnackbar({
+            severity: error.status,
+            message: error.message,
+          })
+        );
 
         // setting loading to false and error to true
         dispatch(
@@ -314,7 +405,13 @@ export function VerifyOTP(formValues) {
         }
       )
       .then(function (response) {
-        console.log(response);
+        // show snackbar for verify otp action
+        dispatch(
+          ShowSnackbar({
+            severity: response.data.status,
+            message: response.data.message,
+          })
+        );
 
         // set login status to true
         dispatch(
@@ -330,7 +427,13 @@ export function VerifyOTP(formValues) {
         );
       })
       .catch(function (error) {
-        console.log(error);
+        // show snackbar for error
+        dispatch(
+          ShowSnackbar({
+            severity: error.data.status,
+            message: error.data.message,
+          })
+        );
 
         // setting loading to false and error to true
         dispatch(

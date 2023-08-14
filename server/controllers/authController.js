@@ -49,7 +49,7 @@ export const login = catchAsync(async (req, res, next) => {
   // check if user is verified
   if (!user.verified) {
     res.status(200).json({
-      status: "success",
+      status: "info",
       message: `Hello ${user.firstName}, please verify to login`,
     });
     return;
@@ -72,7 +72,7 @@ export const register = async (req, res, next) => {
   if (!firstName || !lastName || !email || !password) {
     return res.status(400).json({
       status: "error",
-      message: "please provide firstName, lastName, email and password",
+      message: "please provide First Name, Last Name, Email and Password",
     });
   }
 
