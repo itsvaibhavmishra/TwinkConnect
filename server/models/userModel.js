@@ -40,6 +40,12 @@ const userSchema = new mongoose.Schema(
     // OTP schema
     otp: { type: String },
     otp_expiry_time: { type: Date },
+
+    // Users friends
+    friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+
+    // socket io
+    socket_id: { type: String },
   }
 );
 
