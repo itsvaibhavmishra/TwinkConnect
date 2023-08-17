@@ -1,3 +1,4 @@
+import FriendRequest from "../models/requestModel.js";
 import User from "../models/userModel.js";
 import { filterObj } from "../utils/filterObj.js";
 
@@ -14,7 +15,7 @@ export const getUsers = async (req, res, next) => {
   const remaining_user = all_users.filter(
     (user) =>
       // users not in this_user friend list
-      !this.user.friends.includes(user._id) &&
+      !this_user.friends.includes(user._id) &&
       // does not includes itself {User 1 will not be present in this list}
       user._id.toString() !== req.user._id.toString()
   );
@@ -23,6 +24,33 @@ export const getUsers = async (req, res, next) => {
     status: "success",
     message: "Users Found!",
     data: remaining_user,
+  });
+};
+
+// -------------------------- Getting User Friends --------------------------
+export const getFriends = async (req, res, next) => {
+  const friends = await User.findById(req.user._id).populate(
+    "friends",
+    "_id firstName lastName"
+  ); // getting all friends from DB
+
+  res.status(200).json({
+    status: "success",
+    message: "Friends List Found!",
+    data: friends,
+  });
+};
+
+// -------------------------- Getting All Friend Requests --------------------------
+export const getRequests = async (req, res, next) => {
+  const requests = await FriendRequest.find({
+    recipient: req.user._id,
+  }).populate("sender", "_id firstName lastName");
+
+  res.status(200).json({
+    status: "success",
+    message: "Friend Requests List Found!",
+    data: requests,
   });
 };
 
