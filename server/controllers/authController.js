@@ -240,7 +240,7 @@ export const protect = async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    token = req.header.authorization.split(" ")[1];
+    token = req.headers.authorization.split(" ")[1];
   }
   // getting token from cookies
   else if (req.cookies.jwt) {
@@ -256,7 +256,7 @@ export const protect = async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // check for existing user with same token
-  const this_user = await User.findById(decoded.id);
+  const this_user = await User.findById(decoded.userId);
 
   if (!this_user) {
     return next(new AppError("Unidentified User", 401));

@@ -10,13 +10,13 @@ import {
 const userRouter = express.Router();
 
 // fetching all verified users
-userRouter.get("/get_users", protect, getUsers);
+userRouter.get("/get-users", protect, getUsers);
 
 // fetching all friends list
-userRouter.get("/get_friends", protect, getFriends);
+userRouter.get("/get-friends", protect, getFriends);
 
 // fetching all friend requests
-userRouter.get("/get_requests", protect, getRequests);
+userRouter.get("/get-requests", protect, getRequests);
 
 // update user profile Route
 userRouter.patch("/update-profile", protect, upadteProfile);

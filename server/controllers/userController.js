@@ -4,71 +4,99 @@ import { filterObj } from "../utils/filterObj.js";
 
 // -------------------------- Verified Users List --------------------------
 export const getUsers = async (req, res, next) => {
-  // getting all verified users from DB
-  const all_users = await User.find({
-    verified: true,
-  }).select("firstName lastName _id"); // only fetching required fields
+  try {
+    // getting all verified users from DB
+    const all_users = await User.find({
+      verified: true,
+    }).select("firstName lastName _id"); // only fetching required fields
 
-  const this_user = req.user; // getting current user
+    const this_user = req.user; // getting current user
 
-  // users not in friend list
-  const remaining_user = all_users.filter(
-    (user) =>
-      // users not in this_user friend list
-      !this_user.friends.includes(user._id) &&
-      // does not includes itself {User 1 will not be present in this list}
-      user._id.toString() !== req.user._id.toString()
-  );
+    // users not in friend list
+    const remaining_user = all_users.filter(
+      (user) =>
+        // users not in this_user friend list
+        !this_user.friends.includes(user._id) &&
+        // does not includes itself {User 1 will not be present in this list}
+        user._id.toString() !== req.user._id.toString()
+    );
 
-  res.status(200).json({
-    status: "success",
-    message: "Users Found!",
-    data: remaining_user,
-  });
+    res.status(200).json({
+      status: "success",
+      message: "Users Found!",
+      data: remaining_user,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: `Unable to get All Users: ${error}`,
+    });
+  }
 };
 
 // -------------------------- Getting User Friends --------------------------
 export const getFriends = async (req, res, next) => {
-  const friends = await User.findById(req.user._id).populate(
-    "friends",
-    "_id firstName lastName"
-  ); // getting all friends from DB
+  try {
+    const this_user = await User.findById(req.user._id).populate(
+      "friends",
+      "_id firstName lastName"
+    ); // getting all friends from DB
 
-  res.status(200).json({
-    status: "success",
-    message: "Friends List Found!",
-    data: friends,
-  });
+    res.status(200).json({
+      status: "success",
+      message: "Friends List Found!",
+      data: this_user.friends,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: `Unable to get Users Friends List: ${error}`,
+    });
+  }
 };
 
 // -------------------------- Getting All Friend Requests --------------------------
 export const getRequests = async (req, res, next) => {
-  const requests = await FriendRequest.find({
-    recipient: req.user._id,
-  }).populate("sender", "_id firstName lastName");
+  try {
+    const requests = await FriendRequest.find({
+      recipient: req.user._id,
+    }).populate("sender", "_id firstName lastName");
 
-  res.status(200).json({
-    status: "success",
-    message: "Friend Requests List Found!",
-    data: requests,
-  });
+    res.status(200).json({
+      status: "success",
+      message: "Friend Requests List Found!",
+      data: requests,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: `Unable to get Friend Request: ${error}`,
+    });
+  }
 };
 
 // -------------------------- User Profile --------------------------
 export const upadteProfile = async (req, res, next) => {
-  const filteredBody = filterObj(
-    req.body,
-    "firstName",
-    "lastName",
-    "about",
-    "avatar"
-  );
+  try {
+    const filteredBody = filterObj(
+      req.body,
+      "firstName",
+      "lastName",
+      "about",
+      "avatar"
+    );
 
-  const updated_user = await User.create(filteredBody);
+    const updated_user = await User.create(filteredBody);
 
-  res.status(200).json({
-    status: "success",
-    data: updated_user,
-    message: "Profile Updated",
-  });
+    res.status(200).json({
+      status: "success",
+      data: updated_user,
+      message: "Profile Updated",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: `Unable to Update Users Profile: ${error}`,
+    });
+  }
 };
