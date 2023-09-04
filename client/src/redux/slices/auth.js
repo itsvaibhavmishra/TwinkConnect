@@ -69,6 +69,8 @@ export function LoginUser(formValues) {
               token: response.data.token,
             })
           );
+
+          window.localStorage.setItem("user_id", response.data.user_id);
         } else {
           // updating email state
           dispatch(
@@ -113,6 +115,8 @@ export function LoginUser(formValues) {
 export function LogoutUser() {
   return async (dispatch, getState) => {
     dispatch(slice.actions.signOut());
+    // removing user id from local storage
+    window.localStorage.removeItem("user_id");
 
     // show snackbar for logout action
     dispatch(
@@ -420,6 +424,8 @@ export function VerifyOTP(formValues) {
             token: response.data.token,
           })
         );
+
+        window.localStorage.setItem("user_id", response.data.user_id);
 
         // updating isLoading back to false and error false
         dispatch(
