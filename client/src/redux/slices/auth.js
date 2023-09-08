@@ -114,9 +114,10 @@ export function LoginUser(formValues) {
 // action for signing out user
 export function LogoutUser() {
   return async (dispatch, getState) => {
-    dispatch(slice.actions.signOut());
     // removing user id from local storage
     window.localStorage.removeItem("user_id");
+
+    dispatch(slice.actions.signOut());
 
     // show snackbar for logout action
     dispatch(
