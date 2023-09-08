@@ -164,7 +164,7 @@ const FriendRequestComponent = ({
   lastName,
   _id,
   online,
-  img,
+  avatar,
   id,
 }) => {
   // using theme
@@ -196,7 +196,7 @@ const FriendRequestComponent = ({
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={img} alt={name} />
+              <Avatar src={avatar} alt={name} />
             </StyledBadge>
           ) : (
             <Avatar src={img} alt={name} />
