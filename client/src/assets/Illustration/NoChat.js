@@ -1,17 +1,17 @@
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { memo } from 'react';
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { memo } from "react";
 
 const NoChat = ({ ...other }) => {
   const theme = useTheme();
   const PRIMARY_MAIN = theme.palette.primary.main;
 
   return (
-    <Box {...other}>
+    <Box {...other} sx={{ mt: -20 }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="1500"
-        height="1500"
+        width="600"
+        height="600"
         fill="none"
         viewBox="0 0 1500 1500"
         id="male-freelancer-working-from-home"
