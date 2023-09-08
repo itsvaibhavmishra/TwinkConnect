@@ -1,4 +1,14 @@
-import { Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  Divider,
+  IconButton,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +21,30 @@ import {
   FriendRequestComponent,
   UserComponent,
 } from "../../components/Friends";
+import { BugDroid } from "phosphor-react";
+
+const NotDataFound = ({ type }) => {
+  // using theme
+  const theme = useTheme();
+
+  return (
+    <Stack spacing={2} alignItems={"center"} justifyContent={"center"}>
+      <Divider />
+      <Stack direction={"row"} alignItems={"center"} justifyContent={"center"}>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontSize: 25, color: theme.palette.text.secondary }}
+        >
+          No {type} Found
+        </Typography>
+        <IconButton>
+          <BugDroid size={32} />
+        </IconButton>
+      </Stack>
+      <Divider />
+    </Stack>
+  );
+};
 
 const UsersList = () => {
   // dispatch from redux
@@ -19,14 +53,18 @@ const UsersList = () => {
 
   useEffect(() => {
     dispatch(FetchUsers());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
-      {users.map((e) => {
-        // List of all users
-        return <UserComponent key={e._id} {...e} />;
-      })}
+      {users.length > 0 ? (
+        users.map((user) => (
+          // List of all users
+          <UserComponent key={user._id} {...user} />
+        ))
+      ) : (
+        <NotDataFound type="User" />
+      )}
     </>
   );
 };
@@ -41,10 +79,18 @@ const FriendsList = () => {
 
   return (
     <>
-      {friends.map((e, index) => {
-        // List of all users
-        return <FriendsComponent key={e._id} {...e} />;
-      })}
+      {friends.length > 0 ? (
+        friends.map((e, index) => {
+          // List of all users
+          return (
+            <>
+              <FriendsComponent key={e._id} {...e} />
+            </>
+          );
+        })
+      ) : (
+        <NotDataFound type="User" />
+      )}
     </>
   );
 };
@@ -59,10 +105,16 @@ const FriendRequestList = () => {
 
   return (
     <>
-      {friendRequests.map((e) => {
-        // List of all users
-        return <FriendRequestComponent key={e._id} id={e._id} {...e.sender} />;
-      })}
+      {friendRequests.length > 0 ? (
+        friendRequests.map((e) => {
+          // List of all users
+          return (
+            <FriendRequestComponent key={e._id} id={e._id} {...e.sender} />
+          );
+        })
+      ) : (
+        <NotDataFound type="User" />
+      )}
     </>
   );
 };
@@ -95,7 +147,7 @@ const Friends = ({ open, toggleDialog }) => {
 
       {/* Listing items */}
       <DialogContent
-        sx={{ overflowY: "scroll", maxHeight: "25rem" }}
+        sx={{ overflowY: "scroll", maxHeight: "25rem", minHeight: "10rem" }}
         className="scrollbar"
       >
         <Stack sx={{ height: "100%" }}>

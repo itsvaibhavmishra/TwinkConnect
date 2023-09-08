@@ -13,13 +13,7 @@ import StyledBadge from "./StyledBadge";
 import { socket } from "../socket";
 import { useDispatch } from "react-redux";
 import { ShowSnackbar } from "../redux/slices/app";
-import { Chat } from "phosphor-react";
-
-const StyledChatBox = styled(Box)(({ theme }) => ({
-  "&:hover": {
-    cursor: "pointer",
-  },
-}));
+import { Chat, CheckCircle, XCircle } from "phosphor-react";
 
 const UserComponent = ({ firstName, lastName, _id, online, img }) => {
   // using theme
@@ -34,58 +28,58 @@ const UserComponent = ({ firstName, lastName, _id, online, img }) => {
   // getting current user id from localstorage
   const user_id = window.localStorage.getItem("user_id");
   return (
-    <StyledChatBox
+    <Box
       sx={{
         width: "100%",
-        borderRadius: 1,
         backgroundColor: theme.palette.background.paper,
+        borderRadius: 1,
       }}
       p={2}
+      my={1}
     >
       <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          {" "}
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          {/* Avatar and online status badge */}
           {online ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={name} src={img} />
+              <Avatar src={img} alt={name} />
             </StyledBadge>
           ) : (
-            <Avatar alt={name} src={img} />
+            <Avatar src={img} alt={name} />
           )}
+
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{name}</Typography>
-          </Stack>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <Button
-              onClick={() => {
-                socket.emit(
-                  "friend_request",
-                  { to: _id, from: user_id },
-                  () => {
-                    dispatch(
-                      ShowSnackbar({
-                        severity: "success",
-                        message: "Request Sent",
-                      })
-                    );
-                  }
-                );
-              }}
-            >
-              Send Request
-            </Button>
+            {/* Name */}
+            <Typography variant="subtitle2" sx={{ fontSize: "1.1rem" }}>
+              {name}
+            </Typography>
           </Stack>
         </Stack>
+
+        <Button
+          onClick={() => {
+            socket.emit("friend_request", { to: _id, from: user_id }, () => {
+              dispatch(
+                ShowSnackbar({
+                  severity: "success",
+                  message: "Request Sent",
+                })
+              );
+            });
+          }}
+        >
+          Send Request
+        </Button>
       </Stack>
-    </StyledChatBox>
+    </Box>
   );
 };
 
@@ -97,47 +91,60 @@ const FriendsComponent = ({ firstName, lastName, _id, online, img }) => {
   const name = `${firstName} ${lastName}`;
 
   return (
-    <StyledChatBox
+    <Box
       sx={{
         width: "100%",
-        borderRadius: 1,
         backgroundColor: theme.palette.background.paper,
+        borderRadius: 1,
       }}
       p={2}
+      my={1}
     >
       <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          {" "}
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          {/* Avatar and online status badge */}
           {online ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={name} src={img} />
+              <Avatar src={img} alt={name} />
             </StyledBadge>
           ) : (
-            <Avatar alt={name} src={img} />
+            <Avatar src={img} alt={name} />
           )}
+
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{name}</Typography>
-          </Stack>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <IconButton
-              onClick={() => {
-                // start conversation
-              }}
-            >
-              <Chat />
-            </IconButton>
+            {/* Name */}
+            <Typography variant="subtitle2" sx={{ fontSize: "1.1rem" }}>
+              {name}
+            </Typography>
           </Stack>
         </Stack>
+
+        <Stack direction={"row"} alignItems={"center"}>
+          <IconButton
+            onClick={() => {
+              // start conversation
+            }}
+          >
+            <Chat style={{ color: theme.palette.success.main }} />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              // remove friend
+            }}
+          >
+            <XCircle style={{ color: theme.palette.error.main }} />
+          </IconButton>
+        </Stack>
       </Stack>
-    </StyledChatBox>
+    </Box>
   );
 };
 
@@ -159,54 +166,77 @@ const FriendRequestComponent = ({
   const name = `${firstName} ${lastName}`;
 
   return (
-    <StyledChatBox
+    <Box
       sx={{
         width: "100%",
-        borderRadius: 1,
         backgroundColor: theme.palette.background.paper,
+        borderRadius: 1,
       }}
       p={2}
+      my={1}
     >
       <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          {" "}
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          {/* Avatar and online status badge */}
           {online ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={name} src={img} />
+              <Avatar src={img} alt={name} />
             </StyledBadge>
           ) : (
-            <Avatar alt={name} src={img} />
+            <Avatar src={img} alt={name} />
           )}
+
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{name}</Typography>
-          </Stack>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <Button
-              onClick={() => {
-                socket.emit("accept_request", { request_id: id }, () => {
-                  dispatch(
-                    ShowSnackbar({
-                      severity: "success",
-                      message: "Request Sent",
-                    })
-                  );
-                });
-              }}
-            >
-              Accept Request
-            </Button>
+            {/* Name */}
+            <Typography variant="subtitle2" sx={{ fontSize: "1.1rem" }}>
+              {name}
+            </Typography>
           </Stack>
         </Stack>
+
+        <Stack direction={"row"} spacing={1} alignItems={"center"}>
+          <IconButton
+            onClick={() => {
+              socket.emit("accept_request", { request_id: id }, () => {
+                dispatch(
+                  ShowSnackbar({
+                    severity: "success",
+                    message: "Request Accepted",
+                  })
+                );
+              });
+            }}
+          >
+            <CheckCircle
+              size={25}
+              style={{ color: theme.palette.success.main }}
+            />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              socket.emit("accept_request", { request_id: id }, () => {
+                dispatch(
+                  ShowSnackbar({
+                    severity: "error",
+                    message: "Request Rejected",
+                  })
+                );
+              });
+            }}
+          >
+            <XCircle size={25} style={{ color: theme.palette.error.main }} />
+          </IconButton>
+        </Stack>
       </Stack>
-    </StyledChatBox>
+    </Box>
   );
 };
 
