@@ -26,7 +26,7 @@ const DashboardLayout = () => {
           window.location.reload();
         }
       };
-      window.reload();
+      window.onload();
 
       if (!socket) {
         conenctSocket(user_id);

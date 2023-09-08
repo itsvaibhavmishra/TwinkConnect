@@ -15,6 +15,8 @@ const initialState = {
   users: [], // list of all unknown users
   friends: [], // list of all friends
   friendRequests: [], // list of all friend requests
+  chat_type: null, // group chat or direct chat
+  room_id: null, // id for the conversation
 };
 
 const slice = createSlice({
@@ -49,6 +51,10 @@ const slice = createSlice({
     },
     updateFriendRequests(state, action) {
       state.friendRequests = action.payload.request;
+    },
+    selectConversation(state, action) {
+      state.chat_type = "direct";
+      state.room_id = action.payload.room_id;
     },
   },
 });
@@ -147,6 +153,12 @@ export function FetchFriendRequest() {
       .catch((error) => {
         console.log(error);
       });
+  };
+}
+
+export function SelectConversation({ room_id }) {
+  return (dispatch, getState) => {
+    dispatch(slice.actions.selectConversation({ room_id }));
   };
 }
 

@@ -6,6 +6,11 @@ import {
   FetchFriends,
   FetchUsers,
 } from "../../redux/slices/app";
+import {
+  FriendsComponent,
+  FriendRequestComponent,
+  UserComponent,
+} from "../../components/Friends";
 
 const UsersList = () => {
   // dispatch from redux
@@ -14,13 +19,13 @@ const UsersList = () => {
 
   useEffect(() => {
     dispatch(FetchUsers());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
-      {users.map((e, index) => {
+      {users.map((e) => {
         // List of all users
-        return <></>;
+        return <UserComponent key={e._id} {...e} />;
       })}
     </>
   );
@@ -38,7 +43,7 @@ const FriendsList = () => {
     <>
       {friends.map((e, index) => {
         // List of all users
-        return <></>;
+        return <FriendsComponent key={e._id} {...e} />;
       })}
     </>
   );
@@ -54,9 +59,9 @@ const FriendRequestList = () => {
 
   return (
     <>
-      {friendRequests.map((e, index) => {
+      {friendRequests.map((e) => {
         // List of all users
-        return <></>;
+        return <FriendRequestComponent key={e._id} id={e._id} {...e.sender} />;
       })}
     </>
   );
