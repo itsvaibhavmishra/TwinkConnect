@@ -58,8 +58,10 @@ io.on("connection", async (socket) => {
 
     // send request "to" user based on their ID {User 1 => Sending Request User 2}
     // getting user
-    const to_user = await User.findById(data.to).select("socket_id");
-    const from_user = await User.findById(data.from).select("socket_id");
+    const to_user = await User.findById(data.to).select("socket_id firstName");
+    const from_user = await User.findById(data.from).select(
+      "socket_id firstName"
+    );
 
     // creating a friend request
     await FriendRequest.create({
@@ -69,12 +71,12 @@ io.on("connection", async (socket) => {
 
     // emitting alert to User 2 (request recieved)
     io.to(to_user.socket_id).emit("new_friend_request", {
-      message: "New Friend Request",
+      message: `New Friend Request from ${from_user.firstName}`,
     });
 
     // emitting alert to User 1 (request sent)
     io.to(from_user.socket_id).emit("request_sent", {
-      message: "Request Sent",
+      message: `Request Sent to ${to_user.firstName}`,
     });
   });
 
@@ -98,9 +100,10 @@ io.on("connection", async (socket) => {
     await FriendRequest.findByIdAndDelete(data.request_id);
 
     // emitting message to users after accepting request
-    io.to(sender.socket_id).emit("request_accepted", {
-      message: "Friend Request Accepted",
-    });
+    // io.to(sender.socket_id).emit("request_accepted", {
+    //   message: "Friend Request Accepted",
+    // });
+
     io.to(receiver.socket_id).emit("request_accepted", {
       message: "Friend Request Accepted",
     });

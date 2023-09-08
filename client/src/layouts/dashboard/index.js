@@ -64,7 +64,7 @@ const DashboardLayout = () => {
   }, [isLoggedIn, socket]);
 
   if (!isLoggedIn) {
-    return <Navigate to={"/auth"} />;
+    return <Navigate to={"/auth/login"} />;
   }
 
   return (
