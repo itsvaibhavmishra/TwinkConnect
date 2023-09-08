@@ -199,7 +199,7 @@ const FriendRequestComponent = ({
               <Avatar src={avatar} alt={name} />
             </StyledBadge>
           ) : (
-            <Avatar src={img} alt={name} />
+            <Avatar src={avatar} alt={name} />
           )}
 
           <Stack spacing={0.3}>
