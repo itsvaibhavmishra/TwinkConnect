@@ -44,6 +44,12 @@ const userSchema = new mongoose.Schema(
     // Users friends
     friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
 
+    // Current Online Status
+    status: {
+      type: String,
+      enum: ["Online", "Offline"],
+    },
+
     // socket io
     socket_id: { type: String },
   }

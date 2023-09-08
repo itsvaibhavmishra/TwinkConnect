@@ -5,6 +5,8 @@ import { Server } from "socket.io"; // socket io
 import User from "./models/userModel.js";
 import FriendRequest from "./models/requestModel.js";
 
+import path from "path"; // from nodejs
+
 // exception handlers
 process.on("uncaughtException", (err) => {
   console.log(err);
@@ -44,7 +46,8 @@ io.on("connection", async (socket) => {
   console.log(`User connected with ID: ${socket_id}`);
 
   if (Boolean(user_id)) {
-    await User.findByIdAndUpdate(user_id, { socket_id });
+    // setting socket_id and setting status to Online
+    await User.findByIdAndUpdate(user_id, { socket_id, status: "Online" });
   }
 
   // socket event listeners
@@ -103,7 +106,49 @@ io.on("connection", async (socket) => {
     });
   });
 
-  socket.on("end", function () {
+  // handling text/link messages
+  socket.on("text_message", (data) => {
+    console.log("Recieved Message", data); // data will contain: {to, from, message}
+
+    // add message to message list if it exists else create new conversation
+
+    // save message to db
+
+    // message sent User1 => User2
+    // emit incoming_message to user2
+
+    // emit outgoing_message from user1
+  });
+
+  // handling media messages
+  socket.on("file_message", (data) => {
+    console.log("Recieved Message", data); // data will contain: {to, from, message, file}
+
+    // getting file extension
+    const fileExtension = path.extname(data.file.name);
+
+    // generate a unique filename
+    const fileName = `${Date.now()}_${Math.floor(
+      Math.random() * 1000
+    )}${fileExtension}`;
+
+    // uploading file
+
+    // add message to message list if it exists else create new conversation
+
+    // save message to db
+
+    // message sent User1 => User2
+    // emit incoming_message to user2
+
+    // emit outgoing_message from user1
+  });
+
+  socket.on("end", async (data) => {
+    // find user with id and setting status to Offline
+    if (data.user_id) {
+      await User.findByIdAndUpdate(data.user_id, { status: "Offline" });
+    }
     // closing connection for this socket
     console.log("Closing connection");
     socket.disconnect(0);
