@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { ShowSnackbar } from "../redux/slices/app";
 import { Chat, CheckCircle, XCircle } from "phosphor-react";
 
-const UserComponent = ({ firstName, lastName, _id, online, img }) => {
+const UserComponent = ({ firstName, lastName, _id, online, avatar }) => {
   // using theme
   const theme = useTheme();
 
@@ -49,10 +49,10 @@ const UserComponent = ({ firstName, lastName, _id, online, img }) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={img} alt={name} />
+              <Avatar src={avatar} alt={name} />
             </StyledBadge>
           ) : (
-            <Avatar src={img} alt={name} />
+            <Avatar src={avatar} alt={name} />
           )}
 
           <Stack spacing={0.3}>
@@ -82,7 +82,7 @@ const UserComponent = ({ firstName, lastName, _id, online, img }) => {
   );
 };
 
-const FriendsComponent = ({ firstName, lastName, _id, online, img }) => {
+const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
   // using theme
   const theme = useTheme();
 
@@ -115,10 +115,10 @@ const FriendsComponent = ({ firstName, lastName, _id, online, img }) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={img} alt={name} />
+              <Avatar src={avatar} alt={name} />
             </StyledBadge>
           ) : (
-            <Avatar src={img} alt={name} />
+            <Avatar src={avatar} alt={name} />
           )}
 
           <Stack spacing={0.3}>
