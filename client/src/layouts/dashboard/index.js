@@ -44,11 +44,21 @@ const DashboardLayout = () => {
       socket.on("request_sent", (data) => {
         dispatch(ShowSnackbar({ severity: "success", message: data.message }));
       });
+
+      socket.on("request_rejected", (data) => {
+        dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+      });
+
+      socket.on("friend_removed", (data) => {
+        dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+      });
     }
     return () => {
       socket.off("new_friend_request");
       socket.off("request_accepted");
       socket.off("request_sent");
+      socket.off("request_rejected");
+      socket.off("friend_removed");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn, socket]);

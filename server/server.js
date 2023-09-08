@@ -106,6 +106,74 @@ io.on("connection", async (socket) => {
     });
   });
 
+  // reject request listener
+  socket.on("reject_request", async (data) => {
+    const request_doc = await FriendRequest.findById(data.request_id);
+
+    // getting sender and receiver
+    // const sender = await User.findById(request_doc.sender);
+    const receiver = await User.findById(request_doc.recipient);
+
+    // deleting friend request event after it is rejected
+    await FriendRequest.findByIdAndDelete(data.request_id);
+
+    // emitting message to the sender that the request was rejected
+    // io.to(sender.socket_id).emit("request_rejected", {
+    //   message: "Friend Request Rejected",
+    // });
+
+    // emitting message to the recipient that the request was rejected
+    io.to(receiver.socket_id).emit("request_rejected", {
+      message: "Friend Request Rejected",
+    });
+  });
+
+  // remove friend listener
+  socket.on("remove_friend", async (data) => {
+    try {
+      const user = await User.findById(data.user_id);
+
+      // Check if the user exists
+      if (!user) {
+        // Handle the case where the user doesn't exist
+        io.to(socket.id).emit("remove_friend_error", {
+          message: "User not found",
+        });
+        return;
+      }
+
+      const friendToRemove = await User.findById(data.friend_id);
+
+      // Check if the friend to remove exists
+      if (!friendToRemove) {
+        // Handle the case where the friend doesn't exist
+        io.to(user.socket_id).emit("friend_removed", {
+          message: "Friend not found",
+        });
+        return;
+      }
+
+      // Remove the friend from the user's friend list
+      user.friends.pull(data.friend_id);
+      await user.save();
+
+      // Remove the user from the friend's friend list
+      friendToRemove.friends.pull(data.user_id);
+      await friendToRemove.save();
+
+      // Emit a confirmation event to the user who initiated the removal
+      io.to(user.socket_id).emit("friend_removed", {
+        message: "Friend removed successfully",
+      });
+    } catch (error) {
+      console.error("Error removing friend:", error);
+      // Handle any errors that may occur during the process
+      io.to(socket.id).emit("friend_removed", {
+        message: "An error occurred while removing the friend",
+      });
+    }
+  });
+
   // handling text/link messages
   socket.on("text_message", (data) => {
     console.log("Recieved Message", data); // data will contain: {to, from, message}

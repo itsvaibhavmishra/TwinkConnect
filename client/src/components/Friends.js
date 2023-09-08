@@ -1,7 +1,6 @@
 import {
   Stack,
   useTheme,
-  styled,
   Avatar,
   Typography,
   Button,
@@ -87,6 +86,9 @@ const FriendsComponent = ({ firstName, lastName, _id, online, img }) => {
   // using theme
   const theme = useTheme();
 
+  // getting current user id from localstorage
+  const user_id = window.localStorage.getItem("user_id");
+
   // concatinating user's name
   const name = `${firstName} ${lastName}`;
 
@@ -137,7 +139,16 @@ const FriendsComponent = ({ firstName, lastName, _id, online, img }) => {
           </IconButton>
           <IconButton
             onClick={() => {
-              // remove friend
+              const confirmed = window.confirm(
+                `Remove ${firstName} from your Friends List?`
+              );
+              if (confirmed) {
+                // Remove friend
+                socket.emit("remove_friend", {
+                  user_id: user_id,
+                  friend_id: _id,
+                });
+              }
             }}
           >
             <XCircle style={{ color: theme.palette.error.main }} />
@@ -158,9 +169,6 @@ const FriendRequestComponent = ({
 }) => {
   // using theme
   const theme = useTheme();
-
-  // using dispatch
-  const dispatch = useDispatch();
 
   // concatinating user's name
   const name = `${firstName} ${lastName}`;
@@ -205,14 +213,7 @@ const FriendRequestComponent = ({
         <Stack direction={"row"} spacing={1} alignItems={"center"}>
           <IconButton
             onClick={() => {
-              socket.emit("accept_request", { request_id: id }, () => {
-                dispatch(
-                  ShowSnackbar({
-                    severity: "success",
-                    message: "Request Accepted",
-                  })
-                );
-              });
+              socket.emit("accept_request", { request_id: id });
             }}
           >
             <CheckCircle
@@ -222,14 +223,7 @@ const FriendRequestComponent = ({
           </IconButton>
           <IconButton
             onClick={() => {
-              socket.emit("accept_request", { request_id: id }, () => {
-                dispatch(
-                  ShowSnackbar({
-                    severity: "error",
-                    message: "Request Rejected",
-                  })
-                );
-              });
+              socket.emit("reject_request", { request_id: id });
             }}
           >
             <XCircle size={25} style={{ color: theme.palette.error.main }} />
