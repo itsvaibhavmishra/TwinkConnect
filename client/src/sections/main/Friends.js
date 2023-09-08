@@ -81,7 +81,7 @@ const FriendsList = () => {
     <>
       {friends.length > 0 ? (
         friends.map((e, index) => {
-          // List of all users
+          // List of all friends
           return (
             <>
               <FriendsComponent key={e._id} {...e} />
@@ -107,7 +107,7 @@ const FriendRequestList = () => {
     <>
       {friendRequests.length > 0 ? (
         friendRequests.map((e) => {
-          // List of all users
+          // List of all friend requests
           return (
             <FriendRequestComponent key={e._id} id={e._id} {...e.sender} />
           );
