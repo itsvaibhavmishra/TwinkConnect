@@ -53,8 +53,6 @@ const UsersList = () => {
   const dispatch = useDispatch();
   const { users, sentRequests, isLoading } = useSelector((state) => state.app);
 
-  console.log(sentRequests);
-
   useEffect(() => {
     dispatch(FetchUsers());
   }, []);
@@ -97,11 +95,7 @@ const FriendsList = () => {
         friends.length > 0 ? (
           friends.map((e, index) => {
             // List of all friends
-            return (
-              <>
-                <FriendsComponent key={index} {...e} />
-              </>
-            );
+            return <FriendsComponent key={e._id} {...e} />;
           })
         ) : (
           <NotDataFound type="Friends" />

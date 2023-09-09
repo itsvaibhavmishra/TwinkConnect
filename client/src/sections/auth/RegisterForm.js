@@ -60,9 +60,17 @@ const RegisterForm = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          alignItems={"center"}
+          spacing={2}
+        >
           <RHFTextField name="firstName" label="First Name" />
-          <RHFTextField name="lastName" label="Last Name" />
+          <RHFTextField
+            name="lastName"
+            label="Last Name"
+            style={{ marginTop: "7.5px" }}
+          />
         </Stack>
         <RHFTextField name="email" label="Email" />
         <RHFTextField

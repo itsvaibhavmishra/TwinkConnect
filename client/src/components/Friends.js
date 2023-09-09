@@ -39,7 +39,6 @@ const UserComponent = ({
   const user_id = window.localStorage.getItem("user_id");
 
   // Check if the _id exists in the sentRequests list
-  console.log(sentRequests);
   const isRequestSent =
     sentRequests === undefined || sentRequests.length < 0
       ? undefined
@@ -85,6 +84,7 @@ const UserComponent = ({
         <Button
           onClick={() => {
             if (isRequestSent) {
+              // handling cancel request
               socket.emit(
                 "cancel_request",
                 { to: _id, from: user_id },
@@ -93,6 +93,7 @@ const UserComponent = ({
                 }, 2000)
               );
             } else {
+              // handling sending request
               socket.emit(
                 "friend_request",
                 { to: _id, from: user_id },
