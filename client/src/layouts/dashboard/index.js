@@ -37,6 +37,10 @@ const DashboardLayout = () => {
         dispatch(ShowSnackbar({ severity: "success", message: data.message }));
       });
 
+      socket.on("request_canceled", (data) => {
+        dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+      });
+
       socket.on("request_accepted", (data) => {
         dispatch(ShowSnackbar({ severity: "success", message: data.message }));
       });
@@ -59,6 +63,7 @@ const DashboardLayout = () => {
     }
     return () => {
       socket.off("new_friend_request");
+      socket.off("request_canceled");
       socket.off("request_accepted");
       socket.off("request_sent");
       socket.off("request_rejected");

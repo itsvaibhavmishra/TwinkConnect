@@ -21,10 +21,20 @@ export const getUsers = async (req, res, next) => {
         user._id.toString() !== req.user._id.toString()
     );
 
+    // Get the users to whom the current user has sent friend requests
+    const sentFriendRequests = await FriendRequest.find({
+      sender: this_user._id,
+    }).populate("recipient", "firstName lastName _id");
+
     res.status(200).json({
       status: "success",
       message: "Users Found!",
-      data: remaining_user,
+      data: {
+        remaining_user,
+        sentFriendRequests: sentFriendRequests.map(
+          (request) => request.recipient
+        ),
+      },
     });
   } catch (error) {
     res.status(400).json({

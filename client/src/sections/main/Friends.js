@@ -51,7 +51,9 @@ const NotDataFound = ({ type }) => {
 const UsersList = () => {
   // from redux
   const dispatch = useDispatch();
-  const { users, isLoading } = useSelector((state) => state.app);
+  const { users, sentRequests, isLoading } = useSelector((state) => state.app);
+
+  console.log(sentRequests);
 
   useEffect(() => {
     dispatch(FetchUsers());
@@ -63,7 +65,11 @@ const UsersList = () => {
         users.length > 0 ? (
           users.map((user) => (
             // List of all users
-            <UserComponent key={user._id} {...user} />
+            <UserComponent
+              key={user._id}
+              {...user}
+              sentRequests={sentRequests}
+            />
           ))
         ) : (
           <NotDataFound type="User" />

@@ -15,11 +15,17 @@ import {
   FetchFriendRequest,
   FetchFriends,
   FetchUsers,
-  ShowSnackbar,
 } from "../redux/slices/app";
 import { Chat, CheckCircle, XCircle } from "phosphor-react";
 
-const UserComponent = ({ firstName, lastName, _id, online, avatar }) => {
+const UserComponent = ({
+  firstName,
+  lastName,
+  _id,
+  online,
+  avatar,
+  sentRequests,
+}) => {
   // using theme
   const theme = useTheme();
 
@@ -31,6 +37,14 @@ const UserComponent = ({ firstName, lastName, _id, online, avatar }) => {
 
   // getting current user id from localstorage
   const user_id = window.localStorage.getItem("user_id");
+
+  // Check if the _id exists in the sentRequests list
+  console.log(sentRequests);
+  const isRequestSent =
+    sentRequests === undefined || sentRequests.length < 0
+      ? undefined
+      : sentRequests.some((request) => request._id === _id);
+
   return (
     <Box
       sx={{
@@ -70,16 +84,26 @@ const UserComponent = ({ firstName, lastName, _id, online, avatar }) => {
 
         <Button
           onClick={() => {
-            socket.emit(
-              "friend_request",
-              { to: _id, from: user_id },
-              setTimeout(() => {
-                dispatch(FetchUsers());
-              }, 2000)
-            );
+            if (isRequestSent) {
+              socket.emit(
+                "cancel_request",
+                { to: _id, from: user_id },
+                setTimeout(() => {
+                  dispatch(FetchUsers());
+                }, 2000)
+              );
+            } else {
+              socket.emit(
+                "friend_request",
+                { to: _id, from: user_id },
+                setTimeout(() => {
+                  dispatch(FetchUsers());
+                }, 2000)
+              );
+            }
           }}
         >
-          Send Request
+          {isRequestSent ? "Cancel Request" : "Send Request"}
         </Button>
       </Stack>
     </Box>

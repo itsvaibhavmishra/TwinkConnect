@@ -74,6 +74,48 @@ export const initializeSocket = (server) => {
       }
     });
 
+    // cancel request listener
+    socket.on("cancel_request", async (data) => {
+      try {
+        // Check if the request exists
+        const requestExists = await FriendRequest.findOne({
+          sender: data.from,
+          recipient: data.to,
+        });
+
+        if (!requestExists) {
+          // Handle the case where the request doesn't exist
+          io.to(socket.id).emit("event_error", {
+            message: "Friend request not found",
+          });
+          return;
+        }
+
+        // Delete the friend request
+        await FriendRequest.findOneAndDelete({
+          sender: data.from,
+          recipient: data.to,
+        });
+
+        // Emit a confirmation event to the user who canceled the request
+        io.to(socket.id).emit("request_canceled", {
+          message: "Friend request canceled successfully",
+        });
+
+        // emit an event to notify the recipient if needed
+        // const to_user = await User.findById(data.to).select("socket_id");
+        // io.to(to_user.socket_id).emit("request_canceled", {
+        //   message: `Friend request canceled by ${data.from}`,
+        // });
+      } catch (error) {
+        console.error("Error canceling friend request:", error);
+        // Handle any errors that may occur during the process
+        io.to(socket.id).emit("event_error", {
+          message: "An error occurred while canceling the friend request",
+        });
+      }
+    });
+
     // accept request listener
     socket.on("accept_request", async (data) => {
       const request_doc = await FriendRequest.findById(data.request_id);

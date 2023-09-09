@@ -21,6 +21,7 @@ const initialState = {
   friendRequests: [], // list of all friend requests
   chat_type: null, // group chat or direct chat
   room_id: null, // id for the conversation
+  sentRequests: [], // list of users current user sent request to
 };
 
 const slice = createSlice({
@@ -61,6 +62,9 @@ const slice = createSlice({
     },
     updateFriendRequests(state, action) {
       state.friendRequests = action.payload.request;
+    },
+    updateSentRequests(state, action) {
+      state.sentRequests = action.payload.sentRequests;
     },
     selectConversation(state, action) {
       state.chat_type = "direct";
@@ -119,7 +123,18 @@ export function FetchUsers() {
       })
       .then((response) => {
         // adding found users to the list
-        dispatch(slice.actions.updateUsers({ users: response.data.data }));
+        dispatch(
+          slice.actions.updateUsers({
+            users: response.data.data.remaining_user,
+          })
+        );
+
+        // adding found requests list to sentRequests array
+        dispatch(
+          slice.actions.updateSentRequests({
+            sentRequests: response.data.data.sentFriendRequests,
+          })
+        );
 
         // updating isLoading back to false and error false
         dispatch(
