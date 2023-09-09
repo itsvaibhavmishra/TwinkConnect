@@ -11,7 +11,12 @@ import React from "react";
 import StyledBadge from "./StyledBadge";
 import { socket } from "../socket";
 import { useDispatch } from "react-redux";
-import { ShowSnackbar } from "../redux/slices/app";
+import {
+  FetchFriendRequest,
+  FetchFriends,
+  FetchUsers,
+  ShowSnackbar,
+} from "../redux/slices/app";
 import { Chat, CheckCircle, XCircle } from "phosphor-react";
 
 const UserComponent = ({ firstName, lastName, _id, online, avatar }) => {
@@ -65,14 +70,13 @@ const UserComponent = ({ firstName, lastName, _id, online, avatar }) => {
 
         <Button
           onClick={() => {
-            socket.emit("friend_request", { to: _id, from: user_id }, () => {
-              dispatch(
-                ShowSnackbar({
-                  severity: "success",
-                  message: "Request Sent",
-                })
-              );
-            });
+            socket.emit(
+              "friend_request",
+              { to: _id, from: user_id },
+              setTimeout(() => {
+                dispatch(FetchUsers());
+              }, 2000)
+            );
           }}
         >
           Send Request
@@ -88,6 +92,9 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
 
   // getting current user id from localstorage
   const user_id = window.localStorage.getItem("user_id");
+
+  // using redux
+  const dispatch = useDispatch();
 
   // concatinating user's name
   const name = `${firstName} ${lastName}`;
@@ -144,10 +151,16 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
               );
               if (confirmed) {
                 // Remove friend
-                socket.emit("remove_friend", {
-                  user_id: user_id,
-                  friend_id: _id,
-                });
+                socket.emit(
+                  "remove_friend",
+                  {
+                    user_id: user_id,
+                    friend_id: _id,
+                  },
+                  setTimeout(() => {
+                    dispatch(FetchFriends());
+                  }, 2000)
+                );
               }
             }}
           >
@@ -169,6 +182,9 @@ const FriendRequestComponent = ({
 }) => {
   // using theme
   const theme = useTheme();
+
+  // using redux
+  const dispatch = useDispatch();
 
   // concatinating user's name
   const name = `${firstName} ${lastName}`;
@@ -213,7 +229,13 @@ const FriendRequestComponent = ({
         <Stack direction={"row"} spacing={1} alignItems={"center"}>
           <IconButton
             onClick={() => {
-              socket.emit("accept_request", { request_id: id });
+              socket.emit(
+                "accept_request",
+                { request_id: id },
+                setTimeout(() => {
+                  dispatch(FetchFriendRequest());
+                }, 2000)
+              );
             }}
           >
             <CheckCircle
@@ -223,7 +245,13 @@ const FriendRequestComponent = ({
           </IconButton>
           <IconButton
             onClick={() => {
-              socket.emit("reject_request", { request_id: id });
+              socket.emit(
+                "reject_request",
+                { request_id: id },
+                setTimeout(() => {
+                  dispatch(FetchFriendRequest());
+                }, 2000)
+              );
             }}
           >
             <XCircle size={25} style={{ color: theme.palette.error.main }} />

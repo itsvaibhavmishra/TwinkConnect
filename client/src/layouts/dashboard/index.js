@@ -46,11 +46,15 @@ const DashboardLayout = () => {
       });
 
       socket.on("request_rejected", (data) => {
-        dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+        dispatch(ShowSnackbar({ severity: "info", message: data.message }));
       });
 
       socket.on("friend_removed", (data) => {
-        dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+        dispatch(ShowSnackbar({ severity: "error", message: data.message }));
+      });
+
+      socket.on("event_error", (data) => {
+        dispatch(ShowSnackbar({ severity: "error", message: data.message }));
       });
     }
     return () => {
@@ -59,6 +63,7 @@ const DashboardLayout = () => {
       socket.off("request_sent");
       socket.off("request_rejected");
       socket.off("friend_removed");
+      socket.off("event_error");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn, socket]);

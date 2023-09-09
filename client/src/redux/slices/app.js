@@ -12,6 +12,10 @@ const initialState = {
     message: null,
     severity: null,
   },
+
+  isLoading: false,
+  error: false,
+
   users: [], // list of all unknown users
   friends: [], // list of all friends
   friendRequests: [], // list of all friend requests
@@ -40,6 +44,12 @@ const slice = createSlice({
     },
     updateSidebarType(state, action) {
       state.sidebar.type = action.payload.type;
+    },
+
+    // updating loading and error state
+    updateIsLoading(state, action) {
+      state.isLoading = action.payload.isLoading;
+      state.error = action.payload.error;
     },
 
     // slice for users
@@ -97,6 +107,9 @@ export function UpdateSidebarType(type) {
 // users list functions
 export function FetchUsers() {
   return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
     await axios
       .get("/user/get-users", {
         headers: {
@@ -105,18 +118,29 @@ export function FetchUsers() {
         },
       })
       .then((response) => {
-        console.log(response);
         // adding found users to the list
         dispatch(slice.actions.updateUsers({ users: response.data.data }));
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
       })
       .catch((error) => {
         console.log(error);
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
       });
   };
 }
 
 export function FetchFriends() {
   return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
     await axios
       .get("/user/get-friends", {
         headers: {
@@ -125,17 +149,29 @@ export function FetchFriends() {
         },
       })
       .then((response) => {
-        console.log(response);
         dispatch(slice.actions.updateFriends({ friends: response.data.data }));
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
       })
       .catch((error) => {
         console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
       });
   };
 }
 
 export function FetchFriendRequest() {
   return async (dispatch, getState) => {
+    // updating state for isLoading to true and error false
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
     await axios
       .get("/user/get-requests", {
         headers: {
@@ -144,14 +180,23 @@ export function FetchFriendRequest() {
         },
       })
       .then((response) => {
-        console.log(response);
         // adding found friend requests to the list
         dispatch(
           slice.actions.updateFriendRequests({ request: response.data.data })
         );
+
+        // updating isLoading back to false and error false
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
       })
       .catch((error) => {
         console.log(error);
+
+        // setting loading to false and error to true
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
       });
   };
 }

@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
+  CircularProgress,
   Dialog,
   DialogContent,
   Divider,
@@ -47,23 +49,29 @@ const NotDataFound = ({ type }) => {
 };
 
 const UsersList = () => {
-  // dispatch from redux
+  // from redux
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.app);
+  const { users, isLoading } = useSelector((state) => state.app);
 
   useEffect(() => {
     dispatch(FetchUsers());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
-      {users.length > 0 ? (
-        users.map((user) => (
-          // List of all users
-          <UserComponent key={user._id} {...user} />
-        ))
+      {!isLoading ? (
+        users.length > 0 ? (
+          users.map((user) => (
+            // List of all users
+            <UserComponent key={user._id} {...user} />
+          ))
+        ) : (
+          <NotDataFound type="User" />
+        )
       ) : (
-        <NotDataFound type="User" />
+        <Stack alignItems={"center"} justifyContent={"center"}>
+          <CircularProgress />
+        </Stack>
       )}
     </>
   );
@@ -71,25 +79,31 @@ const UsersList = () => {
 const FriendsList = () => {
   // dispatch from redux
   const dispatch = useDispatch();
-  const { friends } = useSelector((state) => state.app);
+  const { friends, isLoading } = useSelector((state) => state.app);
 
   useEffect(() => {
     dispatch(FetchFriends());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
-      {friends.length > 0 ? (
-        friends.map((e, index) => {
-          // List of all friends
-          return (
-            <>
-              <FriendsComponent key={e._id} {...e} />
-            </>
-          );
-        })
+      {!isLoading ? (
+        friends.length > 0 ? (
+          friends.map((e, index) => {
+            // List of all friends
+            return (
+              <>
+                <FriendsComponent key={index} {...e} />
+              </>
+            );
+          })
+        ) : (
+          <NotDataFound type="Friends" />
+        )
       ) : (
-        <NotDataFound type="Friends" />
+        <Stack alignItems={"center"} justifyContent={"center"}>
+          <CircularProgress />
+        </Stack>
       )}
     </>
   );
@@ -97,23 +111,29 @@ const FriendsList = () => {
 const FriendRequestList = () => {
   // dispatch from redux
   const dispatch = useDispatch();
-  const { friendRequests } = useSelector((state) => state.app);
+  const { friendRequests, isLoading } = useSelector((state) => state.app);
 
   useEffect(() => {
     dispatch(FetchFriendRequest());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
-      {friendRequests.length > 0 ? (
-        friendRequests.map((e) => {
-          // List of all friend requests
-          return (
-            <FriendRequestComponent key={e._id} id={e._id} {...e.sender} />
-          );
-        })
+      {!isLoading ? (
+        friendRequests.length > 0 ? (
+          friendRequests.map((e) => {
+            // List of all friend requests
+            return (
+              <FriendRequestComponent key={e._id} id={e._id} {...e.sender} />
+            );
+          })
+        ) : (
+          <NotDataFound type="Requests" />
+        )
       ) : (
-        <NotDataFound type="Requests" />
+        <Stack alignItems={"center"} justifyContent={"center"}>
+          <CircularProgress />
+        </Stack>
       )}
     </>
   );

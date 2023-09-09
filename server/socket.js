@@ -25,30 +25,53 @@ export const initializeSocket = (server) => {
     // socket event listeners
     // friend request listener
     socket.on("friend_request", async (data) => {
-      // send request "to" user based on their ID {User 1 => Sending Request User 2}
-      // getting user
-      const to_user = await User.findById(data.to).select(
-        "socket_id firstName"
-      );
-      const from_user = await User.findById(data.from).select(
-        "socket_id firstName"
-      );
+      try {
+        // Check if a friend request from the same sender to the same recipient already exists
+        const existingRequest = await FriendRequest.findOne({
+          sender: data.from,
+          recipient: data.to,
+        });
 
-      // creating a friend request
-      await FriendRequest.create({
-        sender: data.from,
-        recipient: data.to,
-      });
+        const from_user = await User.findById(data.from).select("socket_id");
 
-      // emitting alert to User 2 (request recieved)
-      io.to(to_user.socket_id).emit("new_friend_request", {
-        message: `New Friend Request from ${from_user.firstName}`,
-      });
+        if (existingRequest) {
+          // Handle the case where a duplicate friend request is detected
+          io.to(from_user.socket_id).emit("event_error", {
+            message: "Friend request already sent",
+          });
+        } else {
+          // send request "to" user based on their ID {User 1 => Sending Request User 2}
+          // getting user
+          const to_user = await User.findById(data.to).select(
+            "socket_id firstName"
+          );
+          const from_user = await User.findById(data.from).select(
+            "socket_id firstName"
+          );
 
-      // emitting alert to User 1 (request sent)
-      io.to(from_user.socket_id).emit("request_sent", {
-        message: `Request Sent to ${to_user.firstName}`,
-      });
+          // creating a friend request
+          await FriendRequest.create({
+            sender: data.from,
+            recipient: data.to,
+          });
+
+          // emitting alert to User 2 (request received)
+          io.to(to_user.socket_id).emit("new_friend_request", {
+            message: `New Friend Request from ${from_user.firstName}`,
+          });
+
+          // emitting alert to User 1 (request sent)
+          io.to(from_user.socket_id).emit("request_sent", {
+            message: `Request Sent to ${to_user.firstName}`,
+          });
+        }
+      } catch (error) {
+        console.error("Error sending friend request:", error);
+        // Handle any errors that may occur during the process
+        io.to(socket.id).emit("event_error", {
+          message: "An error occurred while sending the friend request",
+        });
+      }
     });
 
     // accept request listener
@@ -69,12 +92,12 @@ export const initializeSocket = (server) => {
       await FriendRequest.findByIdAndDelete(data.request_id);
 
       // emitting message to users after accepting request
-      // io.to(sender.socket_id).emit("request_accepted", {
-      //   message: "Friend Request Accepted",
-      // });
+      io.to(sender.socket_id).emit("request_accepted", {
+        message: `Friend Request Accepted by ${receiver.firstName}`,
+      });
 
       io.to(receiver.socket_id).emit("request_accepted", {
-        message: "Friend Request Accepted",
+        message: `Friend Request Accepted from ${sender.firstName}`,
       });
     });
 
