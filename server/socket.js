@@ -25,8 +25,6 @@ export const initializeSocket = (server) => {
     // socket event listeners
     // friend request listener
     socket.on("friend_request", async (data) => {
-      console.log(data.to); // returns users ID
-
       // send request "to" user based on their ID {User 1 => Sending Request User 2}
       // getting user
       const to_user = await User.findById(data.to).select(
@@ -55,8 +53,6 @@ export const initializeSocket = (server) => {
 
     // accept request listener
     socket.on("accept_request", async (data) => {
-      console.log(data);
-
       const request_doc = await FriendRequest.findById(data.request_id);
 
       // getting sender and receiver
@@ -152,21 +148,17 @@ export const initializeSocket = (server) => {
 
     // handling text/link messages
     socket.on("text_message", (data) => {
-      console.log("Recieved Message", data); // data will contain: {to, from, message}
-
+      // data will contain: {to, from, message}
       // add message to message list if it exists else create new conversation
-
       // save message to db
-
       // message sent User1 => User2
       // emit incoming_message to user2
-
       // emit outgoing_message from user1
     });
 
     // handling media messages
     socket.on("file_message", (data) => {
-      console.log("Recieved Message", data); // data will contain: {to, from, message, file}
+      // data will contain: {to, from, message, file}
 
       // getting file extension
       const fileExtension = path.extname(data.file.name);

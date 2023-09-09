@@ -1,8 +1,6 @@
 import http from "http";
 import { app } from "./app.js";
 import mongoose from "mongoose";
-import { Server } from "socket.io"; // socket io
-
 import { initializeSocket } from "./socket.js";
 
 // exception handlers
