@@ -2,6 +2,7 @@ import { Server } from "socket.io"; // socket io
 import path from "path"; // from nodejs
 import User from "./models/userModel.js";
 import FriendRequest from "./models/requestModel.js";
+import DirectMessage from "./models/directMessageModel.js";
 
 export const initializeSocket = (server) => {
   // creating socket.io instence
@@ -209,6 +210,15 @@ export const initializeSocket = (server) => {
           message: "An error occurred while removing the friend",
         });
       }
+    });
+
+    socket.on("get_direct_conversation", async ({ user_id }, callback) => {
+      // getting list of all the conversations user has direct message with
+      const existing_conversations = await DirectMessage.find({
+        participants: { $all: [user_id] },
+      }).populate("participants", "_id firstName lastName email status");
+
+      callback(existing_conversations);
     });
 
     // handling text/link messages
