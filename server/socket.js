@@ -212,7 +212,7 @@ export const initializeSocket = (server) => {
       }
     });
 
-    socket.on("get_direct_conversation", async ({ user_id }, callback) => {
+    socket.on("get_direct_conversations", async ({ user_id }, callback) => {
       // getting list of all the conversations user has direct message with
       const existing_conversations = await DirectMessage.find({
         participants: { $all: [user_id] },

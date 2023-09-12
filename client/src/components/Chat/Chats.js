@@ -13,11 +13,12 @@ import {
   MagnifyingGlass,
   UserPlus,
 } from "phosphor-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatList } from "../../data";
 import ChatElement from "./ChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../Search";
 import Friends from "../../sections/main/Friends";
+import { socket } from "../../socket";
 
 const Chats = () => {
   // using theme
@@ -29,6 +30,15 @@ const Chats = () => {
   const toggleDialog = () => {
     setOpenDialog(!openDialog);
   };
+
+  const user_id = window.localStorage.getItem("user_id");
+
+  useEffect(() => {
+    socket.emit("get_direct_conversations", { user_id }, (data) => {
+      // data is the list of conversations
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

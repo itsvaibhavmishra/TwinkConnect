@@ -84,6 +84,31 @@ export const register = async (req, res, next) => {
     "password"
   ); // filter request according to allowed fields
 
+  // Regular expression to check if firstName and lastName contain only alphabetic characters
+  const nameRegex = /^[a-zA-Z]+$/;
+
+  if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+    return res.status(400).json({
+      status: "error",
+      message:
+        "First Name and Last Name can only contain alphabetic characters.",
+    });
+  }
+
+  // Check if firstName and lastName are between 3 and 10 characters long
+  if (
+    firstName.length < 3 ||
+    firstName.length > 10 ||
+    lastName.length < 3 ||
+    lastName.length > 10
+  ) {
+    return res.status(400).json({
+      status: "error",
+      message:
+        "First Name and Last Name must be between 3 and 10 characters long.",
+    });
+  }
+
   // Check if email is disposable
   const isDisposable = await isDisposableEmail(email);
 

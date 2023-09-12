@@ -18,14 +18,25 @@ const RegisterForm = () => {
   // hide and show password controller
   const [showPassword, setShowPassword] = useState(false);
 
-  //  Login Schema
+  //  Register Schema
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required("First Name Required"),
-    lastName: Yup.string().required("Last Name Required"),
+    firstName: Yup.string()
+      .required("First Name Required")
+      .min(3, "First Name must be atleast 3 charaters long")
+      .max(10, "First Name cannot be more than 10 characters long")
+      .matches(/^[a-zA-Z]+$/, "Name can only contain alphabets"),
+    lastName: Yup.string()
+      .required("Last Name Required")
+      .min(3, "Last Name must be atleast 3 charaters long")
+      .max(10, "Last Name cannot be more than 10 characters long")
+      .matches(/^[a-zA-Z]+$/, "Name can only contain alphabets"),
+
     email: Yup.string().required("Email Required").email("Invalid Email"),
+
     password: Yup.string()
       .required("Password Required")
       .min(8, "Password must be 8 characters long")
+      .max(16, "Password cannot be more that 16 characters")
       .matches(/[0-9]/, "Password requires a number")
       .matches(/[a-z]/, "Password requires a lowercase letter")
       .matches(/[A-Z]/, "Password requires an uppercase letter")
