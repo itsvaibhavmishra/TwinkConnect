@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import createAvatar from "../../utils/createAvatar";
 
 const user_id = window.localStorage.getItem("user_id");
 
@@ -25,9 +26,23 @@ const slice = createSlice({
           id: e._id,
           user_id: this_user._id,
           name: `${this_user.firstName} ${this_user.lastName}`,
+          online: this_user.status === "Online",
+          avatar: this_user.avatar || createAvatar(this_user.firstName),
+          msg: "Hello World!",
+          time: "9:36",
+          unread: 0,
+          pinned: false,
         };
       });
-      state.direct_chat.conversations = [];
+      state.direct_chat.conversations = list;
     },
   },
 });
+
+export function FetchDirectConversations({ conversations }) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.fetchDirectConversations({ conversations }));
+  };
+}
+
+export default slice.reducer;

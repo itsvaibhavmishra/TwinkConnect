@@ -3,7 +3,16 @@ import StyledBadge from "../StyledBadge";
 import { useDispatch } from "react-redux";
 import { SelectConversation } from "../../redux/slices/app";
 
-const ChatElement = ({ id, img, name, msg, time, unread, pinned, online }) => {
+const ChatElement = ({
+  id,
+  avatar,
+  name,
+  msg,
+  time,
+  unread,
+  pinned,
+  online,
+}) => {
   // using theme
   const theme = useTheme();
 
@@ -38,10 +47,10 @@ const ChatElement = ({ id, img, name, msg, time, unread, pinned, online }) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={img} />
+              <Avatar src={avatar} />
             </StyledBadge>
           ) : (
-            <Avatar src={img} />
+            <Avatar src={avatar} />
           )}
 
           {/* Name and message */}
