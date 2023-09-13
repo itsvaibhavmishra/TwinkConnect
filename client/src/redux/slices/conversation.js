@@ -27,7 +27,7 @@ const slice = createSlice({
           user_id: this_user._id,
           name: `${this_user.firstName} ${this_user.lastName}`,
           online: this_user.status === "Online",
-          avatar: this_user.avatar || createAvatar(this_user.firstName),
+          avatar: this_user.avatar,
           msg: "Hello World!",
           time: "9:36",
           unread: 0,

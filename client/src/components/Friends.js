@@ -17,6 +17,24 @@ import {
   FetchUsers,
 } from "../redux/slices/app";
 import { Chat, CheckCircle, XCircle } from "phosphor-react";
+import createAvatar from "../utils/createAvatar";
+
+const getAvatar = ({ avatar, name, theme }) => {
+  return avatar ? (
+    <Avatar src={avatar} alt={name} />
+  ) : (
+    <Avatar
+      sx={{
+        backgroundColor: theme.palette[createAvatar(name).color].main,
+        fontWeight: 800,
+        color: "#fff",
+      }}
+      alt={name}
+    >
+      {createAvatar(name).name}
+    </Avatar>
+  );
+};
 
 const UserComponent = ({
   firstName,
@@ -67,10 +85,10 @@ const UserComponent = ({
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={avatar} alt={name} />
+              {getAvatar({ avatar, name, theme })}
             </StyledBadge>
           ) : (
-            <Avatar src={avatar} alt={name} />
+            getAvatar({ avatar, name, theme })
           )}
 
           <Stack spacing={0.3}>
@@ -147,10 +165,10 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={avatar} alt={name} />
+              {getAvatar({ avatar, name, theme })}
             </StyledBadge>
           ) : (
-            <Avatar src={avatar} alt={name} />
+            getAvatar({ avatar, name, theme })
           )}
 
           <Stack spacing={0.3}>
@@ -237,10 +255,10 @@ const FriendRequestComponent = ({
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={avatar} alt={name} />
+              {getAvatar({ avatar, name, theme })}
             </StyledBadge>
           ) : (
-            <Avatar src={avatar} alt={name} />
+            getAvatar({ avatar, name, theme })
           )}
 
           <Stack spacing={0.3}>

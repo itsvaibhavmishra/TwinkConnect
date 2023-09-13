@@ -7,18 +7,14 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import {
-  ArchiveBox,
-  CircleDashed,
-  MagnifyingGlass,
-  UserPlus,
-} from "phosphor-react";
+import { ArchiveBox, MagnifyingGlass, UserPlus } from "phosphor-react";
 import React, { useEffect, useState } from "react";
 import { ChatList } from "../../data";
 import ChatElement from "./ChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../Search";
 import Friends from "../../sections/main/Friends";
 import { socket } from "../../socket";
+import { useSelector } from "react-redux";
 
 const Chats = () => {
   // using theme
@@ -32,6 +28,11 @@ const Chats = () => {
   };
 
   const user_id = window.localStorage.getItem("user_id");
+
+  // using redux
+  const { conversations } = useSelector(
+    (state) => state.conversation.direct_chat
+  );
 
   useEffect(() => {
     socket.emit("get_direct_conversations", { user_id }, (data) => {
@@ -101,7 +102,7 @@ const Chats = () => {
             className="scrollbar"
           >
             {/* Pinned Messages */}
-            <Stack spacing={2.4}>
+            {/* <Stack spacing={2.4}>
               <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                 Pinned
               </Typography>
@@ -115,7 +116,7 @@ const Chats = () => {
                   return <ChatElement {...e} key={e.id} />;
                 })}
               </Stack>
-            </Stack>
+            </Stack> */}
 
             {/* All Chats */}
             <Stack spacing={2.4}>
@@ -128,9 +129,11 @@ const Chats = () => {
                   borderRadius: 1,
                 }}
               >
-                {ChatList.filter((e) => !e.pinned).map((e) => {
-                  return <ChatElement {...e} key={e.id} />;
-                })}
+                {conversations
+                  .filter((e) => !e.pinned)
+                  .map((e) => {
+                    return <ChatElement {...e} key={e.id} />;
+                  })}
               </Stack>
             </Stack>
           </Stack>
