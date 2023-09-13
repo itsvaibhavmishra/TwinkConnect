@@ -36,6 +36,9 @@ const getAvatar = ({ avatar, name, theme }) => {
   );
 };
 
+// getting current user id from localstorage
+const user_id = window.localStorage.getItem("user_id");
+
 const UserComponent = ({
   firstName,
   lastName,
@@ -52,9 +55,6 @@ const UserComponent = ({
 
   // concatinating user's name
   const name = `${firstName} ${lastName}`;
-
-  // getting current user id from localstorage
-  const user_id = window.localStorage.getItem("user_id");
 
   // Check if the _id exists in the sentRequests list
   const isRequestSent =
@@ -133,9 +133,6 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
   // using theme
   const theme = useTheme();
 
-  // getting current user id from localstorage
-  const user_id = window.localStorage.getItem("user_id");
-
   // using redux
   const dispatch = useDispatch();
 
@@ -183,6 +180,16 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
           <IconButton
             onClick={() => {
               // start conversation
+              socket.emit(
+                "start_conversation",
+                {
+                  to: _id,
+                  from: user_id,
+                },
+                setTimeout(() => {
+                  dispatch(FetchFriends());
+                }, 2000)
+              );
             }}
           >
             <Chat style={{ color: theme.palette.success.main }} />

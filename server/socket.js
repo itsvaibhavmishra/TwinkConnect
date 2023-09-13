@@ -221,6 +221,33 @@ export const initializeSocket = (server) => {
       callback(existing_conversations);
     });
 
+    socket.on("start_conversation", async (data) => {
+      const { to, from } = data;
+
+      // check existing conversation
+      const existing_conversation = await DirectMessage.find({
+        participants: { $size: 2, $all: [to, from] },
+      }).populate("participants", "_id firstName lastName email status");
+
+      // create new chat doc if there's no existing conversation
+      if (existing_conversation.length === 0) {
+        let new_chat = await DirectMessage.create({
+          participants: [to, from],
+        });
+        new_chat = await DirectMessage.findById(new_chat._id).populate(
+          "participants",
+          "_id firstName lastName email status"
+        );
+
+        socket.emit("start_chat", new_chat);
+      }
+
+      // if there is existing conversation
+      else {
+        socket.emit("open_chat", existing_conversation[0]);
+      }
+    });
+
     // handling text/link messages
     socket.on("text_message", (data) => {
       // data will contain: {to, from, message}
