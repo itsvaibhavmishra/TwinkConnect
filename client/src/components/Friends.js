@@ -25,7 +25,7 @@ const UserComponent = ({
   firstName,
   lastName,
   _id,
-  online,
+  status,
   avatar,
   sentRequests,
 }) => {
@@ -61,7 +61,7 @@ const UserComponent = ({
       >
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           {/* Avatar and online status badge */}
-          {online ? (
+          {status === "Online" ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -111,7 +111,7 @@ const UserComponent = ({
   );
 };
 
-const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
+const FriendsComponent = ({ firstName, lastName, _id, status, avatar }) => {
   // using theme
   const theme = useTheme();
 
@@ -138,7 +138,7 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
       >
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           {/* Avatar and online status badge */}
-          {online ? (
+          {status === "Online" ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -204,14 +204,7 @@ const FriendsComponent = ({ firstName, lastName, _id, online, avatar }) => {
   );
 };
 
-const FriendRequestComponent = ({
-  firstName,
-  lastName,
-  _id,
-  online,
-  avatar,
-  id,
-}) => {
+const FriendRequestComponent = ({ firstName, lastName, _id, avatar, id }) => {
   // using theme
   const theme = useTheme();
 
@@ -238,18 +231,7 @@ const FriendRequestComponent = ({
       >
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           {/* Avatar and online status badge */}
-          {online ? (
-            <StyledBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              variant="dot"
-            >
-              {getAvatar({ avatar, name, theme })}
-            </StyledBadge>
-          ) : (
-            getAvatar({ avatar, name, theme })
-          )}
-
+          {getAvatar({ avatar, name, theme })}
           <Stack spacing={0.3}>
             {/* Name */}
             <Typography variant="subtitle2" sx={{ fontSize: "1.1rem" }}>

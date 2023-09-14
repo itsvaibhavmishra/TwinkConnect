@@ -8,7 +8,7 @@ export const getUsers = async (req, res, next) => {
     // getting all verified users from DB
     const all_users = await User.find({
       verified: true,
-    }).select("firstName lastName _id"); // only fetching required fields
+    }).select("firstName lastName _id avatar"); // only fetching required fields
 
     const this_user = req.user; // getting current user
 
@@ -24,7 +24,7 @@ export const getUsers = async (req, res, next) => {
     // Get the users to whom the current user has sent friend requests
     const sentFriendRequests = await FriendRequest.find({
       sender: this_user._id,
-    }).populate("recipient", "firstName lastName _id");
+    }).populate("recipient", "firstName lastName _id avatar");
 
     res.status(200).json({
       status: "success",
@@ -49,7 +49,7 @@ export const getFriends = async (req, res, next) => {
   try {
     const this_user = await User.findById(req.user._id).populate(
       "friends",
-      "_id firstName lastName"
+      "_id firstName lastName status avatar"
     ); // getting all friends from DB
 
     res.status(200).json({
@@ -70,7 +70,7 @@ export const getRequests = async (req, res, next) => {
   try {
     const requests = await FriendRequest.find({
       recipient: req.user._id,
-    }).populate("sender", "_id firstName lastName");
+    }).populate("sender", "_id firstName lastName avatar");
 
     res.status(200).json({
       status: "success",
