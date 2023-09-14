@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-import { ShowSnackbar } from "./app";
+import { ShowSnackbar, resetAppState } from "./app";
 import { socket } from "../../socket";
+import { resetConversationState } from "./conversation";
 
 // initial state for logged in status
 const initialState = {
@@ -37,6 +38,11 @@ const slice = createSlice({
     // updating email state
     updateRegisterEmail(state, action) {
       state.email = action.payload.email;
+    },
+
+    // Reset authentication state to its initial values
+    resetAuthState: (state) => {
+      return initialState;
     },
   },
 });
@@ -127,6 +133,11 @@ export function LogoutUser() {
     window.localStorage.removeItem("user_id");
 
     dispatch(slice.actions.signOut());
+
+    // Dispatch the resetAuthState action to clear the authentication state
+    dispatch(resetConversationState());
+    dispatch(resetAuthState());
+    dispatch(resetAppState());
 
     // show snackbar for logout action
     dispatch(
@@ -458,5 +469,7 @@ export function VerifyOTP(formValues) {
       });
   };
 }
+
+export const { resetAuthState } = slice.actions;
 
 export default slice.reducer;

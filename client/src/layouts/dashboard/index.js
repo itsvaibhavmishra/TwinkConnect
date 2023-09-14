@@ -29,13 +29,13 @@ const DashboardLayout = () => {
 
     if (isLoggedIn) {
       // adding hash
-      // window.onload = function () {
-      //   if (!window.location.hash) {
-      //     window.location = window.location + "#loaded";
-      //     window.location.reload();
-      //   }
-      // };
-      // window.onload();
+      window.onload = function () {
+        if (!window.location.hash) {
+          window.location = window.location + "#loaded";
+          window.location.reload();
+        }
+      };
+      window.onload();
 
       if (!socket) {
         connectSocket(user_id);
@@ -45,7 +45,7 @@ const DashboardLayout = () => {
         // Add a beforeunload event listener
         handleBeforeUnload = () => {
           // Disconnect the socket when the user closes the window
-          socket.disconnect();
+          socket.emit("end", { user_id });
         };
 
         window.addEventListener("beforeunload", handleBeforeUnload);

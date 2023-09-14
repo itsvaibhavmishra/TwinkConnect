@@ -81,6 +81,11 @@ const slice = createSlice({
         }
       );
     },
+
+    // Reset conversation state to its initial values
+    resetConversationState: (state) => {
+      return initialState;
+    },
   },
 });
 
@@ -101,5 +106,7 @@ export function UpdateDirectConversation({ conversation }) {
     dispatch(slice.actions.updateDirectConversation({ conversation }));
   };
 }
+
+export const { resetConversationState } = slice.actions;
 
 export default slice.reducer;

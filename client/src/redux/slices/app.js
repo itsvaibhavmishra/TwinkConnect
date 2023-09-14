@@ -70,6 +70,10 @@ const slice = createSlice({
       state.chat_type = "direct";
       state.room_id = action.payload.room_id;
     },
+    // Reset app state to its initial values
+    resetAppState(state) {
+      return initialState;
+    },
   },
 });
 
@@ -221,5 +225,7 @@ export function SelectConversation({ room_id }) {
     dispatch(slice.actions.selectConversation({ room_id }));
   };
 }
+
+export const { resetAppState } = slice.actions;
 
 export default slice.reducer;

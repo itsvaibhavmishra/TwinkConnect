@@ -37,7 +37,7 @@ const Nav_Buttons = [
   {
     index: 0,
     icon: <ChatCircleDots />,
-    address: "app", // route to /app
+    address: "app/#loaded", // route to /app
   },
   {
     index: 1,
