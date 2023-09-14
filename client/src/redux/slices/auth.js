@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
 import { ShowSnackbar } from "./app";
+import { socket } from "../../socket";
 
 // initial state for logged in status
 const initialState = {
@@ -114,6 +115,14 @@ export function LoginUser(formValues) {
 // action for signing out user
 export function LogoutUser() {
   return async (dispatch, getState) => {
+    // Disconnect the socket if it exists
+    if (socket) {
+      const user_id = window.localStorage.getItem("user_id");
+
+      // Emit the "end" event to the server with the user_id
+      socket.emit("end", { user_id });
+    }
+
     // removing user id from local storage
     window.localStorage.removeItem("user_id");
 

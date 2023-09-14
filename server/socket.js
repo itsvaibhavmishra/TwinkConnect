@@ -221,6 +221,8 @@ export const initializeSocket = (server) => {
       callback(existing_conversations);
     });
 
+    // socket.on("get_messages");
+
     socket.on("start_conversation", async (data) => {
       const { to, from } = data;
 
@@ -288,7 +290,7 @@ export const initializeSocket = (server) => {
         await User.findByIdAndUpdate(data.user_id, { status: "Offline" });
       }
       // closing connection for this socket
-      console.log("Closing connection");
+      console.log("User disconnected with ID: ", socket_id);
       socket.disconnect(0);
     });
   });

@@ -25,21 +25,31 @@ const DashboardLayout = () => {
   const user_id = window.localStorage.getItem("user_id");
 
   useEffect(() => {
+    let handleBeforeUnload;
+
     if (isLoggedIn) {
       // adding hash
-      window.onload = function () {
-        if (!window.location.hash) {
-          window.location = window.location + "#loaded";
-          window.location.reload();
-        }
-      };
-      window.onload();
+      // window.onload = function () {
+      //   if (!window.location.hash) {
+      //     window.location = window.location + "#loaded";
+      //     window.location.reload();
+      //   }
+      // };
+      // window.onload();
 
       if (!socket) {
         connectSocket(user_id);
       }
 
       if (socket) {
+        // Add a beforeunload event listener
+        handleBeforeUnload = () => {
+          // Disconnect the socket when the user closes the window
+          socket.disconnect();
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
         // listening to events
         socket.on("new_friend_request", (data) => {
           dispatch(
@@ -94,6 +104,8 @@ const DashboardLayout = () => {
     }
     return () => {
       if (socket) {
+        // Remove the beforeunload event listener when the component unmounts
+        window.removeEventListener("beforeunload", handleBeforeUnload);
         socket.off("new_friend_request");
         socket.off("request_canceled");
         socket.off("request_accepted");

@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
     // Current Online Status
     status: {
       type: String,
-      enum: ["Online", "Offline"],
+      enum: ["Offline", "Online"],
     },
 
     // socket io
