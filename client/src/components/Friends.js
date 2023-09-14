@@ -1,7 +1,6 @@
 import {
   Stack,
   useTheme,
-  Avatar,
   Typography,
   Button,
   Box,
@@ -17,24 +16,7 @@ import {
   FetchUsers,
 } from "../redux/slices/app";
 import { Chat, CheckCircle, XCircle } from "phosphor-react";
-import createAvatar from "../utils/createAvatar";
-
-const getAvatar = ({ avatar, name, theme }) => {
-  return avatar ? (
-    <Avatar src={avatar} alt={name} />
-  ) : (
-    <Avatar
-      sx={{
-        backgroundColor: theme.palette[createAvatar(name).color].main,
-        fontWeight: 800,
-        color: "#fff",
-      }}
-      alt={name}
-    >
-      {createAvatar(name).name}
-    </Avatar>
-  );
-};
+import getAvatar from "../utils/createAvatar";
 
 // getting current user id from localstorage
 const user_id = window.localStorage.getItem("user_id");

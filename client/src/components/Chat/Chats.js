@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { ArchiveBox, MagnifyingGlass, UserPlus } from "phosphor-react";
 import React, { useEffect, useState } from "react";
-import { ChatList } from "../../data";
 import ChatElement from "./ChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../Search";
 import Friends from "../../sections/main/Friends";

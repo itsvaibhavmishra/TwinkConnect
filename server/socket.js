@@ -244,7 +244,7 @@ export const initializeSocket = (server) => {
 
       // if there is existing conversation
       else {
-        socket.emit("open_chat", existing_conversation[0]);
+        socket.emit("start_chat", existing_conversation[0]);
       }
     });
 

@@ -5,7 +5,11 @@ import Sidebar from "./Sidebar";
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { connectSocket, socket } from "../../socket";
-import { ShowSnackbar } from "../../redux/slices/app";
+import { SelectConversation, ShowSnackbar } from "../../redux/slices/app";
+import {
+  AddDirectConversation,
+  UpdateDirectConversation,
+} from "../../redux/slices/conversation";
 
 const DashboardLayout = () => {
   // using dispatch from redux
@@ -13,6 +17,9 @@ const DashboardLayout = () => {
 
   // check is user is logged in
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const { conversations } = useSelector(
+    (state) => state.conversation.direct_chat
+  );
 
   // getting user id from local storage
   const user_id = window.localStorage.getItem("user_id");
@@ -66,6 +73,20 @@ const DashboardLayout = () => {
           dispatch(ShowSnackbar({ severity: "error", message: data.message }));
         });
 
+        socket.on("start_chat", (data) => {
+          const exisiting_conversation = conversations.find(
+            (e) => e.id === data._id
+          );
+
+          if (exisiting_conversation) {
+            dispatch(UpdateDirectConversation({ conversation: data }));
+          } else {
+            // add direct conversation
+            dispatch(AddDirectConversation({ conversation: data }));
+          }
+          dispatch(SelectConversation({ room_id: data._id }));
+        });
+
         socket.on("event_error", (data) => {
           dispatch(ShowSnackbar({ severity: "error", message: data.message }));
         });
@@ -79,6 +100,7 @@ const DashboardLayout = () => {
         socket.off("request_sent");
         socket.off("request_rejected");
         socket.off("friend_removed");
+        socket.off("start_chat");
         socket.off("event_error");
       }
     };
