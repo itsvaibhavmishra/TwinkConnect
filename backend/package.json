@@ -1,0 +1,18 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "TwinkChat Backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chatapp",
+    "mern",
+    "twinkchat",
+    "chat",
+    "app"
+  ],
+  "author": "Vaibhaw Mishra",
+  "license": "ISC"
+}
