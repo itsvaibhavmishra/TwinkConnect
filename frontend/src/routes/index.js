@@ -31,6 +31,6 @@ export default function Router() {
 }
 
 const GeneralApp = Loadable(
-  lazy(() => import(".../pages/dashboard/GeneralApp"))
+  lazy(() => import("../pages/dashboard/GeneralApp"))
 );
-const Page404 = Loadable(lazy(() => import(".../pages/404")));
+const Page404 = Loadable(lazy(() => import("../pages/404")));
