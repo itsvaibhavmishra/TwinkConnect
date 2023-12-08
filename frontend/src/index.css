@@ -27,3 +27,7 @@ body:hover::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #6c6b6b56;
 }
+
+body {
+  transition: all 0.3s ease;
+}
