@@ -44,8 +44,6 @@ const Sidebar = () => {
       return 3;
     } else if (path.startsWith("/settings")) {
       return 4;
-    } else {
-      return 1;
     }
   };
 
