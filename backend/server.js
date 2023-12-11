@@ -1,9 +1,29 @@
 import http from "http";
+import mongoose from "mongoose";
 
 import app from "./app.js";
 
 // env variables
 const port = process.env.PORT || "5000";
+
+// ---------Setting up Database---------
+// mongodb error handling
+mongoose.connection.on("error", (err) => {
+  console.log(`Error connecting with DB: ${err}`);
+  process.exit(1);
+});
+
+// DB Connection
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("[DB] Connection Success");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
+// ------------------------------------
 
 const server = http.createServer(app);
 

@@ -34,6 +34,7 @@
     "express-xss-sanitizer": "^1.1.6",
     "helmet": "^7.1.0",
     "http-errors": "^2.0.0",
+    "mongoose": "^8.0.3",
     "trim-request": "^1.0.6"
   }
 }
