@@ -1,6 +1,17 @@
+import { createUser } from "../services/authService.js";
+
 export const register = async (req, res, next) => {
   try {
-    res.send(req.body);
+    const { firstName, lastName, email, avatar, activityStatus, password } =
+      req.body;
+    const newUser = await createUser({
+      firstName,
+      lastName,
+      email,
+      avatar,
+      activityStatus,
+      password,
+    });
   } catch (error) {
     next(error);
   }
@@ -8,7 +19,6 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    res.send("hello from login api");
   } catch (error) {
     next(error);
   }
@@ -16,7 +26,6 @@ export const login = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
   try {
-    res.send("hello from logout api");
   } catch (error) {
     next(error);
   }
@@ -24,7 +33,6 @@ export const logout = async (req, res, next) => {
 
 export const refreshToken = async (req, res, next) => {
   try {
-    res.send("hello from refreshTokens api");
   } catch (error) {
     next(error);
   }

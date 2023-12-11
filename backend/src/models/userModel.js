@@ -13,7 +13,10 @@ const userSchema = mongoose.Schema(
       lowercase: true,
       validate: [validator.isEmail, "Invalid Email"],
     },
-    status: { type: String, default: "Hey There! I ❤️ Using TwinkChat 😸" },
+    activityStatus: {
+      type: String,
+      default: "Hey There! I ❤️ Using TwinkChat 😸",
+    },
 
     // Passwords schema
     password: { type: String, required: [true, "Password is required"] },
@@ -26,6 +29,6 @@ const userSchema = mongoose.Schema(
 );
 
 // creating model for schema
-const User = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", userSchema);
 
-export default User;
+export default UserModel;
