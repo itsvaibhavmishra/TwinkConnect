@@ -12,6 +12,9 @@ import compression from "compression";
 import fileUpload from "express-fileupload";
 import rateLimit from "express-rate-limit";
 
+// error handler
+import createHttpError from "http-errors";
+
 // dotenv config
 dotenv.config();
 
@@ -47,6 +50,23 @@ app.use(
     useTempFiles: true,
   })
 );
+
+// -------http error handling-------
+app.use(async (req, res, next) => {
+  next(createHttpError.NotFound("This route does not exist!"));
+});
+
+// error handling
+app.use(async (err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
+});
+// ---------------------------------
 
 // Index Route
 app.get("/", (req, res) => {

@@ -33,6 +33,7 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.1.5",
     "express-xss-sanitizer": "^1.1.6",
-    "helmet": "^7.1.0"
+    "helmet": "^7.1.0",
+    "http-errors": "^2.0.0"
   }
 }
