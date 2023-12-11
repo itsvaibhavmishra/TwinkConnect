@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import { xss } from "express-xss-sanitizer";
-import bodyParser from "body-parser";
 import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import compression from "compression";
@@ -30,8 +29,8 @@ app.use(
 );
 
 // parsing data to json
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // security middlewares
 const limiter = rateLimit({

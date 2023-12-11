@@ -1,6 +1,6 @@
 export const register = async (req, res, next) => {
   try {
-    res.send("hello from register api");
+    res.send(req.body);
   } catch (error) {
     next(error);
   }
