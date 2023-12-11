@@ -1,4 +1,4 @@
 PORT = 8000
-
+FRONT_URL = "http://localhost:3000"
 # Dev Env
 SERVER_TYPE = development
