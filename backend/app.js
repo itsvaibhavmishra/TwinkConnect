@@ -11,9 +11,10 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import fileUpload from "express-fileupload";
 import rateLimit from "express-rate-limit";
+import createHttpError from "http-errors"; // error handler
 
-// error handler
-import createHttpError from "http-errors";
+// folder/file imports
+import router from "./src/routes/index.js";
 
 // dotenv config
 dotenv.config();
@@ -51,6 +52,14 @@ app.use(
   })
 );
 
+// Index Route
+app.get("/", (req, res) => {
+  res.send("Welcome to TwinkChat Backend😺");
+});
+
+// using api routes
+app.use("/api", router);
+
 // -------http error handling-------
 app.use(async (req, res, next) => {
   next(createHttpError.NotFound("This route does not exist!"));
@@ -67,10 +76,5 @@ app.use(async (err, req, res, next) => {
   });
 });
 // ---------------------------------
-
-// Index Route
-app.get("/", (req, res) => {
-  res.send("Welcome to TwinkChat Backend😺");
-});
 
 export default app;
