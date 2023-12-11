@@ -35,6 +35,7 @@
     "helmet": "^7.1.0",
     "http-errors": "^2.0.0",
     "mongoose": "^8.0.3",
-    "trim-request": "^1.0.6"
+    "trim-request": "^1.0.6",
+    "validator": "^13.11.0"
   }
 }
