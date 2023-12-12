@@ -1,3 +1,9 @@
 PORT = 8000
-FRONT_URL = "http://localhost:3000"
 MONGODB_URI = ""
+
+# Origin
+FRONT_URL = "http://localhost:3000"
+
+# Nodemailer Config
+MAIL_USER = ''
+MAIL_PASS = ''
