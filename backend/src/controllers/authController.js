@@ -1,15 +1,13 @@
 import createHttpError from "http-errors";
 import validator from "validator";
 import otpGenerator from "otp-generator";
-import jwt from "jsonwebtoken";
 
 import UserModel from "../models/userModel.js";
 import { isDisposableEmail } from "../utils/checkDispose.js";
 import { filterObj } from "../utils/filterObj.js";
 import otp from "../Templates/Mail/otp.js";
 import { transporter } from "../services/mailer.js";
-
-const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET);
+import { generateToken } from "../services/tokenService.js";
 
 // -------------------------- Register auth --------------------------
 export const register = async (req, res, next) => {
@@ -182,13 +180,30 @@ export const verifyOTP = async (req, res, next) => {
 
     await user.save({ new: true, validateModifiedOnly: true });
 
-    // set user status to logged in
-    const token = signToken(user._id);
+    // generating user token
+    const access_token = await generateToken(
+      { userId: user._id },
+      "1d",
+      process.env.JWT_ACCESS_SECRET
+    );
+    const refresh_token = await generateToken(
+      { userId: user._id },
+      "30d",
+      process.env.JWT_REFRESH_SECRET
+    );
 
+    // store refresh token to cookies
+    res.cookie("refreshToken", refresh_token, {
+      httpOnly: true,
+      path: "/api/auth/refreshToken",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
+    // grant access to login
     return res.status(200).json({
       status: "success",
       message: "OTP verified",
-      token,
+      access_token,
       user_id: user._id,
     });
   } catch (error) {
