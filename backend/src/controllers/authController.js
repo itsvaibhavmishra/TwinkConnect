@@ -9,6 +9,67 @@ import otp from "../Templates/Mail/otp.js";
 import { transporter } from "../services/mailer.js";
 import { generateToken } from "../services/tokenService.js";
 
+// -------------------------- Login auth --------------------------
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // check for empty fields
+    if (!email || !password) {
+      throw createHttpError.BadRequest("Required fields: email & password");
+    }
+
+    const user = await UserModel.findOne({ email: email }).select("+password");
+
+    // check for user and password
+    if (!user || !user.password) {
+      throw createHttpError.NotFound("Incorrect Email or Password");
+    }
+
+    // check if user is present in DB and password is correct
+    if (!user || !(await user.correctPassword(password, user.password))) {
+      throw createHttpError.NotFound("Incorrect Email or Password");
+    }
+
+    // check if user is verified
+    if (!user.verified) {
+      res.status(200).json({
+        status: "info",
+        message: `Hello ${user.firstName}, please verify to login`,
+      });
+      return;
+    }
+
+    // generating user token
+    const access_token = await generateToken(
+      { userId: user._id },
+      "1d",
+      process.env.JWT_ACCESS_SECRET
+    );
+    const refresh_token = await generateToken(
+      { userId: user._id },
+      "30d",
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    // store refresh token to cookies
+    res.cookie("refreshToken", refresh_token, {
+      httpOnly: true,
+      path: "/api/auth/refreshToken",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Logged in successfully",
+      access_token,
+      user_id: user._id,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // -------------------------- Register auth --------------------------
 export const register = async (req, res, next) => {
   try {
