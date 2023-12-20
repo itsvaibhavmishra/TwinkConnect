@@ -1,5 +1,8 @@
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
+import { promisify } from "util";
+
+import { UserModel } from "../models/index.js";
 
 // ------------------- Protected route middleware -------------------
 export const protect = async (req, res, next) => {
@@ -19,11 +22,27 @@ export const protect = async (req, res, next) => {
   }
 
   // verifying token
-  jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, payload) => {
-    if (err) {
-      return next(createHttpError.Unauthorized("Please login first"));
-    }
-    req.user = payload;
-    next();
-  });
+  const decoded = await promisify(jwt.verify)(
+    token,
+    process.env.JWT_ACCESS_SECRET
+  );
+
+  // check for existing user with same token
+  const this_user = await UserModel.findById(decoded.userId);
+
+  if (!this_user) {
+    return next(createHttpError.Unauthorized("Unidentified User"));
+  }
+
+  // check if user changed password after new token was created
+  if (this_user.changedPasswordAfter(decoded.iat)) {
+    return next(
+      createHttpError.Unauthorized(
+        "Password updated, logging out! Please login again"
+      )
+    );
+  }
+
+  req.user = decoded;
+  next();
 };
