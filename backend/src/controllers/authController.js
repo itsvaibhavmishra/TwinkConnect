@@ -2,12 +2,13 @@ import createHttpError from "http-errors";
 import validator from "validator";
 import otpGenerator from "otp-generator";
 
-import UserModel from "../models/userModel.js";
+import { UserModel } from "../models/index.js";
 import { isDisposableEmail } from "../utils/checkDispose.js";
 import { filterObj } from "../utils/filterObj.js";
 import otp from "../Templates/Mail/otp.js";
 import { transporter } from "../services/mailer.js";
-import { generateToken } from "../services/tokenService.js";
+import { generateToken, verifyToken } from "../services/tokenService.js";
+import { findUser } from "../services/userService.js";
 
 // -------------------------- Login auth --------------------------
 export const login = async (req, res, next) => {
@@ -63,7 +64,27 @@ export const login = async (req, res, next) => {
       status: "success",
       message: "Logged in successfully",
       access_token,
-      user_id: user._id,
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar,
+        email: user.email,
+        activityStatus: user.activityStatus,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -------------------------- Logout auth --------------------------
+export const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("refreshToken", { path: "/api/auth/refreshToken" });
+    res.status(200).json({
+      status: "success",
+      message: "Logged out successfully",
     });
   } catch (error) {
     next(error);
@@ -265,7 +286,14 @@ export const verifyOTP = async (req, res, next) => {
       status: "success",
       message: "OTP verified",
       access_token,
-      user_id: user._id,
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar,
+        email: user.email,
+        activityStatus: user.activityStatus,
+      },
     });
   } catch (error) {
     next(error);
@@ -274,6 +302,36 @@ export const verifyOTP = async (req, res, next) => {
 
 export const refreshToken = async (req, res, next) => {
   try {
+    const refresh_token = req.cookies.refreshToken;
+    if (!refresh_token) throw createHttpError.Unauthorized("Please login");
+
+    const check = await verifyToken(
+      refresh_token,
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    const user = await findUser(check.userId);
+
+    // generating user token
+    const access_token = await generateToken(
+      { userId: user._id },
+      "1d",
+      process.env.JWT_ACCESS_SECRET
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "Token Refreshed",
+      access_token,
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar,
+        email: user.email,
+        activityStatus: user.activityStatus,
+      },
+    });
   } catch (error) {
     next(error);
   }

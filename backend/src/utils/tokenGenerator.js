@@ -19,3 +19,15 @@ export const sign = async (payload, expiresIn, secret) => {
     );
   });
 };
+
+export const verify = async (token, secret) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, secret, (error, payload) => {
+      if (error) {
+        resolve(null);
+      } else {
+        resolve(payload);
+      }
+    });
+  });
+};

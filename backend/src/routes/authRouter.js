@@ -6,11 +6,13 @@ import {
   verifyOTP,
   refreshToken,
   login,
+  logout,
 } from "../controllers/authController.js";
 
 const authRouter = express.Router();
 
 authRouter.route("/login").post(trimRequest.all, login);
+authRouter.route("/logout").post(trimRequest.all, logout);
 authRouter.route("/register").post(trimRequest.all, register, sendOtp);
 authRouter.route("/send-otp").post(trimRequest.all, sendOtp);
 authRouter.route("/verify-otp").post(trimRequest.all, verifyOTP);
