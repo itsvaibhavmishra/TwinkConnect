@@ -2,6 +2,7 @@ import { Link, Stack, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 import LoginForm from "../../sections/auth/LoginForm";
+import AuthSocial from "../../sections/auth/AuthSocial";
 
 const Login = () => {
   return (
@@ -21,7 +22,7 @@ const Login = () => {
       <LoginForm />
 
       {/* Auth Social login */}
-      {/* <AuthSocial /> */}
+      <AuthSocial />
     </Stack>
   );
 };

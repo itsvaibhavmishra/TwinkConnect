@@ -1,5 +1,6 @@
 import { AnimatePresence, m } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { alpha, styled } from "@mui/material/styles";
 import {
   Stack,
@@ -7,6 +8,7 @@ import {
   Backdrop,
   Typography,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import useSettings from "../../../hooks/useSettings";
 import cssStyles from "../../../utils/cssStyles";
@@ -53,6 +55,7 @@ export default function SettingsDrawer() {
     themeDirection,
     themeColorPresets,
     onResetSetting,
+    onToggleMode,
   } = useSettings();
 
   // const { currentLang, onChangeLang, allLangs } = useLocales();
@@ -82,6 +85,13 @@ export default function SettingsDrawer() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const location = useLocation();
+
+  const isAuthPage = location.pathname.includes("/auth");
+
+  // breakpoint
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   return (
     <>
@@ -115,6 +125,20 @@ export default function SettingsDrawer() {
                 <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
                   Settings
                 </Typography>
+
+                {isAuthPage || isSmallScreen ? (
+                  <IconButton onClick={onToggleMode}>
+                    <Iconify
+                      icon={`${
+                        themeMode === "light" ? "ph:sun-bold" : "ph:moon-bold"
+                      }`}
+                      width={20}
+                      height={20}
+                    />
+                  </IconButton>
+                ) : (
+                  <></>
+                )}
 
                 <IconButton onClick={onResetSetting}>
                   <Iconify icon={"ic:round-refresh"} width={20} height={20} />

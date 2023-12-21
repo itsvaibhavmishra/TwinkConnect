@@ -86,6 +86,7 @@ const Sidebar = () => {
           sx={{ height: "100%" }}
           alignItems="center"
           spacing={isSmallScreen ? 0 : 4}
+          mx={isSmallScreen ? -2 : 0}
           justifyContent={isSmallScreen ? "space-around" : "space-between"}
         >
           {/* Sidebar Logo */}
@@ -189,12 +190,6 @@ const Sidebar = () => {
           {/* Sidebar Final Index */}
           {isSmallScreen ? (
             <>
-              <ThemeSwitch
-                onChange={() => {
-                  onToggleMode();
-                }}
-                checked={isSwitchChecked}
-              />
               <IconButton
                 aria-controls={open ? "basic-menu" : undefined}
                 aria-haspopup="true"
@@ -205,7 +200,7 @@ const Sidebar = () => {
                   id="basic-menu"
                   src={""}
                   label={"Avatar"}
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: "pointer", height: 35, width: 35 }}
                 />
               </IconButton>
               <Menu
