@@ -1,5 +1,11 @@
+import { Stack } from "@mui/material";
+
 const GeneralApp = () => {
-  return <>General App Starts Here!</>;
+  return (
+    <Stack sx={{ height: "calc(100vh - 65px)" }}>
+      General App Starts Here!
+    </Stack>
+  );
 };
 
 export default GeneralApp;

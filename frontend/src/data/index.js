@@ -13,7 +13,7 @@ import {
 const Nav_Buttons = [
   {
     index: 0,
-    icon: <UserCircle />,
+    icon: <UserCircle size={28} />,
     address: "profile", // route to /app
   },
   {
