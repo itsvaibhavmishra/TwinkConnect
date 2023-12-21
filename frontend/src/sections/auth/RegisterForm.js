@@ -11,9 +11,16 @@ import {
 import { Eye, EyeSlash } from "phosphor-react";
 import { LoadingButton } from "@mui/lab";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 
 const RegisterForm = () => {
+  // dispatch from redux
+  const { isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   // hide and show password controller
   const [showPassword, setShowPassword] = useState(false);
 
@@ -101,7 +108,7 @@ const RegisterForm = () => {
           }}
         />
         <LoadingButton
-          // loading={isLoading}
+          loading={isLoading}
           fullWidth
           size="large"
           type="submit"

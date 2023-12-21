@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // initial state for contacts menu
 const initialState = {
-  status: "",
+  isLoading: "",
   error: "",
 
   user: {
@@ -22,7 +22,7 @@ const slice = createSlice({
   reducers: {
     // logout reducer
     logout: (state) => {
-      state.status = "";
+      state.isLoading = "";
       state.error = "";
       state.user = {
         id: "",

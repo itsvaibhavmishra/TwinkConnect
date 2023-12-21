@@ -4,24 +4,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+
 import FormProvider, { RHFOtp, RHFTextField } from "../../components/hook-form";
 
 // ---------------------- Email for OTP Form ----------------------
 export const EmailForm = () => {
   // dispatch from redux
-  // const { isLoading } = useSelector((state) => state.auth);
-  // const { email } = useSelector((state) => state.auth);
-  // const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
+  const { email } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   // Email for OTP Schema
   const EmailSchema = Yup.object().shape({
     email: Yup.string().required("Email Required").email("Invalid Email"),
   });
 
-  //   Labels
+  // Labels
   const defaultValues = {
-    // email: email || "",
-    email: "",
+    email: email || "",
   };
 
   const methods = useForm({
@@ -32,35 +34,35 @@ export const EmailForm = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    // if (email) {
-    //   try {
-    //     // api request to backend for verifying email for otp using redux
-    //     dispatch(SendOTP(data));
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // } else {
-    //   try {
-    //     // api request to add email to redux store
-    //     dispatch(AddEmail(data));
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
+    if (email) {
+      try {
+        // api request to backend for verifying email for otp using redux
+        // dispatch(SendOTP(data));
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        // api request to add email to redux store
+        // dispatch(AddEmail(data));
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      {/* {!email && ( */}
-      <Typography
-        sx={{
-          pl: 1,
-          color: (theme) => theme.palette.error.main,
-        }}
-      >
-        Please enter email and click Add Email first
-      </Typography>
-      {/* )} */}
+      {!email && (
+        <Typography
+          sx={{
+            pl: 1,
+            color: (theme) => theme.palette.error.main,
+          }}
+        >
+          Please enter email and click Add Email first
+        </Typography>
+      )}
       <Stack
         direction={"row"}
         justifyContent={"center"}
@@ -73,26 +75,26 @@ export const EmailForm = () => {
           InputProps={{
             endAdornment: (
               <>
-                {/* {!email ? ( */}
-                <LoadingButton
-                  // loading={isLoading}
-                  size="small"
-                  type="submit"
-                  variant="outlined"
-                  sx={{
-                    py: 1,
-                    width: "9rem",
-                    color: (theme) =>
-                      theme.palette.mode === "light" ? "common.black" : "",
-                    "&:hover": {
-                      bgcolor: "primary.main",
-                      color: "common.white",
-                    },
-                  }}
-                >
-                  Add Email
-                </LoadingButton>
-                {/* ) : (
+                {!email ? (
+                  <LoadingButton
+                    loading={isLoading}
+                    size="small"
+                    type="submit"
+                    variant="outlined"
+                    sx={{
+                      py: 1,
+                      width: "9rem",
+                      color: (theme) =>
+                        theme.palette.mode === "light" ? "common.black" : "",
+                      "&:hover": {
+                        bgcolor: "primary.main",
+                        color: "common.white",
+                      },
+                    }}
+                  >
+                    Add Email
+                  </LoadingButton>
+                ) : (
                   <LoadingButton
                     loading={isLoading}
                     size="small"
@@ -111,7 +113,7 @@ export const EmailForm = () => {
                   >
                     Resend OTP
                   </LoadingButton>
-                )} */}
+                )}
               </>
             ),
           }}
@@ -124,9 +126,9 @@ export const EmailForm = () => {
 // ---------------------- OTP Form ----------------------
 const VerifyForm = () => {
   // dispatch from redux
-  // const { isLoading } = useSelector((state) => state.auth);
-  // const { email } = useSelector((state) => state.auth);
-  // const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
+  const { email } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   //  OTP Schema
   const VerifySchema = Yup.object().shape({
@@ -175,18 +177,18 @@ const VerifyForm = () => {
       <Stack spacing={3}>
         {/* Custom OTP input */}
         <RHFOtp
-          // disabled={!email}
+          disabled={!email}
           keyName="otp"
           inputs={["otp1", "otp2", "otp3", "otp4", "otp5", "otp6"]}
         />
 
         <LoadingButton
-          // loading={isLoading}
+          loading={isLoading}
           fullWidth
           size="large"
           type="submit"
           variant="contained"
-          // disabled={!email}
+          disabled={!email}
           sx={{
             mt: 3,
             bgcolor: "text.primary",

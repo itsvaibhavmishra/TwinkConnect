@@ -12,9 +12,16 @@ import { Eye, EyeSlash } from "phosphor-react";
 import { LoadingButton } from "@mui/lab";
 // import { useSearchParams } from "react-router-dom";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 
 const NewPasswordForm = () => {
+  // dispatch from redux
+  const { isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   // for getting token from url
   // const [queryParameters] = useSearchParams();
 
@@ -89,7 +96,7 @@ const NewPasswordForm = () => {
           type={showPassword ? "text" : "password"}
         />
         <LoadingButton
-          // loading={isLoading}
+          loading={isLoading}
           fullWidth
           size="large"
           type="submit"

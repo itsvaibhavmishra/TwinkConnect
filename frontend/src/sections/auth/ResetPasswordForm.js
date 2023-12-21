@@ -4,9 +4,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, useMediaQuery } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 
 const ResetPasswordForm = () => {
+  // from redux
+  const { isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   //  Login Schema
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email Required").email("Invalid Email"),
@@ -42,7 +49,7 @@ const ResetPasswordForm = () => {
         <RHFTextField name="email" label="Email address" />
 
         <LoadingButton
-          // loading={isLoading}
+          loading={isLoading}
           fullWidth
           size="large"
           type="submit"
