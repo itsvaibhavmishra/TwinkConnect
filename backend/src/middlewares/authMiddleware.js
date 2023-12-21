@@ -15,6 +15,10 @@ export const protect = async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
+  // getting token from cookies
+  else if (req.cookies.accessToken) {
+    token = req.cookies.accessToken;
+  }
 
   // token not found
   if (!token) {

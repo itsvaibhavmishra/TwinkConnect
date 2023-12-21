@@ -53,6 +53,12 @@ export const login = async (req, res, next) => {
       process.env.JWT_REFRESH_SECRET
     );
 
+    // store access token to cookies
+    res.cookie("accessToken", access_token, {
+      httpOnly: true,
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    });
+
     // store refresh token to cookies
     res.cookie("refreshToken", refresh_token, {
       httpOnly: true,
@@ -81,6 +87,10 @@ export const login = async (req, res, next) => {
 // -------------------------- Logout auth --------------------------
 export const logout = async (req, res, next) => {
   try {
+    // clear refreshToken
+    res.clearCookie("accessToken");
+
+    // clear refreshToken
     res.clearCookie("refreshToken", { path: "/api/auth/refreshToken" });
     res.status(200).json({
       status: "success",
@@ -273,6 +283,12 @@ export const verifyOTP = async (req, res, next) => {
       "30d",
       process.env.JWT_REFRESH_SECRET
     );
+
+    // store access token to cookies
+    res.cookie("accessToken", access_token, {
+      httpOnly: true,
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    });
 
     // store refresh token to cookies
     res.cookie("refreshToken", refresh_token, {
