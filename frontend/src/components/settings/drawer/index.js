@@ -16,7 +16,7 @@ import ToggleButton from "./ToggleButton";
 import SettingDirection from "./SettingDirection";
 import SettingFullscreen from "./SettingFullscreen";
 import SettingColorPresets from "./SettingColorPresets";
-import useLocales from "../../../hooks/useLocales";
+// import useLocales from "../../../hooks/useLocales";
 // import Avatar from "@mui/material/Avatar";
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -55,7 +55,7 @@ export default function SettingsDrawer() {
     onResetSetting,
   } = useSettings();
 
-  const { currentLang, onChangeLang, allLangs } = useLocales();
+  // const { currentLang, onChangeLang, allLangs } = useLocales();
 
   const [open, setOpen] = useState(false);
 
