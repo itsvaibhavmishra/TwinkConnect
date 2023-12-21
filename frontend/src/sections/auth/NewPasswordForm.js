@@ -1,45 +1,51 @@
-import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   IconButton,
   InputAdornment,
-  Link,
   Stack,
   useMediaQuery,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import { Eye, EyeSlash } from "phosphor-react";
+import { LoadingButton } from "@mui/lab";
+// import { useSearchParams } from "react-router-dom";
 
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 
-const LoginForm = () => {
+const NewPasswordForm = () => {
+  // for getting token from url
+  // const [queryParameters] = useSearchParams();
+
   // hide and show password controller
   const [showPassword, setShowPassword] = useState(false);
 
-  // Login Schema
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string().required("Email Required").email("Invalid Email"),
+  //  Login Schema
+  const NewPasswordSchema = Yup.object().shape({
     password: Yup.string()
       .required("Password Required")
-      .min(8, "Password must be atleast 8 characters long")
+      .min(8, "Password must be 8 characters long")
+      .max(16, "Password cannot be more that 16 characters")
       .matches(/[0-9]/, "Password requires a number")
       .matches(/[a-z]/, "Password requires a lowercase letter")
       .matches(/[A-Z]/, "Password requires an uppercase letter")
       .matches(/[^\w]/, "Password requires a symbol"),
+
+    passwordConfirm: Yup.string()
+      .required("Password Required")
+      .oneOf([Yup.ref("password"), null], "Password does not match"),
   });
 
-  // Labels
+  //   Labels
   const defaultValues = {
-    email: "",
     password: "",
+    passwordConfirm: "",
   };
 
   const methods = useForm({
     mode: "onChange",
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(NewPasswordSchema),
     defaultValues,
   });
 
@@ -47,8 +53,9 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
+      // api request to backend for new password using redux
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -58,7 +65,6 @@ const LoginForm = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={isSmallScreen ? 0 : 3}>
-        <RHFTextField name="email" label="Email address" />
         <RHFTextField
           name="password"
           label="Password"
@@ -77,40 +83,34 @@ const LoginForm = () => {
             ),
           }}
         />
-      </Stack>
-      <Stack alignItems={isSmallScreen ? "center" : "flex-end"} sx={{ my: 2 }}>
-        <Link
-          to="/auth/reset-password"
-          component={RouterLink}
-          variant="body2"
-          color="inherit"
-          underline="hover"
-        >
-          Forgot Password?
-        </Link>
-      </Stack>
-      <LoadingButton
-        // loading={isLoading}
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        sx={{
-          mt: 3,
-          bgcolor: "text.primary",
-          color: (theme) =>
-            theme.palette.mode === "light" ? "common.white" : "grey.800",
-          "&:hover": {
+        <RHFTextField
+          name="passwordConfirm"
+          label="Confirm Password"
+          type={showPassword ? "text" : "password"}
+        />
+        <LoadingButton
+          // loading={isLoading}
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          sx={{
+            mt: 3,
             bgcolor: "text.primary",
             color: (theme) =>
               theme.palette.mode === "light" ? "common.white" : "grey.800",
-          },
-        }}
-      >
-        Login
-      </LoadingButton>
+            "&:hover": {
+              bgcolor: "text.primary",
+              color: (theme) =>
+                theme.palette.mode === "light" ? "common.white" : "grey.800",
+            },
+          }}
+        >
+          Reset Password
+        </LoadingButton>
+      </Stack>
     </FormProvider>
   );
 };
 
-export default LoginForm;
+export default NewPasswordForm;
