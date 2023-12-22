@@ -69,14 +69,14 @@ export const login = async (req, res, next) => {
     return res.status(200).json({
       status: "success",
       message: "Logged in successfully",
-      access_token,
       user: {
-        _id: user._id,
+        id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,
         email: user.email,
         activityStatus: user.activityStatus,
+        token: access_token,
       },
     });
   } catch (error) {
@@ -301,14 +301,14 @@ export const verifyOTP = async (req, res, next) => {
     return res.status(200).json({
       status: "success",
       message: "OTP verified",
-      access_token,
       user: {
-        _id: user._id,
+        id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,
         email: user.email,
         activityStatus: user.activityStatus,
+        token: access_token,
       },
     });
   } catch (error) {
@@ -338,14 +338,14 @@ export const refreshToken = async (req, res, next) => {
     return res.status(200).json({
       status: "success",
       message: "Token Refreshed",
-      access_token,
       user: {
-        _id: user._id,
+        id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,
         email: user.email,
         activityStatus: user.activityStatus,
+        token: access_token,
       },
     });
   } catch (error) {

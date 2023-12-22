@@ -17,6 +17,7 @@ import { Eye, EyeSlash } from "phosphor-react";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormProvider, { RHFTextField } from "../../components/hook-form";
+import { loginUser } from "../../redux/slices/authSlice";
 
 const LoginForm = () => {
   // dispatch from redux
@@ -54,6 +55,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
+      dispatch(loginUser(data));
     } catch (error) {
       console.log(error);
     }

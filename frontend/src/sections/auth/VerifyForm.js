@@ -13,7 +13,7 @@ import FormProvider, { RHFOtp, RHFTextField } from "../../components/hook-form";
 export const EmailForm = () => {
   // dispatch from redux
   const { isLoading } = useSelector((state) => state.auth);
-  const { email } = useSelector((state) => state.auth);
+  const { otpEmail } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   // Email for OTP Schema
@@ -23,7 +23,7 @@ export const EmailForm = () => {
 
   // Labels
   const defaultValues = {
-    email: email || "",
+    email: otpEmail || "",
   };
 
   const methods = useForm({
@@ -34,7 +34,7 @@ export const EmailForm = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    if (email) {
+    if (otpEmail) {
       try {
         // api request to backend for verifying email for otp using redux
         // dispatch(SendOTP(data));
@@ -53,7 +53,7 @@ export const EmailForm = () => {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      {!email && (
+      {!otpEmail && (
         <Typography
           sx={{
             pl: 1,
@@ -75,7 +75,7 @@ export const EmailForm = () => {
           InputProps={{
             endAdornment: (
               <>
-                {!email ? (
+                {!otpEmail ? (
                   <LoadingButton
                     loading={isLoading}
                     size="small"
@@ -127,7 +127,7 @@ export const EmailForm = () => {
 const VerifyForm = () => {
   // dispatch from redux
   const { isLoading } = useSelector((state) => state.auth);
-  const { email } = useSelector((state) => state.auth);
+  const { otpEmail } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   //  OTP Schema
@@ -177,7 +177,7 @@ const VerifyForm = () => {
       <Stack spacing={3}>
         {/* Custom OTP input */}
         <RHFOtp
-          disabled={!email}
+          disabled={!otpEmail}
           keyName="otp"
           inputs={["otp1", "otp2", "otp3", "otp4", "otp5", "otp6"]}
         />
@@ -188,7 +188,7 @@ const VerifyForm = () => {
           size="large"
           type="submit"
           variant="contained"
-          disabled={!email}
+          disabled={!otpEmail}
           sx={{
             mt: 3,
             bgcolor: "text.primary",
