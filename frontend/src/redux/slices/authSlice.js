@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logout } from "./userSlice";
 
 import {
   AddOtpEmail,
   ForgorPassword,
   LoginUser,
+  LogoutUser,
   RegisterUser,
   ResetPassword,
   SendOTP,
@@ -49,6 +49,21 @@ const slice = createSlice({
       })
       .addCase(LoginUser.rejected, (state, action) => {
         state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Logout Builder ---------
+      .addCase(LogoutUser.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(LogoutUser.fulfilled, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(LogoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
       })
@@ -150,11 +165,6 @@ const slice = createSlice({
       });
   },
 });
-
-// Thunk for handling logout, dispatches userSlice actions
-export const logoutAndClearData = () => (dispatch) => {
-  dispatch(logout()); // Dispatching the logout action from userSlice
-};
 
 export const { updateOtpEmail } = slice.actions;
 

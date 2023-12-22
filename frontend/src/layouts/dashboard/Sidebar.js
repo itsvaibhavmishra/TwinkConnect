@@ -14,12 +14,19 @@ import {
 } from "@mui/material";
 import { SignOut } from "phosphor-react";
 
+// redux imports
+import { useDispatch } from "react-redux";
+import { LogoutUser } from "../../redux/slices/actions/authActions";
+
 import TwinkLogo from "../../assets/icons/logo/TwinkChat.png";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import ThemeSwitch from "../../components/ThemeSwitch";
 import useSettings from "../../hooks/useSettings";
 
 const Sidebar = () => {
+  // using redux
+  const dispatch = useDispatch();
+
   const theme = useTheme();
 
   // Selected Menu
@@ -228,24 +235,6 @@ const Sidebar = () => {
                       component={Link}
                       to={menuItem.address}
                     >
-                      <Typography variant="body1">
-                        <Stack
-                          direction={"row"}
-                          sx={{ width: 130 }}
-                          px={1}
-                          alignItems={"center"}
-                          justifyContent={"space-between"}
-                        >
-                          {menuItem.title}
-
-                          {menuItem.icon}
-                        </Stack>
-                      </Typography>
-                    </MenuItem>
-                  ))}
-                  <Divider />
-                  <MenuItem onClick={handleClose}>
-                    <Typography variant="body1">
                       <Stack
                         direction={"row"}
                         sx={{ width: 130 }}
@@ -253,10 +242,31 @@ const Sidebar = () => {
                         alignItems={"center"}
                         justifyContent={"space-between"}
                       >
-                        Log Out
-                        <SignOut />
+                        <Typography variant="body1">
+                          {menuItem.title}
+                        </Typography>
+
+                        {menuItem.icon}
                       </Stack>
-                    </Typography>
+                    </MenuItem>
+                  ))}
+                  <Divider />
+                  <MenuItem
+                    onClick={() => {
+                      dispatch(LogoutUser());
+                      handleClose();
+                    }}
+                  >
+                    <Stack
+                      direction={"row"}
+                      sx={{ width: 130 }}
+                      px={1}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography variant="body1">Log Out</Typography>
+                      <SignOut />
+                    </Stack>
                   </MenuItem>
                 </Stack>
               </Menu>
@@ -311,24 +321,6 @@ const Sidebar = () => {
                       component={Link}
                       to={menuItem.address}
                     >
-                      <Typography variant="body1">
-                        <Stack
-                          direction={"row"}
-                          sx={{ width: 130 }}
-                          px={1}
-                          alignItems={"center"}
-                          justifyContent={"space-between"}
-                        >
-                          {menuItem.title}
-
-                          {menuItem.icon}
-                        </Stack>
-                      </Typography>
-                    </MenuItem>
-                  ))}
-                  <Divider />
-                  <MenuItem onClick={handleClose}>
-                    <Typography variant="body1">
                       <Stack
                         direction={"row"}
                         sx={{ width: 130 }}
@@ -336,10 +328,31 @@ const Sidebar = () => {
                         alignItems={"center"}
                         justifyContent={"space-between"}
                       >
-                        Log Out
-                        <SignOut />
+                        <Typography variant="body1">
+                          {menuItem.title}
+                        </Typography>
+
+                        {menuItem.icon}
                       </Stack>
-                    </Typography>
+                    </MenuItem>
+                  ))}
+                  <Divider />
+                  <MenuItem
+                    onClick={() => {
+                      dispatch(LogoutUser());
+                      handleClose();
+                    }}
+                  >
+                    <Stack
+                      direction={"row"}
+                      sx={{ width: 130 }}
+                      px={1}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography variant="body1">Log Out</Typography>
+                      <SignOut />
+                    </Stack>
                   </MenuItem>
                 </Stack>
               </Menu>

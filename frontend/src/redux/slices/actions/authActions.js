@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { ShowSnackbar, updateUser } from "../userSlice";
+import { ShowSnackbar, logout, updateUser } from "../userSlice";
 
 import axios from "../../../utils/axios";
 import { updateOtpEmail } from "../authSlice";
@@ -43,6 +43,38 @@ export const LoginUser = createAsyncThunk(
       );
       return rejectWithValue(error.error);
     }
+  }
+);
+
+// ------------- Logout Thunk -------------
+export const LogoutUser = createAsyncThunk(
+  "auth/logout",
+  async (arg, { rejectWithValue, dispatch }) => {
+    return new Promise(async (resolve) => {
+      try {
+        dispatch(logout());
+
+        // show snackbar
+        dispatch(
+          ShowSnackbar({
+            severity: "success",
+            message: "Logged Out",
+          })
+        );
+
+        // Resolve the promise to indicate that the operation is complete
+        resolve();
+      } catch (error) {
+        dispatch(
+          ShowSnackbar({
+            severity: "error",
+            message: "Error logging out",
+          })
+        );
+
+        return rejectWithValue(error);
+      }
+    });
   }
 );
 
