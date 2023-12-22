@@ -15,9 +15,9 @@ import { Eye, EyeSlash } from "phosphor-react";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
+import { LoginUser } from "../../redux/slices/actions/authActions";
 
 import FormProvider, { RHFTextField } from "../../components/hook-form";
-import { loginUser } from "../../redux/slices/authSlice";
 
 const LoginForm = () => {
   // dispatch from redux
@@ -55,7 +55,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      dispatch(loginUser(data));
+      dispatch(LoginUser(data));
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +89,7 @@ const LoginForm = () => {
       </Stack>
       <Stack alignItems={isSmallScreen ? "center" : "flex-end"} sx={{ my: 2 }}>
         <Link
-          to="/auth/reset-password"
+          to="/auth/forgot-password"
           component={RouterLink}
           variant="body2"
           color="inherit"

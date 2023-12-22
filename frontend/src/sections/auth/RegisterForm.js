@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
+import { RegisterUser } from "../../redux/slices/actions/authActions";
 
 import FormProvider, { RHFTextField } from "../../components/hook-form";
 
@@ -68,6 +69,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     try {
       // api request to backend for registering user using redux
+      dispatch(RegisterUser(data));
     } catch (error) {
       console.error(error);
     }

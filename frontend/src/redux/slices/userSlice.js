@@ -63,10 +63,6 @@ const slice = createSlice({
 export function ShowSnackbar({ message, severity }) {
   return async (dispatch, getState) => {
     dispatch(slice.actions.openSnackbar({ message, severity }));
-
-    setTimeout(() => {
-      dispatch(slice.actions.closeSnackbar());
-    }, 5000);
   };
 }
 

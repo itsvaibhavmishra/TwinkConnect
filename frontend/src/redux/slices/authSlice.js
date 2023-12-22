@@ -1,7 +1,15 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateUser, logout, ShowSnackbar } from "./userSlice";
+import { createSlice } from "@reduxjs/toolkit";
+import { logout } from "./userSlice";
 
-import axios from "../../utils/axios";
+import {
+  AddOtpEmail,
+  ForgorPassword,
+  LoginUser,
+  RegisterUser,
+  ResetPassword,
+  SendOTP,
+  VerifyOTP,
+} from "./actions/authActions";
 
 // initial state for logged in status
 const initialState = {
@@ -13,50 +21,23 @@ const initialState = {
   otpEmail: "",
 };
 
-// Thunk for Login User
-export const loginUser = createAsyncThunk(
-  "auth/login",
-  async (formValues, { rejectWithValue, dispatch }) => {
-    try {
-      const { data } = await axios.post("/auth/login", {
-        ...formValues,
-      });
-
-      // show snackbar
-      dispatch(
-        ShowSnackbar({
-          severity: data.status,
-          message: data.message,
-        })
-      );
-      // update user data
-      dispatch(updateUser(data.user));
-
-      return data;
-    } catch (error) {
-      dispatch(
-        ShowSnackbar({
-          severity: error.error.status,
-          message: error.error.message,
-        })
-      );
-      return rejectWithValue(error.error);
-    }
-  }
-);
-
 const slice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    // updating otp email state
+    updateOtpEmail(state, action) {
+      state.otpEmail = action.payload.otpEmail;
+    },
+  },
   extraReducers(builder) {
     builder
       // --------- Login Builder ---------
-      .addCase(loginUser.pending, (state, action) => {
+      .addCase(LoginUser.pending, (state, action) => {
         state.isLoading = true;
         state.error = false;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(LoginUser.fulfilled, (state, action) => {
         // check if user is verified
         if (action.payload.user) {
           state.isLoggedIn = true;
@@ -66,7 +47,103 @@ const slice = createSlice({
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(LoginUser.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Register Builder ---------
+      .addCase(RegisterUser.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(RegisterUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(RegisterUser.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Verify OTP Builder ---------
+      .addCase(VerifyOTP.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(VerifyOTP.fulfilled, (state, action) => {
+        // check if user is verified
+        if (action.payload.user) {
+          state.isLoggedIn = true;
+        } else {
+          state.isLoggedIn = false;
+        }
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(VerifyOTP.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Send OTP Builder ---------
+      .addCase(SendOTP.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(SendOTP.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(SendOTP.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Add Email Builder ---------
+      .addCase(AddOtpEmail.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(AddOtpEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(AddOtpEmail.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Forgot Password Builder ---------
+      .addCase(ForgorPassword.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(ForgorPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(ForgorPassword.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Reset Password Builder ---------
+      .addCase(ResetPassword.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(ResetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(ResetPassword.rejected, (state, action) => {
         state.isLoggedIn = false;
         state.isLoading = false;
         state.error = true;
@@ -78,5 +155,7 @@ const slice = createSlice({
 export const logoutAndClearData = () => (dispatch) => {
   dispatch(logout()); // Dispatching the logout action from userSlice
 };
+
+export const { updateOtpEmail } = slice.actions;
 
 export default slice.reducer;

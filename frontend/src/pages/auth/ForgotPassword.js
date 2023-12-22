@@ -1,36 +1,27 @@
 import { Link, Stack, Typography } from "@mui/material";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import React from "react";
 import { CaretLeft } from "phosphor-react";
 
-import NewPasswordForm from "../../sections/auth/NewPasswordForm";
+import ForgotPasswordForm from "../../sections/auth/ForgotPasswordForm";
 
-const NewPassword = () => {
-  // Checking if params url has token
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("code");
-
-    if (!token) {
-      navigate("/"); // Redirect to "/" if code parameter is not present
-    }
-  }, [location, navigate]);
-
+const ForgotPassword = () => {
   return (
     <Stack spacing={2} sx={{ my: 5, position: "realative" }}>
       {/* Head section */}
       <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography variant="h4">Reset Password</Typography>
+        <Typography variant="h3" paragraph>
+          Forgot your Password?
+        </Typography>
       </Stack>
+
       <Typography sx={{ color: "text.secondary", mb: 5 }}>
-        Please set your new password
+        Please enter your registered email. You will recieve a link to create a
+        new password via email.
       </Typography>
 
-      {/* New Password Form */}
-      <NewPasswordForm />
+      {/* Reset Password Form */}
+      <ForgotPasswordForm />
 
       {/* Return to Login Button */}
       <Link
@@ -52,4 +43,4 @@ const NewPassword = () => {
   );
 };
 
-export default NewPassword;
+export default ForgotPassword;

@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 import validator from "validator";
 import otpGenerator from "otp-generator";
+import crypto from "crypto";
 
 import { UserModel } from "../models/index.js";
 import { isDisposableEmail } from "../utils/checkDispose.js";
@@ -9,6 +10,7 @@ import otp from "../Templates/Mail/otp.js";
 import { transporter } from "../services/mailer.js";
 import { generateToken, verifyToken } from "../services/tokenService.js";
 import { findUser } from "../services/userService.js";
+import reset from "../Templates/Mail/reset.js";
 
 // -------------------------- Login auth --------------------------
 export const login = async (req, res, next) => {
@@ -316,6 +318,108 @@ export const verifyOTP = async (req, res, next) => {
   }
 };
 
+// -------------------------- Forgot Password --------------------------
+export const forgotPassword = async (req, res, next) => {
+  try {
+    // check for required fields
+    if (!req.body.email) {
+      throw createHttpError("Required field: email");
+    }
+
+    const user = await UserModel.findOne({ email: req.body.email });
+
+    if (!user) {
+      throw createHttpError.NotFound("Email is not registered");
+    }
+
+    const resetToken = await user.createPasswordResetToken();
+
+    await user.save();
+
+    const resetURL = `${process.env.FRONT_URL}/auth/reset-password/?code=${resetToken}`;
+
+    // sending email
+    const emailDetails = {
+      from: `TwinkChat <${process.env.MAIL_USER}>`,
+      to: user.email,
+      subject: "TwinkChat - Here's your Password Reset Link",
+      html: reset(user.firstName, resetURL),
+    };
+
+    await transporter
+      .sendMail(emailDetails)
+      .then(() => {
+        return res.status(200).json({
+          status: "success",
+          message: "Reset Password link sent",
+        });
+      })
+      .catch((error) => {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+
+        // turn validator off for passing undefined values
+        user.save({ validateBeforeSave: false });
+
+        throw createHttpError.InternalServerError(error);
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -------------------------- Reset Password --------------------------
+export const resetPassword = async (req, res, next) => {
+  try {
+    if (!req.body.token) {
+      throw createHttpError.BadRequest("Required field: token");
+    }
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.body.token)
+      .digest("hex");
+
+    const user = await UserModel.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      throw createHttpError.BadRequest("Token Expired or Invalid Token");
+    }
+
+    // updating user password
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    if (user.password !== user.passwordConfirm) {
+      throw createHttpError.BadRequest(
+        "Password and Confirm Password does not match"
+      );
+    }
+
+    // Password Validation
+    if (!validator.isStrongPassword(user.password)) {
+      throw createHttpError.BadRequest(
+        "Password must be 8 characters long, contain atleast one number, lowercase, uppercase letters and a symbol"
+      );
+    }
+
+    await user.save();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Password Reset Successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -------------------------- Refresh Token --------------------------
 export const refreshToken = async (req, res, next) => {
   try {
     const refresh_token = req.cookies.refreshToken;

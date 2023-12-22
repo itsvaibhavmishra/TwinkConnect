@@ -6,6 +6,11 @@ import { LoadingButton } from "@mui/lab";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
+import {
+  AddOtpEmail,
+  SendOTP,
+  VerifyOTP,
+} from "../../redux/slices/actions/authActions";
 
 import FormProvider, { RHFOtp, RHFTextField } from "../../components/hook-form";
 
@@ -37,14 +42,14 @@ export const EmailForm = () => {
     if (otpEmail) {
       try {
         // api request to backend for verifying email for otp using redux
-        // dispatch(SendOTP(data));
+        dispatch(SendOTP(data));
       } catch (error) {
         console.error(error);
       }
     } else {
       try {
         // api request to add email to redux store
-        // dispatch(AddEmail(data));
+        dispatch(AddOtpEmail(data));
       } catch (error) {
         console.error(error);
       }
@@ -161,12 +166,12 @@ const VerifyForm = () => {
   const onSubmit = async (data) => {
     try {
       // api request to backend for verifying otp using redux
-      // dispatch(
-      //   VerifyOTP({
-      //     email: email,
-      //     otp: `${data.otp1}${data.otp2}${data.otp3}${data.otp4}${data.otp5}${data.otp6}`,
-      //   })
-      // );
+      dispatch(
+        VerifyOTP({
+          email: otpEmail,
+          otp: `${data.otp1}${data.otp2}${data.otp3}${data.otp4}${data.otp5}${data.otp6}`,
+        })
+      );
     } catch (error) {
       console.error(error);
     }

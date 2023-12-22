@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 const userSchema = mongoose.Schema(
   {
@@ -80,7 +81,8 @@ userSchema.pre("save", function (next) {
 // method for password decrypt
 userSchema.methods.correctPassword = async function (
   canditatePassword, // provided by user
-  userPassword // from db
+  userPassword, // from db
+  next
 ) {
   try {
     return await bcrypt.compare(canditatePassword, userPassword);
@@ -92,7 +94,8 @@ userSchema.methods.correctPassword = async function (
 // method for otp decrypt
 userSchema.methods.correctOTP = async function (
   canditateOTP, // provided by user
-  userOTP // from db
+  userOTP, // from db
+  next
 ) {
   try {
     return await bcrypt.compare(canditateOTP, userOTP);
@@ -102,7 +105,7 @@ userSchema.methods.correctOTP = async function (
 };
 
 // method for changed password
-userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
+userSchema.methods.changedPasswordAfter = function (JWTTimeStamp, next) {
   try {
     if (this.passwordChangedAt) {
       const changedTimeStamp = parseInt(
@@ -120,7 +123,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
 };
 
 // method for reset password decrypt
-userSchema.methods.createPasswordResetToken = function () {
+userSchema.methods.createPasswordResetToken = async function (next) {
   try {
     const resetToken = crypto.randomBytes(32).toString("hex");
 
