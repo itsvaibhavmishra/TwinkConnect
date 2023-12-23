@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 import { alpha, styled } from "@mui/material/styles";
 import { Tooltip } from "@mui/material";
+import Draggable from "react-draggable";
+import { useRef } from "react";
+
 import cssStyles from "../../../utils/cssStyles";
 import Iconify from "../../Iconify";
 import { IconButtonAnimate } from "../../animate";
@@ -36,33 +39,50 @@ ToggleButton.propTypes = {
   notDefault: PropTypes.bool,
   onToggle: PropTypes.func,
   open: PropTypes.bool,
+  position: PropTypes.object,
+  onDrag: PropTypes.func,
 };
 
-export default function ToggleButton({ notDefault, open, onToggle }) {
-  return (
-    <RootStyle>
-      {notDefault && !open}
+export default function ToggleButton({
+  notDefault,
+  open,
+  onToggle,
+  position,
+  onDrag,
+}) {
+  const nodeRef = useRef(null);
 
-      <Tooltip title="Settings" placement="left">
-        <IconButtonAnimate
-          color="inherit"
-          onClick={onToggle}
-          sx={{
-            p: 1.25,
-            transition: (theme) => theme.transitions.create("all"),
-            "&:hover": {
-              color: "primary.main",
-              bgcolor: (theme) =>
-                alpha(
-                  theme.palette.primary.main,
-                  theme.palette.action.hoverOpacity
-                ),
-            },
-          }}
-        >
-          <Iconify icon="eva:options-2-fill" width={20} height={20} />
-        </IconButtonAnimate>
-      </Tooltip>
-    </RootStyle>
+  return (
+    <Draggable
+      nodeRef={nodeRef}
+      axis="y"
+      onDrag={onDrag}
+      position={position}
+      bounds={"body"}
+    >
+      <RootStyle ref={nodeRef}>
+        {notDefault && !open}
+        <Tooltip title="Settings" placement="left">
+          <IconButtonAnimate
+            color="inherit"
+            onClick={onToggle}
+            sx={{
+              p: 1.25,
+              transition: (theme) => theme.transitions.create("all"),
+              "&:hover": {
+                color: "primary.main",
+                bgcolor: (theme) =>
+                  alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.hoverOpacity
+                  ),
+              },
+            }}
+          >
+            <Iconify icon="eva:options-2-fill" width={20} height={20} />
+          </IconButtonAnimate>
+        </Tooltip>
+      </RootStyle>
+    </Draggable>
   );
 }

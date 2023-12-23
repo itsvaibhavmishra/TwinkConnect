@@ -10,6 +10,7 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
+
 import useSettings from "../../../hooks/useSettings";
 import cssStyles from "../../../utils/cssStyles";
 import { NAVBAR, defaultSettings } from "../../../config";
@@ -61,6 +62,7 @@ export default function SettingsDrawer() {
   // const { currentLang, onChangeLang, allLangs } = useLocales();
 
   const [open, setOpen] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
 
   const notDefault =
     themeMode !== defaultSettings.themeMode ||
@@ -80,6 +82,11 @@ export default function SettingsDrawer() {
 
   const handleToggle = () => {
     setOpen((prev) => !prev);
+  };
+
+  const handleDrag = (e, ui) => {
+    const { x, y } = buttonPosition;
+    setButtonPosition({ x, y: y + ui.deltaY });
   };
 
   const handleClose = () => {
@@ -109,6 +116,8 @@ export default function SettingsDrawer() {
           open={open}
           notDefault={notDefault}
           onToggle={handleToggle}
+          position={buttonPosition}
+          onDrag={handleDrag}
         />
       )}
 
