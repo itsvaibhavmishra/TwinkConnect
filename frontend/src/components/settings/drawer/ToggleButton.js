@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { alpha, styled } from "@mui/material/styles";
-import { Tooltip } from "@mui/material";
+import { Tooltip, useMediaQuery } from "@mui/material";
 import Draggable from "react-draggable";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import cssStyles from "../../../utils/cssStyles";
 import Iconify from "../../Iconify";
@@ -25,16 +25,6 @@ const RootStyle = styled("span")(({ theme }) => ({
   )}`,
 }));
 
-// const DotStyle = styled("span")(({ theme }) => ({
-//   top: 8,
-//   width: 8,
-//   height: 8,
-//   right: 10,
-//   borderRadius: "50%",
-//   position: "absolute",
-//   backgroundColor: theme.palette.error.main,
-// }));
-
 ToggleButton.propTypes = {
   notDefault: PropTypes.bool,
   onToggle: PropTypes.func,
@@ -50,15 +40,58 @@ export default function ToggleButton({
   position,
   onDrag,
 }) {
+  // breakpoint
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
   const nodeRef = useRef(null);
+  const dragStartPositionXYRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    // Load position from localStorage
+    const savedPosition = JSON.parse(localStorage.getItem("buttonPosition"));
+    if (savedPosition) {
+      setButtonPosition(savedPosition);
+    }
+  }, []);
+
+  const setButtonPosition = (newPosition) => {
+    localStorage.setItem("buttonPosition", JSON.stringify(newPosition));
+  };
 
   return (
     <Draggable
       nodeRef={nodeRef}
       axis="y"
-      onDrag={onDrag}
+      onDrag={(event, data) => {
+        onDrag(event, data);
+        setButtonPosition({ x: position.x, y: position.y + data.deltaY });
+      }}
       position={position}
       bounds={"body"}
+      scale={isSmallScreen ? 1.5 : 0.5}
+      onStart={(event) => {
+        dragStartPositionXYRef.current = { x: position.x, y: position.y };
+      }}
+      onStop={(event, data) => {
+        const THRESHOLD = 2;
+        const { x, y } = dragStartPositionXYRef.current;
+        const wasDragged =
+          Math.abs(data.x - x) > THRESHOLD && Math.abs(data.y - y) > THRESHOLD;
+
+        if (!wasDragged) {
+          const clickableElement = event.target.closest(
+            '[data-clickable="true"]'
+          );
+
+          if (clickableElement) {
+            try {
+              clickableElement.click();
+            } catch (error) {
+              console.error("Error triggering click:", error);
+            }
+          }
+        }
+      }}
     >
       <RootStyle ref={nodeRef}>
         {notDefault && !open}
@@ -66,6 +99,7 @@ export default function ToggleButton({
           <IconButtonAnimate
             color="inherit"
             onClick={onToggle}
+            data-clickable="true"
             sx={{
               p: 1.25,
               transition: (theme) => theme.transitions.create("all"),

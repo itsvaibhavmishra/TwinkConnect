@@ -1,7 +1,7 @@
 import { AnimatePresence, m } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { alpha, styled } from "@mui/material/styles";
+import { alpha, styled, Slide } from "@mui/material";
 import {
   Stack,
   Divider,
@@ -62,7 +62,9 @@ export default function SettingsDrawer() {
   // const { currentLang, onChangeLang, allLangs } = useLocales();
 
   const [open, setOpen] = useState(false);
-  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
+  const [buttonPosition, setButtonPosition] = useState(
+    JSON.parse(localStorage.getItem("buttonPosition")) || { x: 0, y: 0 }
+  );
 
   const notDefault =
     themeMode !== defaultSettings.themeMode ||
@@ -100,6 +102,15 @@ export default function SettingsDrawer() {
   // breakpoint
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
+  const handleResetSetting = () => {
+    // Reset settings
+    onResetSetting();
+
+    // Reset button position in localStorage
+    localStorage.removeItem("buttonPosition");
+    setButtonPosition({ x: 0, y: 0 });
+  };
+
   return (
     <>
       <Backdrop
@@ -122,59 +133,58 @@ export default function SettingsDrawer() {
       )}
 
       <AnimatePresence>
-        {open && (
-          <>
-            <RootStyle>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ py: 2, pr: 1, pl: 2.5 }}
-              >
-                <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-                  Settings
-                </Typography>
+        <Slide direction="left" in={open} mountOnEnter unmountOnExit>
+          <RootStyle>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ py: 2, pr: 1, pl: 2.5 }}
+            >
+              <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
+                Settings
+              </Typography>
 
-                {isAuthPage || isSmallScreen ? (
-                  <IconButton onClick={onToggleMode}>
-                    <Iconify
-                      icon={`${
-                        themeMode === "light" ? "ph:sun-bold" : "ph:moon-bold"
-                      }`}
-                      width={20}
-                      height={20}
-                    />
-                  </IconButton>
-                ) : (
-                  <></>
-                )}
-
-                <IconButton onClick={onResetSetting}>
-                  <Iconify icon={"ic:round-refresh"} width={20} height={20} />
+              {isAuthPage || isSmallScreen ? (
+                <IconButton onClick={onToggleMode}>
+                  <Iconify
+                    icon={`${
+                      themeMode === "light" ? "ph:sun-bold" : "ph:moon-bold"
+                    }`}
+                    width={20}
+                    height={20}
+                  />
                 </IconButton>
+              ) : (
+                <></>
+              )}
 
-                <IconButton onClick={handleClose}>
-                  <Iconify icon={"eva:close-fill"} width={20} height={20} />
-                </IconButton>
-              </Stack>
+              <IconButton onClick={handleResetSetting}>
+                <Iconify icon={"ic:round-refresh"} width={20} height={20} />
+              </IconButton>
 
-              <Divider sx={{ borderStyle: "dashed" }} />
+              <IconButton onClick={handleClose}>
+                <Iconify icon={"eva:close-fill"} width={20} height={20} />
+              </IconButton>
+            </Stack>
 
-              <Stack
-                className="scrollbar"
-                sx={{ overflowY: "auto", overflowX: "hidden" }}
-              >
-                <Stack spacing={3} sx={{ p: 3 }}>
-                  <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Direction</Typography>
-                    <SettingDirection />
-                  </Stack>
+            <Divider sx={{ borderStyle: "dashed" }} />
 
-                  <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Presets</Typography>
-                    <SettingColorPresets />
-                  </Stack>
-                  {/* <Stack spacing={1.5}>
+            <Stack
+              className="scrollbar"
+              sx={{ overflowY: "auto", overflowX: "hidden" }}
+            >
+              <Stack spacing={3} sx={{ p: 3 }}>
+                <Stack spacing={1.5}>
+                  <Typography variant="subtitle2">Direction</Typography>
+                  <SettingDirection />
+                </Stack>
+
+                <Stack spacing={1.5}>
+                  <Typography variant="subtitle2">Presets</Typography>
+                  <SettingColorPresets />
+                </Stack>
+                {/* <Stack spacing={1.5}>
                     <Typography variant="subtitle2">Language</Typography>
                     <Stack direction="row" spacing={1}>
                       {allLangs.map((lang) => (
@@ -192,12 +202,11 @@ export default function SettingsDrawer() {
                     </Stack>
                   </Stack> */}
 
-                  <SettingFullscreen />
-                </Stack>
+                <SettingFullscreen />
               </Stack>
-            </RootStyle>
-          </>
-        )}
+            </Stack>
+          </RootStyle>
+        </Slide>
       </AnimatePresence>
     </>
   );
