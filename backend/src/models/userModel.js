@@ -25,6 +25,7 @@ const userSchema = mongoose.Schema(
     passwordChangedAt: { type: Date },
     passwordResetToken: { type: String },
     passwordResetExpires: { type: Date },
+    passwordResetLastSent: { type: Date },
 
     // createdAt: { type: Date, default: Date.now() },
     // updatedAt: { type: Date },
@@ -34,6 +35,8 @@ const userSchema = mongoose.Schema(
     // OTP schema
     otp: { type: String },
     otp_expiry_time: { type: Date },
+    otp_last_sent_time: { type: Date },
+    otp_verify_attempts: { type: Number },
   },
   {
     timestamps: true,

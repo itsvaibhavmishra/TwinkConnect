@@ -157,6 +157,9 @@ const slice = createSlice({
       .addCase(ResetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
       })
       .addCase(ResetPassword.rejected, (state, action) => {
         state.isLoggedIn = false;

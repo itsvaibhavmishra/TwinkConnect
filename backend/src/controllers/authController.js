@@ -7,7 +7,7 @@ import { UserModel } from "../models/index.js";
 import { isDisposableEmail } from "../utils/checkDispose.js";
 import { filterObj } from "../utils/filterObj.js";
 import otp from "../Templates/Mail/otp.js";
-import { transporter } from "../services/mailer.js";
+import { formatRemainingTime, transporter } from "../services/mailer.js";
 import { generateToken, verifyToken } from "../services/tokenService.js";
 import { findUser } from "../services/userService.js";
 import reset from "../Templates/Mail/reset.js";
@@ -80,23 +80,6 @@ export const login = async (req, res, next) => {
         activityStatus: user.activityStatus,
         token: access_token,
       },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// -------------------------- Logout auth --------------------------
-export const logout = async (req, res, next) => {
-  try {
-    // clear refreshToken
-    res.clearCookie("accessToken");
-
-    // clear refreshToken
-    res.clearCookie("refreshToken", { path: "/api/auth/refreshToken" });
-    res.status(200).json({
-      status: "success",
-      message: "Logged out successfully",
     });
   } catch (error) {
     next(error);
@@ -206,6 +189,24 @@ export const sendOtp = async (req, res, next) => {
       throw createHttpError.Conflict("User already verified, Please log in");
     }
 
+    // Check for last otp sent
+    const lastOtpSentTime = user.otp_last_sent_time || 0;
+    const cooldownPeriod = 90 * 1000; // 1 minute 30 seconds in milliseconds
+
+    if (
+      user.otp_last_sent_time &&
+      Date.now() - lastOtpSentTime < cooldownPeriod
+    ) {
+      const timeRemaining = Math.ceil(
+        (cooldownPeriod - (Date.now() - lastOtpSentTime)) / 1000
+      );
+      const remainingTimeString = formatRemainingTime(timeRemaining);
+
+      throw createHttpError.TooEarly(
+        `Please wait ${remainingTimeString} before requesting a new OTP`
+      );
+    }
+
     // Generating new OTP
     const new_otp = otpGenerator.generate(6, {
       lowerCaseAlphabets: false,
@@ -218,6 +219,8 @@ export const sendOtp = async (req, res, next) => {
     // Updating OTP and expiry time
     user.otp = new_otp;
     user.otp_expiry_time = otp_expiry_time;
+    user.otp_last_sent_time = Date.now();
+    user.otp_verify_attempts = 0;
 
     await user.save();
 
@@ -248,13 +251,19 @@ export const verifyOTP = async (req, res, next) => {
   try {
     const { email, otp } = req.body;
 
-    const user = await UserModel.findOne({
-      email,
-      otp_expiry_time: { $gt: Date.now() },
-    });
+    if (!email || !otp) {
+      throw createHttpError.BadGateway("Required fields: email & otp");
+    }
+
+    const user = await UserModel.findOne({ email });
 
     // error handling for OTP
-    if (!user) {
+    if (
+      !user ||
+      (!user.verified &&
+        user.otp_expiry_time &&
+        user.otp_expiry_time <= Date.now())
+    ) {
       throw createHttpError.BadRequest("OTP Expired or Invalid Email");
     }
 
@@ -263,14 +272,30 @@ export const verifyOTP = async (req, res, next) => {
       throw createHttpError.Conflict("Email is already verified");
     }
 
+    if (!user.otp) {
+      throw createHttpError.NotFound("Please Resend OTP");
+    }
+
+    if (user.otp_verify_attempts && user.otp_verify_attempts >= 5) {
+      throw createHttpError.TooManyRequests(
+        "Verify attempts exceeded, please request a new otp"
+      );
+    }
+
+    user.otp_verify_attempts = user.otp_verify_attempts + 1;
+    user.save();
+
     // method defined on userModel | Invalid OTP
-    if (!(await user.correctOTP(otp, user.otp))) {
+    if (!(await user.correctOTP(otp, user.otp, next))) {
       throw createHttpError.Unauthorized("Incorrect OTP");
     }
 
     //  updating verified status
     user.verified = true;
     user.otp = undefined;
+    user.otp_expiry_time = undefined;
+    user.otp_last_sent_time = undefined;
+    user.otp_verify_attempts = undefined;
 
     await user.save({ new: true, validateModifiedOnly: true });
 
@@ -321,9 +346,9 @@ export const verifyOTP = async (req, res, next) => {
 // -------------------------- Forgot Password --------------------------
 export const forgotPassword = async (req, res, next) => {
   try {
-    // check for required fields
+    // check for empty fields
     if (!req.body.email) {
-      throw createHttpError("Required field: email");
+      throw createHttpError.BadRequest("Required field: email");
     }
 
     const user = await UserModel.findOne({ email: req.body.email });
@@ -332,7 +357,28 @@ export const forgotPassword = async (req, res, next) => {
       throw createHttpError.NotFound("Email is not registered");
     }
 
+    // Check for last otp sent
+    const lastResetLinkTime = user.passwordResetLastSent || 0;
+    const cooldownPeriod = 90 * 1000; // 1 minute 30 seconds in milliseconds
+
+    if (
+      user.passwordResetLastSent &&
+      Date.now() - lastResetLinkTime < cooldownPeriod
+    ) {
+      const timeRemaining = Math.ceil(
+        (cooldownPeriod - (Date.now() - lastResetLinkTime)) / 1000
+      );
+      const remainingTimeString = formatRemainingTime(timeRemaining);
+
+      throw createHttpError.TooEarly(
+        `Please wait ${remainingTimeString} before requesting a new reset link`
+      );
+    }
+
     const resetToken = await user.createPasswordResetToken();
+
+    // update password reset link last sent time
+    user.passwordResetLastSent = Date.now();
 
     await user.save();
 
@@ -357,6 +403,7 @@ export const forgotPassword = async (req, res, next) => {
       .catch((error) => {
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
+        user.passwordResetLastSent = undefined;
 
         // turn validator off for passing undefined values
         user.save({ validateBeforeSave: false });
@@ -371,6 +418,7 @@ export const forgotPassword = async (req, res, next) => {
 // -------------------------- Reset Password --------------------------
 export const resetPassword = async (req, res, next) => {
   try {
+    // check for empty fields
     if (!req.body.token) {
       throw createHttpError.BadRequest("Required field: token");
     }
@@ -394,6 +442,7 @@ export const resetPassword = async (req, res, next) => {
     user.passwordConfirm = req.body.passwordConfirm;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
+    user.passwordResetLastSent = undefined;
 
     if (user.password !== user.passwordConfirm) {
       throw createHttpError.BadRequest(
@@ -413,6 +462,23 @@ export const resetPassword = async (req, res, next) => {
     return res.status(200).json({
       status: "success",
       message: "Password Reset Successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -------------------------- Logout auth --------------------------
+export const logout = async (req, res, next) => {
+  try {
+    // clear refreshToken
+    res.clearCookie("accessToken");
+
+    // clear refreshToken
+    res.clearCookie("refreshToken", { path: "/api/auth/refreshToken" });
+    res.status(200).json({
+      status: "success",
+      message: "Logged out successfully",
     });
   } catch (error) {
     next(error);
