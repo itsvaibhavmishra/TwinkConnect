@@ -2,7 +2,10 @@ import { Stack } from "@mui/material";
 
 const GeneralApp = () => {
   return (
-    <Stack sx={{ height: "calc(100vh - 65px)" }}>
+    <Stack
+      direction={"row"}
+      sx={{ width: "100%", height: { xs: "calc(100vh - 65px)", md: "100vh" } }}
+    >
       General App Starts Here!
     </Stack>
   );

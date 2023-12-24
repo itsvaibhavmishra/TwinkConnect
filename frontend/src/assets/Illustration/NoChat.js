@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { memo } from "react";
 
@@ -8,12 +8,15 @@ const NoChat = ({ ...other }) => {
   const PRIMARY_DARK = theme.palette.primary.dark;
   const PRIMARY_LIGHT = theme.palette.primary.light;
 
+  // breakpoint
+  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+
   return (
     <Box {...other} sx={{ mt: -20 }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="600"
-        height="600"
+        width={isMediumScreen ? "530" : "600"}
+        height={isMediumScreen ? "530" : "600"}
         fill="none"
         viewBox="0 0 1500 1500"
         id="male-freelancer-working-from-home"
@@ -164,9 +167,9 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#0F2649"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width=".893"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth=".893"
           d="M829.316 577.111H817.061"
         ></path>
         <path
@@ -207,9 +210,9 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#FE826D"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M1030.51 842.649L1033.79 850.843C1034.31 852.138 1034.3 853.584 1033.77 854.873L1027.45 870.224"
         ></path>
         <path
@@ -265,9 +268,9 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#C1BFCF"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M1164.3 732.349L1227.82 887.724C1229.71 892.355 1230.68 897.31 1230.68 902.312V902.312C1230.68 909.409 1224.93 915.163 1217.83 915.163H1130.08"
         ></path>
         <path
@@ -276,9 +279,9 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#C1BFCF"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="3.572"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3.572"
           d="M1058.09 732.349L1115.58 884.996C1116.7 887.973 1116.64 891.265 1115.42 894.201V894.201C1113.48 898.854 1108.93 901.886 1103.89 901.886H1042.77C1035.44 901.886 1029.49 907.83 1029.49 915.163V915.163"
         ></path>
         <rect
@@ -294,13 +297,13 @@ const NoChat = ({ ...other }) => {
           cy="873.764"
           r="19.617"
           stroke="#fff"
-          stroke-width="7.337"
+          strokeWidth="7.337"
         ></circle>
         <path
           stroke="#FE826D"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M1020.3 848.776L1023.5 854.534C1024.72 856.722 1024.96 859.32 1024.17 861.695L1020.3 873.288M1004.98 847.756L1011.16 856.257C1012.45 858.018 1013.04 860.187 1012.83 862.355L1011.11 880.438"
         ></path>
         <rect
@@ -316,40 +319,40 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#0F2649"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width=".893"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth=".893"
           d="M742.777 577.111H712.888C704.991 577.111 698.589 583.512 698.589 591.409V591.409"
         ></path>
         <circle cx="711.867" cy="592.43" r="20.426" fill="#FFC4A6"></circle>
         <path
           stroke="#0F2649"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width=".893"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth=".893"
           d="M783.357 576.089H789.485"
         ></path>
         <path
           stroke="#FE826D"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M706.76 584.259L719.015 598.557M704.715 595.494L713.907 592.43"
         ></path>
         <circle cx="761.91" cy="577.111" r="3.064" fill="#460908"></circle>
         <circle cx="806.845" cy="577.111" r="3.064" fill="#460908"></circle>
         <path
           stroke="#460908"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M754.758 565.876C758.259 563.425 762.636 561.791 767.013 561.791M813.996 565.876C810.494 563.425 806.117 561.791 801.74 561.791"
         ></path>
         <path
           stroke="#FD8981"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M787.445 581.196L793.342 598.886C794.011 600.895 792.796 603.043 790.728 603.502L785.402 604.686"
         ></path>
         <circle
@@ -361,9 +364,9 @@ const NoChat = ({ ...other }) => {
         ></circle>
         <path
           stroke="#F37269"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M773.146 616.942C776.077 624.043 787.8 627.593 795.615 623.155"
         ></path>
         <rect
@@ -390,20 +393,20 @@ const NoChat = ({ ...other }) => {
           cy="576.09"
           r="19.98"
           stroke="#0F2649"
-          stroke-width=".893"
+          strokeWidth=".893"
         ></circle>
         <circle
           cx="762.93"
           cy="576.09"
           r="19.98"
           stroke="#0F2649"
-          stroke-width=".893"
+          strokeWidth=".893"
         ></circle>
         <path
           stroke={PRIMARY_DARK}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M753.74 713.964L751.697 772.179"
         ></path>
         <circle cx="746.589" cy="733.37" r="4.085" fill={PRIMARY_DARK}></circle>
@@ -420,16 +423,16 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#fff"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2.985"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.985"
           d="M897.096 428.601H992.678M897.096 450.791H944.887"
         ></path>
         <path
           stroke="#FE826D"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M780.293 854.905L795.652 860.025C799.4 861.274 802.157 864.485 802.825 868.38L807.868 897.8M767.014 872.268L786.219 875.011C787.587 875.207 788.721 876.175 789.127 877.497L796.631 901.885M791.527 845.713L806.886 850.833C810.635 852.083 813.391 855.294 814.059 859.188L819.103 888.608M806.844 840.606L818.217 843.639C820.759 844.317 822.962 845.906 824.408 848.103L847.696 883.501"
         ></path>
         <path
@@ -438,23 +441,23 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke="#A8B8EF"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.973"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.973"
           d="M90.2988 1022.08C258.197 1029.98 231.777 1127.03 236.038 1241M236.044 1233.1C222.407 1083.02 265.021 1069.47 359.624 1011.92M161.045 779.456C184.056 848.293 236.897 991.609 233.488 1230.85"
         ></path>
         <path
           stroke="#A8B8EF"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.973"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.973"
           d="M319.565 778.326C242.008 944.212 240.304 982.581 234.338 1173.29V1236.49"
         ></path>
         <path
           stroke="#9F9CC5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M765.992 1000.95L855.383 1013.61C870.859 1015.8 883.112 1027.8 885.628 1043.23L912.038 1205.21"
         ></path>
         <circle
@@ -474,9 +477,9 @@ const NoChat = ({ ...other }) => {
         ></path>
         <path
           stroke={PRIMARY_DARK}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.786"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.786"
           d="M802.764 768.094H832.381"
         ></path>
       </svg>

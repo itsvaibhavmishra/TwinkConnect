@@ -92,6 +92,10 @@ const slice = createSlice({
         // check if user is verified
         if (action.payload.user) {
           state.isLoggedIn = true;
+          // redirect user to profile
+          setTimeout(() => {
+            window.location.href = "/profile";
+          });
         } else {
           state.isLoggedIn = false;
         }
