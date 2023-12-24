@@ -1,10 +1,19 @@
+import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormProvider from "../../components/hook-form/FormProvider";
-import { Alert, Stack, useMediaQuery } from "@mui/material";
-import { RHFTextField } from "../../components/hook-form";
+import {
+  Alert,
+  Divider,
+  Typography,
+  Stack,
+  useMediaQuery,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+
+import { RHFTextField, RHFUploadAvatar } from "../../components/hook-form";
+import StyledBadge from "../../components/StyledBadge";
 
 // redux imports
 import { useSelector } from "react-redux";
@@ -15,6 +24,8 @@ const ProfileForm = () => {
     (state) => state.user.user
   );
   const { isLoading } = useSelector((state) => state.auth);
+
+  const [file, setFile] = useState();
 
   //  Login Schema
   const LoginSchema = Yup.object().shape({
@@ -44,6 +55,7 @@ const ProfileForm = () => {
   const {
     reset,
     setError,
+    setValue,
     handleSubmit,
     formState: { errors, isDirty },
   } = methods;
@@ -61,6 +73,23 @@ const ProfileForm = () => {
     }
   };
 
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+
+      setFile(file);
+
+      const newFile = Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      });
+
+      if (file) {
+        setValue("avatar", newFile, { shouldValidate: true });
+      }
+    },
+    [setValue]
+  );
+
   // breakpoint
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -68,9 +97,24 @@ const ProfileForm = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && (
+        {/* {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )}
+        )} */}
+
+        <RHFUploadAvatar name="avatar" maxSize={3145728} onDrop={handleDrop} />
+        <Divider>
+          <Stack
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            spacing={1.5}
+          >
+            <Typography variant="caption" color={"#aaa"}>
+              Active
+            </Typography>
+            <StyledBadge variant="dot" useColor="" />
+          </Stack>
+        </Divider>
 
         <Stack
           direction={
