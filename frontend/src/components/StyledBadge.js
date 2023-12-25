@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import { Badge } from "@mui/material";
 
-const StyledBadge = styled(Badge)(({ theme, useColor }) => ({
+const StyledBadge = styled(Badge)(({ theme, usecolor }) => ({
   "& .MuiBadge-badge": {
-    backgroundColor: useColor || "#44b700",
-    color: useColor || "#44b700",
+    backgroundColor: usecolor || "#44b700",
+    color: usecolor || "#44b700",
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",

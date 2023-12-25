@@ -6,9 +6,10 @@ import { UploadAvatar } from "../upload";
 
 RHFUploadAvatar.propTypes = {
   name: PropTypes.string,
+  formState: PropTypes.object,
 };
 
-export function RHFUploadAvatar({ name, ...other }) {
+export function RHFUploadAvatar({ name, formState, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -23,12 +24,14 @@ export function RHFUploadAvatar({ name, ...other }) {
             }}
             error={!!error}
             file={field.value}
+            formState={formState}
             {...other}
           />
 
           {!!error && (
             <FormHelperText error sx={{ px: 2, textAlign: "center" }}>
-              {error.message}
+              {(!formState.isSubmitSuccessful || formState.isDirty) &&
+                error.message}
             </FormHelperText>
           )}
         </div>

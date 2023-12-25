@@ -3,13 +3,7 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormProvider from "../../components/hook-form/FormProvider";
-import {
-  Alert,
-  Divider,
-  Typography,
-  Stack,
-  useMediaQuery,
-} from "@mui/material";
+import { Divider, Typography, Stack, useMediaQuery } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { RHFTextField, RHFUploadAvatar } from "../../components/hook-form";
@@ -20,24 +14,28 @@ import { useSelector } from "react-redux";
 
 const ProfileForm = () => {
   // from redux
-  const { firstName, lastName, activityStatus } = useSelector(
+  const { avatar, firstName, lastName, activityStatus } = useSelector(
     (state) => state.user.user
   );
   const { isLoading } = useSelector((state) => state.auth);
 
-  const [file, setFile] = useState();
+  const [fileChanged, setFileChanged] = useState(false);
 
   //  Login Schema
-  const LoginSchema = Yup.object().shape({
-    name: Yup.string()
+  const ProfileSchema = Yup.object().shape({
+    firstName: Yup.string()
       .required("Name Required")
       .min(3, "Name cannot be less than 3 characters")
-      .max(25, "Name cannot be more than 25 characters long"),
-    about: Yup.string()
+      .max(16, "Name cannot be more than 16 characters long"),
+    lastName: Yup.string()
+      .required("Name Required")
+      .min(3, "Name cannot be less than 3 characters")
+      .max(16, "Name cannot be more than 16 characters long"),
+    activityStatus: Yup.string()
       .required("About Required")
       .min(3, "Minimum length should be more than 3 characters")
       .max(50, "About cannot be more than 50 characters long"),
-    avatarUrl: Yup.string(),
+    avatar: Yup.string().nullable(true),
   });
 
   //   Labels
@@ -45,50 +43,73 @@ const ProfileForm = () => {
     firstName: firstName || "",
     lastName: lastName || "",
     activityStatus: activityStatus || "",
+    avatar: avatar || "",
   };
 
   const methods = useForm({
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(ProfileSchema),
     defaultValues,
   });
 
   const {
-    reset,
+    // reset,
     setError,
     setValue,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { isDirty },
   } = methods;
+
+  const handleDrop = useCallback(
+    (acceptedFiles, fileRejections) => {
+      if (fileRejections.length > 0) {
+        const rejection = fileRejections[0];
+
+        // Check if rejection is due to file size error
+        if (rejection.errors.some((e) => e.code === "file-too-large")) {
+          setError("avatar", {
+            type: "manual",
+            message: "File size exceeds the limit (3MB).",
+          });
+          return;
+        }
+
+        // Handle other rejection errors
+        setError("avatar", {
+          type: "manual",
+          message: "Invalid file type or file not selected.",
+        });
+        return;
+      }
+
+      const file = acceptedFiles[0];
+
+      setFileChanged(true); // Set the fileChanged state to true
+
+      if (file) {
+        const imageUrl = URL.createObjectURL(file);
+        setValue("avatar", imageUrl, { shouldValidate: true });
+      }
+    },
+    [setValue, setError]
+  );
 
   const onSubmit = async (data) => {
     try {
+      console.log(data);
       // submit data to backend
+
+      // // Reset the form to its default values
+      // reset();
     } catch (error) {
       console.error(error);
-      reset();
       setError("afterSubmit", {
         ...error,
         message: error.message,
       });
+    } finally {
+      setFileChanged(false); // Reset fileChanged state after submission
     }
   };
-
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-
-      setFile(file);
-
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
-
-      if (file) {
-        setValue("avatar", newFile, { shouldValidate: true });
-      }
-    },
-    [setValue]
-  );
 
   // breakpoint
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -101,7 +122,12 @@ const ProfileForm = () => {
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )} */}
 
-        <RHFUploadAvatar name="avatar" maxSize={3145728} onDrop={handleDrop} />
+        <RHFUploadAvatar
+          name="avatar"
+          maxSize={3145728}
+          onDrop={handleDrop}
+          formState={methods.formState}
+        />
         <Divider>
           <Stack
             direction={"row"}
@@ -112,7 +138,7 @@ const ProfileForm = () => {
             <Typography variant="caption" color={"#aaa"}>
               Active
             </Typography>
-            <StyledBadge variant="dot" useColor="" />
+            <StyledBadge variant="dot" usecolor="" />
           </Stack>
         </Divider>
 
@@ -158,7 +184,7 @@ const ProfileForm = () => {
             type="submit"
             variant="outlined"
             loading={isLoading}
-            disabled={!isDirty}
+            disabled={!isDirty && !fileChanged}
           >
             Save
           </LoadingButton>

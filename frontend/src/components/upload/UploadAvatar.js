@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import { useDropzone } from "react-dropzone";
-// @mui
 import { Typography } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
+import { Image } from "phosphor-react";
 
 import AvatarPreview from "./preview/AvatarPreview";
-import { Image } from "phosphor-react";
 
 const StyledDropZone = styled("div")(({ theme }) => ({
   width: 144,
@@ -47,6 +46,7 @@ UploadAvatar.propTypes = {
   disabled: PropTypes.bool,
   helperText: PropTypes.node,
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  onRemove: PropTypes.func,
 };
 
 export default function UploadAvatar({
@@ -54,6 +54,7 @@ export default function UploadAvatar({
   file,
   disabled,
   helperText,
+  onRemove,
   sx,
   ...other
 }) {
