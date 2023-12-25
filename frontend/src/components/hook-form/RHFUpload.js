@@ -7,9 +7,10 @@ import { UploadAvatar } from "../upload";
 RHFUploadAvatar.propTypes = {
   name: PropTypes.string,
   formState: PropTypes.object,
+  onRemove: PropTypes.func,
 };
 
-export function RHFUploadAvatar({ name, formState, ...other }) {
+export function RHFUploadAvatar({ name, formState, onRemove, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +25,7 @@ export function RHFUploadAvatar({ name, formState, ...other }) {
             }}
             error={!!error}
             file={field.value}
+            onRemove={onRemove}
             formState={formState}
             {...other}
           />

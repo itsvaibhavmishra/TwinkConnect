@@ -1,10 +1,21 @@
 import PropTypes from "prop-types";
 import { useDropzone } from "react-dropzone";
-import { Typography } from "@mui/material";
+import { Typography, IconButton } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
-import { Image } from "phosphor-react";
+import { Image, Trash } from "phosphor-react";
 
 import AvatarPreview from "./preview/AvatarPreview";
+
+const Container = styled("div")({
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+const StyledDropZoneContainer = styled("div")({
+  position: "relative",
+});
 
 const StyledDropZone = styled("div")(({ theme }) => ({
   width: 144,
@@ -15,9 +26,23 @@ const StyledDropZone = styled("div")(({ theme }) => ({
   overflow: "hidden",
   borderRadius: "50%",
   alignItems: "center",
-  position: "relative",
   justifyContent: "center",
   border: `1px dashed ${alpha(theme.palette.grey[500], 0.32)}`,
+}));
+
+const StyledRemoveButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  top: theme.spacing(0.5),
+  right: theme.spacing(0.5),
+  zIndex: 10,
+  color: theme.palette.text.primary,
+  backgroundColor: theme.palette.background.default,
+  border: `1px solid ${alpha(theme.palette.grey[500], 0.32)}`,
+  borderRadius: "50%",
+  padding: theme.spacing(1),
+  "&:hover": {
+    backgroundColor: theme.palette.background.neutral,
+  },
 }));
 
 const StyledPlaceholder = styled("div")(({ theme }) => ({
@@ -37,8 +62,6 @@ const StyledPlaceholder = styled("div")(({ theme }) => ({
     duration: theme.transitions.duration.shorter,
   }),
 }));
-
-// ----------------------------------------------------------------------
 
 UploadAvatar.propTypes = {
   sx: PropTypes.object,
@@ -70,64 +93,72 @@ export default function UploadAvatar({
   const isError = isDragReject || !!error;
 
   return (
-    <>
-      <StyledDropZone
-        {...getRootProps()}
-        sx={{
-          ...(isDragActive && {
-            opacity: 0.72,
-          }),
-          ...(isError && {
-            borderColor: "error.light",
-            ...(hasFile && {
-              bgcolor: "error.lighter",
-            }),
-          }),
-          ...(disabled && {
-            opacity: 0.48,
-            pointerEvents: "none",
-          }),
-          ...(hasFile && {
-            "&:hover": {
-              "& .placeholder": {
-                opacity: 1,
-              },
-            },
-          }),
-          ...sx,
-        }}
-      >
-        <input {...getInputProps()} />
-
-        {hasFile && <AvatarPreview file={file} />}
-
-        <StyledPlaceholder
-          className="placeholder"
+    <Container>
+      <StyledDropZoneContainer>
+        <StyledDropZone
+          {...getRootProps()}
           sx={{
-            "&:hover": {
+            ...(isDragActive && {
               opacity: 0.72,
-            },
-            ...(hasFile && {
-              zIndex: 9,
-              opacity: 0,
-              color: "common.white",
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.64),
             }),
             ...(isError && {
-              color: "error.main",
-              bgcolor: "error.lighter",
+              borderColor: "error.light",
+              ...(hasFile && {
+                bgcolor: "error.lighter",
+              }),
             }),
+            ...(disabled && {
+              opacity: 0.48,
+              pointerEvents: "none",
+            }),
+            ...(hasFile && {
+              "&:hover": {
+                "& .placeholder": {
+                  opacity: 1,
+                },
+              },
+            }),
+            ...sx,
           }}
         >
-          <Image />
+          <input {...getInputProps()} />
 
-          <Typography variant="caption">
-            {file ? "Update photo" : "Upload photo"}
-          </Typography>
-        </StyledPlaceholder>
-      </StyledDropZone>
+          {hasFile && <AvatarPreview file={file} />}
+
+          <StyledPlaceholder
+            className="placeholder"
+            sx={{
+              "&:hover": {
+                opacity: 0.72,
+              },
+              ...(hasFile && {
+                zIndex: 9,
+                opacity: 0,
+                color: "common.white",
+                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.64),
+              }),
+              ...(isError && {
+                color: "error.main",
+                bgcolor: "error.lighter",
+              }),
+            }}
+          >
+            <Image />
+
+            <Typography variant="caption">
+              {file ? "Update photo" : "Upload photo"}
+            </Typography>
+          </StyledPlaceholder>
+        </StyledDropZone>
+
+        {hasFile && (
+          <StyledRemoveButton size="small" onClick={onRemove}>
+            <Trash />
+          </StyledRemoveButton>
+        )}
+      </StyledDropZoneContainer>
 
       {helperText && helperText}
-    </>
+    </Container>
   );
 }

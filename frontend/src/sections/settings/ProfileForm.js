@@ -111,6 +111,11 @@ const ProfileForm = () => {
     }
   };
 
+  const handleRemoveImage = () => {
+    setValue("avatar", ""); // Clear the avatar value
+    setFileChanged(true); // Set fileChanged to true to indicate a change
+  };
+
   // breakpoint
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -126,6 +131,7 @@ const ProfileForm = () => {
           name="avatar"
           maxSize={3145728}
           onDrop={handleDrop}
+          onRemove={handleRemoveImage}
           formState={methods.formState}
         />
         <Divider>
