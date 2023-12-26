@@ -9,9 +9,16 @@ RHFUploadAvatar.propTypes = {
   name: PropTypes.string,
   formState: PropTypes.object,
   onRemove: PropTypes.func,
+  onEdit: PropTypes.func,
 };
 
-export function RHFUploadAvatar({ name, formState, onRemove, ...other }) {
+export function RHFUploadAvatar({
+  name,
+  formState,
+  onRemove,
+  onEdit,
+  ...other
+}) {
   const methods = useFormContext(); // Use useFormContext to get the form methods
 
   const [cropperOpen, setCropperOpen] = useState(false);
@@ -27,16 +34,28 @@ export function RHFUploadAvatar({ name, formState, onRemove, ...other }) {
 
   const handleUseCroppedImage = async (croppedImage) => {
     methods.setValue(name, croppedImage);
+    onEdit(true);
     handleCloseCropper();
   };
 
   useEffect(() => {
     const imageValue = methods.getValues(name);
-    if (imageValue && !initialImageAdded) {
+
+    // Check if the image is present, not initially added, and not on form submission
+    if (
+      imageValue &&
+      !initialImageAdded &&
+      !methods.formState.isSubmitSuccessful
+    ) {
       setInitialImageAdded(true);
       handleOpenCropper();
     }
-  }, [name, methods, initialImageAdded]);
+  }, [methods, initialImageAdded, name]);
+
+  const handleOnRemove = () => {
+    setInitialImageAdded(false);
+    onRemove();
+  };
 
   return (
     <div>
@@ -59,7 +78,7 @@ export function RHFUploadAvatar({ name, formState, onRemove, ...other }) {
               }}
               error={!!error}
               file={field.value}
-              onRemove={onRemove}
+              onRemove={handleOnRemove}
               formState={formState}
               onCrop={handleOpenCropper}
               {...other}

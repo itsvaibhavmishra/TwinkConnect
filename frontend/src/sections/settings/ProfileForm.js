@@ -96,6 +96,24 @@ const ProfileForm = () => {
   const onSubmit = async (data) => {
     try {
       console.log(data);
+
+      if (data.avatar) {
+        const image = new Image();
+        image.src = data.avatar;
+        await new Promise((resolve) => {
+          image.onload = resolve;
+        });
+
+        const { width, height } = image;
+        if (width !== height) {
+          // If the image doesn't have a 1:1 ratio, open the AvatarCropper
+          setError("avatar", {
+            type: "manual",
+            message: "Please set ratio to 1:1 using edit first.",
+          });
+          return;
+        }
+      }
       // submit data to backend
 
       // // Reset the form to its default values
@@ -116,6 +134,10 @@ const ProfileForm = () => {
     setFileChanged(true); // Set fileChanged to true to indicate a change
   };
 
+  const handleEditImage = () => {
+    setFileChanged(true);
+  };
+
   // breakpoint
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -132,6 +154,7 @@ const ProfileForm = () => {
           maxSize={3145728}
           onDrop={handleDrop}
           onRemove={handleRemoveImage}
+          onEdit={handleEditImage}
           formState={methods.formState}
         />
         <Divider>
@@ -183,18 +206,22 @@ const ProfileForm = () => {
           name="activityStatus"
           label="Activity Status"
         />
-        <Stack direction={"row"} justifyContent={"end"}>
-          <LoadingButton
-            color="primary"
-            size="large"
-            type="submit"
-            variant="outlined"
-            loading={isLoading}
-            disabled={!isDirty && !fileChanged}
-          >
-            Save
-          </LoadingButton>
-        </Stack>
+        {isDirty || fileChanged ? (
+          <Stack direction={"row"} justifyContent={"end"}>
+            <LoadingButton
+              color="primary"
+              size="large"
+              type="submit"
+              variant="outlined"
+              loading={isLoading}
+              disabled={!isDirty && !fileChanged}
+            >
+              Save
+            </LoadingButton>
+          </Stack>
+        ) : (
+          <></>
+        )}
       </Stack>
     </FormProvider>
   );

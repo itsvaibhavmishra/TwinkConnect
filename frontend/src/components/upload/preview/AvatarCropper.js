@@ -32,7 +32,6 @@ const AvatarCropper = ({ open, handleClose, image, onUse }) => {
         rotation
       );
       onUse(croppedImage);
-      console.log(croppedImage);
     } catch (e) {
       console.error(e);
     }

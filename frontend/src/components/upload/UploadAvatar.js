@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useDropzone } from "react-dropzone";
 import { Typography, IconButton } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
-import { Image, Trash } from "phosphor-react";
+import { Image, Trash, Pen } from "phosphor-react";
 
 import AvatarPreview from "./preview/AvatarPreview";
 
@@ -30,10 +30,10 @@ const StyledDropZone = styled("div")(({ theme }) => ({
   border: `1px dashed ${alpha(theme.palette.grey[500], 0.32)}`,
 }));
 
-const StyledRemoveButton = styled(IconButton)(({ theme }) => ({
+const StyledOptionButton = styled(IconButton)(({ theme, setval }) => ({
   position: "absolute",
-  top: theme.spacing(0.5),
-  right: theme.spacing(0.5),
+  top: theme.spacing(15),
+  right: theme.spacing(setval),
   zIndex: 10,
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.background.default,
@@ -70,6 +70,7 @@ UploadAvatar.propTypes = {
   helperText: PropTypes.node,
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onRemove: PropTypes.func,
+  onCrop: PropTypes.func,
 };
 
 export default function UploadAvatar({
@@ -78,6 +79,7 @@ export default function UploadAvatar({
   disabled,
   helperText,
   onRemove,
+  onCrop,
   sx,
   ...other
 }) {
@@ -152,9 +154,14 @@ export default function UploadAvatar({
         </StyledDropZone>
 
         {hasFile && (
-          <StyledRemoveButton size="small" onClick={onRemove}>
-            <Trash />
-          </StyledRemoveButton>
+          <>
+            <StyledOptionButton size="small" onClick={onRemove} setval={0.5}>
+              <Trash />
+            </StyledOptionButton>
+            <StyledOptionButton size="small" onClick={onCrop} setval={13}>
+              <Pen />
+            </StyledOptionButton>
+          </>
         )}
       </StyledDropZoneContainer>
 
