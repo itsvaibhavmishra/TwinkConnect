@@ -61,6 +61,7 @@ const ProfileForm = () => {
 
   const handleDrop = useCallback(
     (acceptedFiles, fileRejections) => {
+      setError("avatar", null);
       if (fileRejections.length > 0) {
         const rejection = fileRejections[0];
 
@@ -95,8 +96,6 @@ const ProfileForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-
       if (data.avatar) {
         const image = new Image();
         image.src = data.avatar;
@@ -114,6 +113,7 @@ const ProfileForm = () => {
           return;
         }
       }
+      console.log(data);
       // submit data to backend
 
       // // Reset the form to its default values

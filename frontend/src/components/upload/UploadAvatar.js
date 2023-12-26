@@ -32,7 +32,7 @@ const StyledDropZone = styled("div")(({ theme }) => ({
 
 const StyledOptionButton = styled(IconButton)(({ theme, setval }) => ({
   position: "absolute",
-  top: theme.spacing(15),
+  top: theme.spacing(14.5),
   right: theme.spacing(setval),
   zIndex: 10,
   color: theme.palette.text.primary,
