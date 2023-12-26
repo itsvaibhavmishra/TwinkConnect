@@ -15,6 +15,7 @@ export function RHFUploadAvatar({ name, formState, onRemove, ...other }) {
   const methods = useFormContext(); // Use useFormContext to get the form methods
 
   const [cropperOpen, setCropperOpen] = useState(false);
+  const [initialImageAdded, setInitialImageAdded] = useState(false);
 
   const handleOpenCropper = () => {
     setCropperOpen(true);
@@ -31,10 +32,11 @@ export function RHFUploadAvatar({ name, formState, onRemove, ...other }) {
 
   useEffect(() => {
     const imageValue = methods.getValues(name);
-    if (imageValue && cropperOpen) {
+    if (imageValue && !initialImageAdded) {
+      setInitialImageAdded(true);
       handleOpenCropper();
     }
-  }, [name, methods, cropperOpen]);
+  }, [name, methods, initialImageAdded]);
 
   return (
     <div>
