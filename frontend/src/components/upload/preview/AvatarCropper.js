@@ -85,8 +85,13 @@ const AvatarCropper = ({ open, handleClose, image, onUse }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Stack justifyContent={"space-between"} direction={"row"} spacing={8}>
-          <Stack direction={"row"} spacing={8}>
+        <Stack
+          justifyContent={"space-between"}
+          sx={{ flexGrow: 1 }}
+          direction={"column"}
+        >
+          {/* Cropper Actions */}
+          <Stack direction={"column"} justifyContent={"flex-start"}>
             <div>
               <Typography variant="overline">Zoom</Typography>
               <Slider
@@ -110,7 +115,8 @@ const AvatarCropper = ({ open, handleClose, image, onUse }) => {
               />
             </div>
           </Stack>
-          <Stack direction={"row"} spacing={1}>
+          {/* Main Actions */}
+          <Stack direction={"row"} spacing={1} justifyContent={"flex-end"}>
             <Button autoFocus onClick={handleClose}>
               Cancel
             </Button>
