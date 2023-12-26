@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import axios from "../../utils/axios";
+
+import { UpdateProfile } from "./actions/userActions";
 
 // initial state for contacts menu
 const initialState = {
@@ -39,7 +40,7 @@ const slice = createSlice({
 
     // update user information
     updateUser: (state, action) => {
-      state.user = action.payload;
+      state.user = { ...state.user, ...action.payload };
     },
 
     // logout reducer | being handled from auth
@@ -57,6 +58,24 @@ const slice = createSlice({
       };
     },
   },
+  extraReducers(builder) {
+    builder
+      // --------- Profile Builder ---------
+      .addCase(UpdateProfile.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(UpdateProfile.fulfilled, (state, action) => {
+        state.user = { ...state.user, ...action.payload.user };
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(UpdateProfile.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      });
+  },
 });
 
 // snackbar functions
@@ -73,6 +92,6 @@ export function HideSnackbar() {
   };
 }
 
-export const { updateUser, logout } = slice.actions;
+export const { updateUser, logout, user } = slice.actions;
 
 export default slice.reducer;

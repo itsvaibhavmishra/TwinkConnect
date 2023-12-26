@@ -74,7 +74,9 @@ export function RHFUploadAvatar({
             )}
             <UploadAvatar
               accept={{
-                "image/*": [],
+                "image/jpeg": ".jpg, .jpeg",
+                "image/png": ".png",
+                "image/webp": ".webp",
               }}
               error={!!error}
               file={field.value}

@@ -10,14 +10,17 @@ import { RHFTextField, RHFUploadAvatar } from "../../components/hook-form";
 import StyledBadge from "../../components/StyledBadge";
 
 // redux imports
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { UpdateProfile } from "../../redux/slices/actions/userActions";
 
 const ProfileForm = () => {
   // from redux
-  const { avatar, firstName, lastName, activityStatus } = useSelector(
+  const { id, avatar, firstName, lastName, activityStatus } = useSelector(
     (state) => state.user.user
   );
   const { isLoading } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const [fileChanged, setFileChanged] = useState(false);
 
@@ -113,8 +116,11 @@ const ProfileForm = () => {
           return;
         }
       }
-      console.log(data);
+
+      // Add the user id to the data object
+      data.userId = id;
       // submit data to backend
+      dispatch(UpdateProfile(data));
 
       // // Reset the form to its default values
       // reset();
