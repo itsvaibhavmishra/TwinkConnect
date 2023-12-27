@@ -3,13 +3,13 @@ import validator from "validator";
 
 import { UserModel } from "../models/index.js";
 import { filterObj } from "../utils/filterObj.js";
+import { deleteFile, uploadFiles } from "../services/fileUploadService.js";
 
 // -------------------------- Update Profile --------------------------
 export const updateProfile = async (req, res, next) => {
   try {
     const { userId, firstName, lastName, activityStatus } = req.body;
-    console.log(req.body);
-    console.log(req.file);
+    const avatar = req.file;
 
     // check for empty fields
     if (!userId || !firstName || !lastName || !activityStatus) {
@@ -47,12 +47,55 @@ export const updateProfile = async (req, res, next) => {
       );
     }
 
+    // url for avatar will be stored here
+    let fileUrls = [];
+
+    if (avatar) {
+      // set main folder for cloudinary
+      const mainFolder = "User Avatars";
+
+      // delete existing avatar
+      if (user.avatar) {
+        const fileName = user.avatar.split("/").pop().split(".")[0];
+
+        await deleteFile(mainFolder, `${firstName} ${userId}`, fileName);
+      }
+
+      // Upload files to Cloudinary
+      const uploadResult = await uploadFiles(
+        mainFolder,
+        avatar,
+        `${firstName} ${userId}`
+      );
+
+      fileUrls = uploadResult.fileUrls;
+    } else {
+      // set main folder for cloudinary
+      const mainFolder = "User Avatars";
+
+      // delete existing avatar
+      if (user.avatar) {
+        const fileName = user.avatar.split("/").pop().split(".")[0];
+
+        await deleteFile(mainFolder, `${firstName} ${userId}`, fileName);
+      }
+    }
+
+    // updating user
+    user.set({
+      firstName: firstName,
+      lastName: lastName,
+      avatar: avatar ? fileUrls[0] : "",
+      activityStatus: activityStatus,
+    });
+
+    user.save();
+
     return res.status(200).json({
       status: "success",
-      message: "Returned from backend 😀",
+      message: "Profile updated successfully",
       user: {
-        firstName: user,
-        firstName,
+        firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,
         activityStatus: user.activityStatus,

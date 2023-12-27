@@ -34,15 +34,12 @@ export const UpdateProfile = createAsyncThunk(
       formData.append("lastName", formValues.lastName);
       formData.append("activityStatus", formValues.activityStatus);
 
-      console.log(formValues.avatar);
-
       const { data } = await axios.post("/user/update-profile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
       // show snackbar
       dispatch(
         ShowSnackbar({
@@ -50,17 +47,6 @@ export const UpdateProfile = createAsyncThunk(
           message: data.message,
         })
       );
-
-      //   // if user is not verified
-      //   if (!data.user) {
-      //     dispatch(updateOtpEmail({ otpEmail: formValues.email }));
-      //     setTimeout(() => {
-      //       window.location.href = "/auth/verify";
-      //     }, 1000);
-      //   } else {
-      //     // update user data
-      //     dispatch(updateUser(data.user));
-      //   }
 
       return data;
     } catch (error) {

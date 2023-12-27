@@ -155,11 +155,12 @@ export default function UploadAvatar({
 
         {hasFile && (
           <>
-            <StyledOptionButton size="small" onClick={onRemove} setval={0.5}>
-              <Trash />
-            </StyledOptionButton>
             <StyledOptionButton size="small" onClick={onCrop} setval={13}>
               <Pen />
+            </StyledOptionButton>
+
+            <StyledOptionButton size="small" onClick={onRemove} setval={0.5}>
+              <Trash />
             </StyledOptionButton>
           </>
         )}

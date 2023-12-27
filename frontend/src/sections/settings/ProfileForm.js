@@ -18,7 +18,7 @@ const ProfileForm = () => {
   const { id, avatar, firstName, lastName, activityStatus } = useSelector(
     (state) => state.user.user
   );
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -55,7 +55,6 @@ const ProfileForm = () => {
   });
 
   const {
-    // reset,
     setError,
     setValue,
     handleSubmit,
@@ -121,9 +120,6 @@ const ProfileForm = () => {
       data.userId = id;
       // submit data to backend
       dispatch(UpdateProfile(data));
-
-      // // Reset the form to its default values
-      // reset();
     } catch (error) {
       console.error(error);
       setError("afterSubmit", {
@@ -151,10 +147,6 @@ const ProfileForm = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {/* {!!errors.afterSubmit && (
-          <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )} */}
-
         <RHFUploadAvatar
           name="avatar"
           maxSize={3145728}
@@ -162,6 +154,7 @@ const ProfileForm = () => {
           onRemove={handleRemoveImage}
           onEdit={handleEditImage}
           formState={methods.formState}
+          defaultValues={defaultValues}
         />
         <Divider>
           <Stack
@@ -212,7 +205,7 @@ const ProfileForm = () => {
           name="activityStatus"
           label="Activity Status"
         />
-        {isDirty || fileChanged ? (
+        {isLoading || isDirty || fileChanged ? (
           <Stack direction={"row"} justifyContent={"end"}>
             <LoadingButton
               color="primary"

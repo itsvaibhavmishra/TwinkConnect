@@ -10,6 +10,7 @@ RHFUploadAvatar.propTypes = {
   formState: PropTypes.object,
   onRemove: PropTypes.func,
   onEdit: PropTypes.func,
+  defaultValues: PropTypes.object,
 };
 
 export function RHFUploadAvatar({
@@ -17,6 +18,7 @@ export function RHFUploadAvatar({
   formState,
   onRemove,
   onEdit,
+  defaultValues,
   ...other
 }) {
   const methods = useFormContext(); // Use useFormContext to get the form methods
@@ -43,6 +45,7 @@ export function RHFUploadAvatar({
 
     // Check if the image is present, not initially added, and not on form submission
     if (
+      !defaultValues[name] &&
       imageValue &&
       !initialImageAdded &&
       !methods.formState.isSubmitSuccessful
@@ -50,7 +53,7 @@ export function RHFUploadAvatar({
       setInitialImageAdded(true);
       handleOpenCropper();
     }
-  }, [methods, initialImageAdded, name]);
+  }, [methods, initialImageAdded, name, defaultValues]);
 
   const handleOnRemove = () => {
     setInitialImageAdded(false);
