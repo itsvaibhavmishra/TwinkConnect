@@ -54,7 +54,7 @@ export const protect = async (req, res, next) => {
       );
     }
 
-    req.user = decoded;
+    req.user = this_user;
     next();
   } catch (error) {
     return next(createHttpError.Unauthorized("Invalid token"));

@@ -9,17 +9,17 @@ import { validateAvatar } from "../services/userService.js";
 // -------------------------- Update Profile --------------------------
 export const updateProfile = async (req, res, next) => {
   try {
-    const { userId, firstName, lastName, activityStatus } = req.body;
+    const { firstName, lastName, activityStatus } = req.body;
     const avatar = req.file;
 
     // check for empty fields
-    if (!userId || !firstName || !lastName || !activityStatus) {
+    if (!firstName || !lastName || !activityStatus) {
       throw createHttpError.BadRequest(
-        "Required fields: userId, firstName, lastName, activityStatus"
+        "Required fields: firstName, lastName, activityStatus"
       );
     }
 
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(req.user._id);
 
     if (!user) {
       throw createHttpError.NotFound("Invalid User");
@@ -62,14 +62,14 @@ export const updateProfile = async (req, res, next) => {
       if (user.avatar) {
         const fileName = user.avatar.split("/").pop().split(".")[0];
 
-        await deleteFile(mainFolder, `${firstName} ${userId}`, fileName);
+        await deleteFile(mainFolder, `${firstName} ${user._id}`, fileName);
       }
 
       // Upload files to Cloudinary
       const uploadResult = await uploadFiles(
         mainFolder,
         avatar,
-        `${firstName} ${userId}`
+        `${firstName} ${user._id}`
       );
 
       fileUrls = uploadResult.fileUrls;
@@ -81,7 +81,7 @@ export const updateProfile = async (req, res, next) => {
       if (user.avatar) {
         const fileName = user.avatar.split("/").pop().split(".")[0];
 
-        await deleteFile(mainFolder, `${firstName} ${userId}`, fileName);
+        await deleteFile(mainFolder, `${firstName} ${user._id}`, fileName);
       }
     }
 
