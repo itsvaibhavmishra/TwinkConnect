@@ -14,7 +14,7 @@ const blobUrlToFile = async (blobUrl, fileName) => {
 // ------------- Login Thunk -------------
 export const UpdateProfile = createAsyncThunk(
   "auth/update-profile",
-  async (formValues, { rejectWithValue, dispatch, getState }) => {
+  async (formValues, { rejectWithValue, dispatch }) => {
     try {
       // Check if avatar is a Blob URL and convert it to File
       if (formValues.avatar && formValues.avatar.startsWith("blob:")) {
@@ -25,7 +25,6 @@ export const UpdateProfile = createAsyncThunk(
 
         formValues.avatar = file;
       }
-      const token = getState().user.user.token;
 
       const formData = new FormData();
       formData.append("avatar", formValues.avatar);

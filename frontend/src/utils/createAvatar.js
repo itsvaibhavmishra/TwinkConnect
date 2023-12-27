@@ -26,7 +26,7 @@ export const createAvatar = (name) => {
   };
 };
 
-export default function getAvatar({ avatar, name, theme }) {
+export default function getAvatar(avatar, name, theme) {
   return avatar ? (
     <Avatar src={avatar} alt={name} />
   ) : (

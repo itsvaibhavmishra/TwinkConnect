@@ -15,17 +15,20 @@ import {
 import { SignOut } from "phosphor-react";
 
 // redux imports
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { LogoutUser } from "../../redux/slices/actions/authActions";
 
 import TwinkLogo from "../../assets/icons/logo/TwinkChat.png";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import ThemeSwitch from "../../components/ThemeSwitch";
 import useSettings from "../../hooks/useSettings";
+import getAvatar from "../../utils/createAvatar";
 
 const Sidebar = () => {
   // using redux
   const dispatch = useDispatch();
+
+  const { avatar, firstName } = useSelector((state) => state.user.user);
 
   const theme = useTheme();
 
@@ -106,11 +109,17 @@ const Sidebar = () => {
             }}
             hidden={isSmallScreen}
           >
-            <img
-              src={TwinkLogo}
-              alt="TwinkChat_Logo"
-              style={{ padding: "2px 0px" }}
-            />
+            <a
+              href="https://github.com/itsvaibhavmishra/TwinkChat-2.0"
+              target="_blank"
+              rel={"noreferrer"}
+            >
+              <img
+                src={TwinkLogo}
+                alt="TwinkChat_Logo"
+                style={{ padding: "2px 0px" }}
+              />
+            </a>
           </Box>
 
           {/* Center Menus */}
@@ -203,12 +212,7 @@ const Sidebar = () => {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
               >
-                <Avatar
-                  id="basic-menu"
-                  src={""}
-                  label={"Avatar"}
-                  sx={{ cursor: "pointer", height: 35, width: 35 }}
-                />
+                {getAvatar(avatar, firstName, theme)}
               </IconButton>
               <Menu
                 id="basic-menu"
@@ -289,12 +293,7 @@ const Sidebar = () => {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
               >
-                <Avatar
-                  id="basic-menu"
-                  src={""}
-                  label={"Avatar"}
-                  sx={{ cursor: "pointer" }}
-                />
+                {getAvatar(avatar, firstName, theme)}
               </IconButton>
               <Menu
                 id="basic-menu"

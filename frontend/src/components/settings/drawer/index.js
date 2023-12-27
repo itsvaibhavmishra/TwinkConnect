@@ -19,6 +19,7 @@ import ToggleButton from "./ToggleButton";
 import SettingDirection from "./SettingDirection";
 import SettingFullscreen from "./SettingFullscreen";
 import SettingColorPresets from "./SettingColorPresets";
+import Developer from "./Developer";
 // import useLocales from "../../../hooks/useLocales";
 // import Avatar from "@mui/material/Avatar";
 
@@ -203,6 +204,7 @@ export default function SettingsDrawer() {
                   </Stack> */}
 
                 <SettingFullscreen />
+                <Developer />
               </Stack>
             </Stack>
           </RootStyle>
