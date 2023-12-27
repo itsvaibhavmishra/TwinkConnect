@@ -5,7 +5,6 @@ import {
   useTheme,
   Stack,
   IconButton,
-  Avatar,
   Menu,
   MenuItem,
   Divider,

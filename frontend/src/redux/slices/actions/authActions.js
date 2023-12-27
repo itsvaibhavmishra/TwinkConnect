@@ -52,13 +52,15 @@ export const LogoutUser = createAsyncThunk(
   async (arg, { rejectWithValue, dispatch }) => {
     return new Promise(async (resolve) => {
       try {
+        const { data } = await axios.post("/auth/logout");
+
         dispatch(logout());
 
         // show snackbar
         dispatch(
           ShowSnackbar({
-            severity: "success",
-            message: "Logged Out",
+            severity: data.status,
+            message: data.message,
           })
         );
 
@@ -67,8 +69,8 @@ export const LogoutUser = createAsyncThunk(
       } catch (error) {
         dispatch(
           ShowSnackbar({
-            severity: "error",
-            message: "Error logging out",
+            severity: error.error.status,
+            message: error.error.message,
           })
         );
 
