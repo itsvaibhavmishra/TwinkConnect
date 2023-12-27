@@ -4,6 +4,7 @@ import validator from "validator";
 import { UserModel } from "../models/index.js";
 import { filterObj } from "../utils/filterObj.js";
 import { deleteFile, uploadFiles } from "../services/fileUploadService.js";
+import { validateAvatar } from "../services/userService.js";
 
 // -------------------------- Update Profile --------------------------
 export const updateProfile = async (req, res, next) => {
@@ -51,6 +52,9 @@ export const updateProfile = async (req, res, next) => {
     let fileUrls = [];
 
     if (avatar) {
+      // validate avatar
+      validateAvatar(avatar);
+
       // set main folder for cloudinary
       const mainFolder = "User Avatars";
 

@@ -7,6 +7,7 @@ import { updateProfile } from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
+// multer setup
 const upload = multer();
 
 // Update Profile Route
