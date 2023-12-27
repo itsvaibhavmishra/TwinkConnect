@@ -1,6 +1,7 @@
-import jwtDecode from 'jwt-decode';
-import { PATH_AUTH } from '../routes/paths';
-import axios from './axios';
+import { jwtDecode } from "jwt-decode";
+
+import { PATH_AUTH } from "../routes/paths";
+import axios from "./axios";
 
 const isValidToken = (accessToken) => {
   if (!accessToken) {
@@ -24,9 +25,9 @@ const handleTokenExpired = (exp) => {
 
   expiredTimer = setTimeout(() => {
     // eslint-disable-next-line no-alert
-    alert('Token expired');
+    alert("Token expired");
 
-    localStorage.removeItem('accessToken');
+    delete axios.defaults.headers.common.Authorization;
 
     window.location.href = PATH_AUTH.login;
   }, timeLeft);
@@ -34,14 +35,12 @@ const handleTokenExpired = (exp) => {
 
 const setSession = (accessToken) => {
   if (accessToken) {
-    localStorage.setItem('accessToken', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     // function for handling token expiry
     const { exp } = jwtDecode(accessToken);
     handleTokenExpired(exp);
   } else {
-    localStorage.removeItem('accessToken');
     delete axios.defaults.headers.common.Authorization;
   }
 };

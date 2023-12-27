@@ -37,7 +37,6 @@ export const UpdateProfile = createAsyncThunk(
       const { data } = await axios.post("/user/update-profile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
       });
       // show snackbar

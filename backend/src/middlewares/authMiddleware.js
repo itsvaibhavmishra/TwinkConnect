@@ -1,7 +1,6 @@
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
-
 import { UserModel } from "../models/index.js";
 
 // ------------------- Protected route middleware -------------------
@@ -26,27 +25,38 @@ export const protect = async (req, res, next) => {
   }
 
   // verifying token
-  const decoded = await promisify(jwt.verify)(
-    token,
-    process.env.JWT_ACCESS_SECRET
-  );
-
-  // check for existing user with same token
-  const this_user = await UserModel.findById(decoded.userId);
-
-  if (!this_user) {
-    return next(createHttpError.Unauthorized("Unidentified User"));
-  }
-
-  // check if user changed password after new token was created
-  if (this_user.changedPasswordAfter(decoded.iat)) {
-    return next(
-      createHttpError.Unauthorized(
-        "Password updated, logging out! Please login again"
-      )
+  try {
+    const decoded = await promisify(jwt.verify)(
+      token,
+      process.env.JWT_ACCESS_SECRET
     );
-  }
 
-  req.user = decoded;
-  next();
+    // Check for token expiration
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (decoded.exp < currentTime) {
+      return next(
+        createHttpError.Unauthorized("Token expired, Please login again")
+      );
+    }
+
+    // check for existing user with the same token
+    const this_user = await UserModel.findById(decoded.userId);
+
+    if (!this_user) {
+      return next(createHttpError.Unauthorized("Unidentified User"));
+    }
+
+    // check if the user changed the password after the new token was created
+    if (this_user.changedPasswordAfter(decoded.iat)) {
+      return next(
+        createHttpError.Unauthorized("Password updated, Please login again")
+      );
+    }
+
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return next(createHttpError.Unauthorized("Invalid token"));
+  }
 };
