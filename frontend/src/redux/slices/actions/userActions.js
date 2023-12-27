@@ -27,18 +27,21 @@ export const UpdateProfile = createAsyncThunk(
       }
       const token = getState().user.user.token;
 
-      const { data } = await axios.post(
-        "/user/update-profile",
-        {
-          ...formValues,
+      const formData = new FormData();
+      formData.append("avatar", formValues.avatar);
+      formData.append("userId", formValues.userId);
+      formData.append("firstName", formValues.firstName);
+      formData.append("lastName", formValues.lastName);
+      formData.append("activityStatus", formValues.activityStatus);
+
+      console.log(formValues.avatar);
+
+      const { data } = await axios.post("/user/update-profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      });
       console.log(data);
       // show snackbar
       dispatch(

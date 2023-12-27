@@ -8,7 +8,6 @@ import { xss } from "express-xss-sanitizer";
 import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import compression from "compression";
-import fileUpload from "express-fileupload";
 import rateLimit from "express-rate-limit";
 import createHttpError from "http-errors"; // error handler
 
@@ -44,12 +43,6 @@ app.use(xss()); // xss protection
 app.use(mongoSanitize()); // sanitization for mongodb
 app.use(cookieParser()); // parsing cookies
 app.use(compression()); // gzip compression
-
-app.use(
-  fileUpload({
-    useTempFiles: true,
-  })
-);
 
 // Index Route
 app.get("/", (req, res) => {

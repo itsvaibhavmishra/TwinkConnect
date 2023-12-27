@@ -7,7 +7,9 @@ import { filterObj } from "../utils/filterObj.js";
 // -------------------------- Update Profile --------------------------
 export const updateProfile = async (req, res, next) => {
   try {
-    const { userId, firstName, lastName, avatar, activityStatus } = req.body;
+    const { userId, firstName, lastName, activityStatus } = req.body;
+    console.log(req.body);
+    console.log(req.file);
 
     // check for empty fields
     if (!userId || !firstName || !lastName || !activityStatus) {
