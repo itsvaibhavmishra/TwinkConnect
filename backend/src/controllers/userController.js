@@ -19,12 +19,6 @@ export const updateProfile = async (req, res, next) => {
       );
     }
 
-    const user = await UserModel.findById(req.user._id);
-
-    if (!user) {
-      throw createHttpError.NotFound("Invalid User");
-    }
-
     // Name validation
     if (
       !validator.isLength(firstName, { min: 3, max: 16 }) ||

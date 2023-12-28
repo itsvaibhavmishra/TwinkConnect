@@ -6,7 +6,16 @@ export default function Developer() {
   };
 
   return (
-    <Box width={"100%"} component={Button} onClick={openLinkInNewTab}>
+    <Box
+      width={"100%"}
+      component={Button}
+      onClick={openLinkInNewTab}
+      sx={{
+        "&:hover": {
+          backgroundColor: (theme) => theme.palette.background.default,
+        },
+      }}
+    >
       <Stack direction={"column"} alignItems={"center"} spacing={2}>
         <Avatar
           src="https://vaibhaw.netlify.app/img/favicon.ico"
