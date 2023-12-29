@@ -9,7 +9,6 @@ import { filterObj } from "../utils/filterObj.js";
 import otp from "../Templates/Mail/otp.js";
 import { formatRemainingTime, transporter } from "../services/mailer.js";
 import { generateToken, verifyToken } from "../services/tokenService.js";
-import { findUser } from "../services/userService.js";
 import reset from "../Templates/Mail/reset.js";
 
 // -------------------------- Login auth --------------------------
@@ -496,7 +495,11 @@ export const refreshToken = async (req, res, next) => {
       process.env.JWT_REFRESH_SECRET
     );
 
-    const user = await findUser(check.userId);
+    const user = await UserModel.findOne({ _id: check.userId, verified: true });
+
+    if (!user) {
+      throw createHttpError.NotFound("User not verified/does not exist");
+    }
 
     // generating user token
     const access_token = await generateToken(

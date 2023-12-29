@@ -1,10 +1,10 @@
 import { jwtDecode } from "jwt-decode";
-
 import { PATH_AUTH } from "../routes/paths";
 import axios from "./axios";
 
 const isValidToken = (accessToken) => {
   if (!accessToken) {
+    localStorage.removeItem("redux-root");
     return false;
   }
   const decoded = jwtDecode(accessToken);
@@ -24,10 +24,10 @@ const handleTokenExpired = (exp) => {
   clearTimeout(expiredTimer);
 
   expiredTimer = setTimeout(() => {
-    // eslint-disable-next-line no-alert
-    alert("Token expired");
-
+    localStorage.removeItem("redux-root");
     delete axios.defaults.headers.common.Authorization;
+
+    alert("Token expired");
 
     window.location.href = PATH_AUTH.login;
   }, timeLeft);

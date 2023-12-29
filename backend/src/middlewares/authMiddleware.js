@@ -41,7 +41,10 @@ export const protect = async (req, res, next) => {
     }
 
     // check for existing user with the same token
-    const this_user = await UserModel.findById(decoded.userId);
+    const this_user = await UserModel.findOne({
+      _id: decoded.userId,
+      verified: true,
+    });
 
     if (!this_user) {
       return next(createHttpError.Unauthorized("Unidentified User"));
