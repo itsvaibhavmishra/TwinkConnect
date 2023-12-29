@@ -1,47 +1,69 @@
 import { jwtDecode } from "jwt-decode";
-import { PATH_AUTH } from "../routes/paths";
 import axios from "./axios";
+import { LogoutUser } from "../redux/slices/actions/authActions";
 
-const isValidToken = (accessToken) => {
-  if (!accessToken) {
-    localStorage.removeItem("redux-root");
-    return false;
-  }
-  const decoded = jwtDecode(accessToken);
+let expiredTimer;
+let isLogoutDispatched = false; // Flag to track whether LogoutUser has been dispatched
 
-  const currentTime = Date.now() / 1000;
-
-  return decoded.exp > currentTime;
+// clear session if token is expired
+const clearSession = () => {
+  delete axios.defaults.headers.common.Authorization;
 };
 
-const handleTokenExpired = (exp) => {
-  let expiredTimer;
+const isValidToken = (accessToken, dispatch) => {
+  if (!accessToken) {
+    clearSession();
+    return false;
+  }
 
+  try {
+    const decoded = jwtDecode(accessToken);
+    const currentTime = Date.now() / 1000;
+
+    if (!(decoded.exp > currentTime)) {
+      clearSession();
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    clearSession();
+    return false;
+  }
+};
+
+const handleSessionExpiration = (exp, dispatch) => {
   const currentTime = Date.now();
-
-  const timeLeft = exp * 1000 - currentTime;
+  const timeLeft = exp * 1000 - currentTime; //- 86386000;
 
   clearTimeout(expiredTimer);
 
   expiredTimer = setTimeout(() => {
-    localStorage.removeItem("redux-root");
-    delete axios.defaults.headers.common.Authorization;
-
-    alert("Token expired");
-
-    window.location.href = PATH_AUTH.login;
+    clearSession();
+    if (!isLogoutDispatched) {
+      alert("Token expired, Logging you out...");
+      dispatch(LogoutUser());
+      isLogoutDispatched = true; // Set the flag to true after dispatching
+    }
   }, timeLeft);
 };
 
-const setSession = (accessToken) => {
+const setSession = (accessToken, dispatch) => {
+  isLogoutDispatched = false;
+
   if (accessToken) {
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
-    // function for handling token expiry
+    // Function for handling token expiry
     const { exp } = jwtDecode(accessToken);
-    handleTokenExpired(exp);
+    handleSessionExpiration(exp, dispatch);
   } else {
-    delete axios.defaults.headers.common.Authorization;
+    clearSession();
+    if (!isLogoutDispatched) {
+      dispatch(LogoutUser());
+      isLogoutDispatched = true; // Set the flag to true after dispatching
+    }
   }
 };
 
