@@ -9,3 +9,8 @@ FRONT_URL = "http://localhost:3000"
 # Nodemailer Config
 MAIL_USER = ''
 MAIL_PASS = ''
+
+# Cloudinary Config
+CLOUDINARY_CLOUD_NAME = ""
+CLOUDINARY_API_KEY = ""
+CLOUDINARY_API_SECRET = ""

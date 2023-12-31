@@ -1,8 +1,6 @@
 import createHttpError from "http-errors";
 import validator from "validator";
 
-import { UserModel } from "../models/index.js";
-import { filterObj } from "../utils/filterObj.js";
 import { deleteFile, uploadFiles } from "../services/fileUploadService.js";
 import { validateAvatar } from "../services/userService.js";
 
