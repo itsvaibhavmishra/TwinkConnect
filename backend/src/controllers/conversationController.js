@@ -1,11 +1,13 @@
 import createHttpError from "http-errors";
-import validator from "validator";
 
-import { filterObj } from "../utils/filterObj.js";
-import { ConversationModel, UserModel } from "../models/index.js";
-import { doesConversationExist } from "../services/conversationService.js";
+import { UserModel } from "../models/index.js";
+import {
+  createConversation,
+  findConversation,
+  getUserConversations,
+} from "../services/conversationService.js";
 
-// -------------------------- Create/Open Conversation --------------------------
+// -------------------------- Create/Open Direct Conversation --------------------------
 export const createOpenConversation = async (req, res, next) => {
   try {
     const sender_id = req.user._id;
@@ -28,7 +30,7 @@ export const createOpenConversation = async (req, res, next) => {
     }
 
     // check for existing conversation
-    const existing_conversation = await doesConversationExist(
+    const existing_conversation = await findConversation(
       sender_id,
       receiver_id
     );
@@ -38,27 +40,44 @@ export const createOpenConversation = async (req, res, next) => {
         status: "success",
         conversation: existing_conversation,
       });
+    } else {
+      // creating a new conversation
+      let convoData;
+
+      if (sender_id.toString() === receiver_id.toString()) {
+        convoData = {
+          name: `${receiver.firstName} ${receiver.lastName}`,
+          isGroup: false,
+          users: [receiver_id],
+        };
+      } else {
+        convoData = {
+          name: `${receiver.firstName} ${receiver.lastName}`,
+          isGroup: false,
+          users: [sender_id, receiver_id],
+        };
+      }
+
+      const new_conversation = await createConversation(convoData);
+
+      res.status(200).json({
+        status: "success",
+        conversation: new_conversation,
+      });
     }
+  } catch (error) {
+    next(error);
+  }
+};
 
-    // creating a new conversation
-    let convoData = {
-      name: `${receiver.firstName} ${receiver.lastName}`,
-      isGroup: false,
-      users: [sender_id, receiver_id],
-    };
+// -------------------------- Get Direct Conversations --------------------------
+export const getConversations = async (req, res, next) => {
+  try {
+    const user_id = req.user._id;
 
-    const newConvo = await ConversationModel.create(convoData);
+    const conversations = await getUserConversations(user_id);
 
-    if (!newConvo) {
-      throw createHttpError.InternalServerError(
-        "Unable to create conversation"
-      );
-    }
-
-    res.status(200).json({
-      status: "success",
-      conversation: newConvo,
-    });
+    res.status(200).json({ status: "success", conversations: conversations });
   } catch (error) {
     next(error);
   }

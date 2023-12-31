@@ -2,13 +2,20 @@ import express from "express";
 import trimRequest from "trim-request";
 
 import { protect } from "../middlewares/authMiddleware.js";
-import { createOpenConversation } from "../controllers/conversationController.js";
+import {
+  createOpenConversation,
+  getConversations,
+} from "../controllers/conversationController.js";
 
 const conversationRouter = express.Router();
 
-// Update Profile Route
+// Create New Conversation Route
 conversationRouter
-  .route("/")
+  .route("/create-open-conversation")
   .post(trimRequest.all, protect, createOpenConversation);
+
+conversationRouter
+  .route("/get-conversations")
+  .get(trimRequest.all, protect, getConversations);
 
 export default conversationRouter;

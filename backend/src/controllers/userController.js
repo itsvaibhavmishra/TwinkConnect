@@ -11,6 +11,7 @@ export const updateProfile = async (req, res, next) => {
   try {
     const { firstName, lastName, activityStatus } = req.body;
     const avatar = req.file;
+    const user = req.user;
 
     // check for empty fields
     if (!firstName || !lastName || !activityStatus) {
