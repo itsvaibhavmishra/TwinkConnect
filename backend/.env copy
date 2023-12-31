@@ -1,0 +1,11 @@
+PORT = 8000
+MONGODB_URI = ""
+JWT_ACCESS_SECRET = ""
+JWT_REFRESH_SECRET = ""
+
+# Origin
+FRONT_URL = "http://localhost:3000"
+
+# Nodemailer Config
+MAIL_USER = ''
+MAIL_PASS = ''

@@ -1,0 +1,50 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "TwinkChat Backend",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "TwinkChat",
+    "Chat",
+    "ChatApp",
+    "MERN",
+    "NodeJS",
+    "Express",
+    "MongoDB",
+    "MERNChat"
+  ],
+  "author": "Vaibhaw Mishra",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^1.41.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.1.5",
+    "express-xss-sanitizer": "^1.1.6",
+    "helmet": "^7.1.0",
+    "http-errors": "^2.0.0",
+    "image-size": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.7",
+    "otp-generator": "^4.0.1",
+    "streamifier": "^0.1.1",
+    "trim-request": "^1.0.6",
+    "validator": "^13.11.0"
+  }
+}
