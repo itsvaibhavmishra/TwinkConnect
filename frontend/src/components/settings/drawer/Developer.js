@@ -1,5 +1,8 @@
 import { Box, Stack, Avatar, Typography, Button, alpha } from "@mui/material";
 
+// Devloper Logo
+import Logo from "../../../assets/icons/logo/VaibhawMishra.ico";
+
 export default function Developer() {
   const openLinkInNewTab = () => {
     window.open("https://vaibhaw.netlify.app/", "_blank");
@@ -18,11 +21,11 @@ export default function Developer() {
     >
       <Stack direction={"column"} alignItems={"center"} spacing={2}>
         <Avatar
-          src="https://vaibhaw.netlify.app/img/favicon.ico"
+          src={Logo}
           alt={"VaibhawMishra"}
           sx={{
-            width: 80,
-            height: 80,
+            width: 90,
+            height: 90,
             p: 1,
             border: (theme) =>
               `1px dashed ${alpha(theme.palette.grey[500], 1)}`,
