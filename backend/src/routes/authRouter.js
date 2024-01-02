@@ -35,6 +35,6 @@ authRouter.route("/forgot-password").post(trimRequest.all, forgotPassword);
 authRouter.route("/reset-password").post(trimRequest.all, resetPassword);
 
 // Refresh Token Route
-authRouter.route("/refreshToken").post(trimRequest.all, refreshToken);
+authRouter.route("/refresh-token").post(trimRequest.all, refreshToken);
 
 export default authRouter;
