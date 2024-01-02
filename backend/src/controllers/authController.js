@@ -488,11 +488,8 @@ export const logout = async (req, res, next) => {
 export const refreshToken = async (req, res, next) => {
   try {
     const refresh_token = req.cookies.refreshToken;
-    console.log(refresh_token);
 
     if (!refresh_token) throw createHttpError.Unauthorized("Please login");
-
-    console.log("check2");
 
     const check = await verifyToken(
       refresh_token,
@@ -504,8 +501,6 @@ export const refreshToken = async (req, res, next) => {
     if (!user) {
       throw createHttpError.NotFound("User not verified/does not exist");
     }
-
-    console.log("check3");
 
     // generating user token
     const access_token = await generateToken(

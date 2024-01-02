@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import axios from "./axios";
-import { LogoutUser } from "../redux/slices/actions/authActions";
+import { LogoutUser, RefreshToken } from "../redux/slices/actions/authActions";
 
 let expiredTimer;
 let isLogoutDispatched = false; // Flag to track whether LogoutUser has been dispatched
@@ -35,16 +35,36 @@ const isValidToken = (accessToken, dispatch) => {
 
 const handleSessionExpiration = (exp, dispatch) => {
   const currentTime = Date.now();
-  const timeLeft = exp * 1000 - currentTime; //- 86386000;
+  const timeLeft = exp * 1000 - currentTime; // - 86386000;
+
+  // console.log(timeLeft);
 
   clearTimeout(expiredTimer);
 
   expiredTimer = setTimeout(() => {
-    clearSession();
-    if (!isLogoutDispatched) {
-      alert("Token expired, Logging you out...");
-      dispatch(LogoutUser());
-      isLogoutDispatched = true; // Set the flag to true after dispatching
+    // Check if token is still valid before attempting to refresh
+    if (isValidToken(axios.defaults.headers.common.Authorization, dispatch)) {
+      dispatch(RefreshToken())
+        .unwrap()
+        .then(() => {
+          // Token refreshed successfully
+          const { exp: newExp } = jwtDecode(
+            axios.defaults.headers.common.Authorization
+          );
+          handleSessionExpiration(newExp, dispatch);
+        })
+        .catch((error) => {
+          // Refresh token failed, log out user
+          clearSession();
+        });
+    } else {
+      // Token is already expired, log out user
+      clearSession();
+      if (!isLogoutDispatched) {
+        alert("Token expired, Logging you out...");
+        dispatch(LogoutUser());
+        isLogoutDispatched = true; // Set the flag to true after dispatching
+      }
     }
   }, timeLeft);
 };

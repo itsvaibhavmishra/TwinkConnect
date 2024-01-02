@@ -177,17 +177,11 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(RefreshToken.fulfilled, (state, action) => {
-        // check if user is verified
-        if (action.payload.user) {
-          state.isLoggedIn = true;
-        } else {
-          state.isLoggedIn = false;
-        }
+        state.isLoggedIn = true;
         state.isLoading = false;
         state.error = false;
       })
       .addCase(RefreshToken.rejected, (state, action) => {
-        state.isLoggedIn = false;
         state.isLoading = false;
         state.error = true;
       });

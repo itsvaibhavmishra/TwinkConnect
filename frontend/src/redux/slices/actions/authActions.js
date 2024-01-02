@@ -276,10 +276,9 @@ export const ResetPassword = createAsyncThunk(
 // ------------- Refresh Token Thunk -------------
 export const RefreshToken = createAsyncThunk(
   "auth/refresh-token",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (arg, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await axios.post("/auth/refresh-token/");
-      console.log(data);
 
       // if user is not verified
       if (!data.user) {
