@@ -10,6 +10,86 @@ import {
   IdentificationCard,
 } from "phosphor-react";
 
+const MembersList = [
+  {
+    _id: 0,
+    firstName: "Vaibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: true,
+  },
+  {
+    _id: 1,
+    firstName: "Gaibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: false,
+  },
+  {
+    _id: 2,
+    firstName: "Baibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: true,
+  },
+  {
+    _id: 3,
+    firstName: "Aaibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: true,
+  },
+  {
+    _id: 4,
+    firstName: "Paibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: true,
+  },
+  {
+    _id: 5,
+    firstName: "Oaibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: true,
+  },
+  {
+    _id: 6,
+    firstName: "Waibhav",
+    lastName: "Mishra",
+    avatar: "",
+    msg: "Hello",
+    time: "9:36",
+    unread: 0,
+    pinned: false,
+    online: true,
+  },
+];
+
 const Nav_Buttons = [
   {
     index: 0,
@@ -51,4 +131,4 @@ const Profile_Menu = [
   },
 ];
 
-export { Nav_Buttons, Profile_Menu };
+export { Nav_Buttons, MembersList, Profile_Menu };

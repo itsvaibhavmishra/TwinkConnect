@@ -15,7 +15,7 @@ function getAvatarColor(name) {
   if (INFO_NAME.includes(getFirstCharacter(name))) return "info";
   if (SUCCESS_NAME.includes(getFirstCharacter(name))) return "success";
   if (WARNING_NAME.includes(getFirstCharacter(name))) return "warning";
-  if (ERROR_NAME.includes(getFirstCharacter(name))) return "warning";
+  if (ERROR_NAME.includes(getFirstCharacter(name))) return "error";
   return "default";
 }
 
@@ -26,15 +26,18 @@ export const createAvatar = (name) => {
   };
 };
 
-export default function getAvatar(avatar, name, theme) {
+export default function getAvatar(avatar, name, theme, size) {
   return avatar ? (
-    <Avatar src={avatar} alt={name} />
+    <Avatar src={avatar} alt={name} sx={{ width: size, height: size }} />
   ) : (
     <Avatar
       sx={{
         backgroundColor: theme.palette[createAvatar(name).color].main,
         fontWeight: 800,
         color: "#fff",
+        width: size,
+        height: size,
+        fontSize: size - 15,
       }}
       alt={name}
     >
