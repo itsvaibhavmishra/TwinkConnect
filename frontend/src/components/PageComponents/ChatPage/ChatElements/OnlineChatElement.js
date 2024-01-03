@@ -1,6 +1,6 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
-import StyledBadge from "../../StyledBadge";
-import getAvatar from "../../../utils/createAvatar";
+import StyledBadge from "../../../StyledBadge";
+import getAvatar from "../../../../utils/createAvatar";
 
 const OnlineChatElement = ({ id, firstName, lastName, avatar }) => {
   // using theme

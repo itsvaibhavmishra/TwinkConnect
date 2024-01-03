@@ -10,9 +10,9 @@ import { MagnifyingGlass } from "phosphor-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { MembersList } from "../../../data";
-import AllChatElement from "./AllChatElement";
+import AllChatElement from "./ChatElements/AllChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
-import OnlineChatElement from "./OnlineChatElement";
+import OnlineChatElement from "./ChatElements/OnlineChatElement";
 
 const ChatsList = () => {
   // using theme
@@ -25,20 +25,20 @@ const ChatsList = () => {
     ? isSmallScreen
       ? "3.5"
       : "6.5"
-    : "4.5";
+    : "3.5";
 
   return (
     <Box
       sx={{
         position: "relative",
         height: "100%",
-        width: { xs: "100%", md: 380 },
+        width: { xs: "100%", md: 320 },
         backgroundColor: theme.palette.background.default,
         boxShadow: "0px 0px 2px #00000040",
         overflow: "hidden",
       }}
     >
-      <Stack p={3} spacing={2} sx={{ height: "100vh" }}>
+      <Stack p={3} spacing={2} sx={{ height: "100%" }}>
         <Typography variant="h5">Chats</Typography>
 
         {/* Search section */}

@@ -1,7 +1,7 @@
 import { Badge, Box, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
-import StyledBadge from "../../StyledBadge";
-import getAvatar from "../../../utils/createAvatar";
+import StyledBadge from "../../../StyledBadge";
+import getAvatar from "../../../../utils/createAvatar";
 
 const AllChatElement = ({
   id,
@@ -74,10 +74,15 @@ const AllChatElement = ({
             {time}
           </Typography>
           <Badge
-            color="primary"
             badgeContent={unread}
             max={9}
-            sx={{ paddingBottom: 1 }}
+            sx={{
+              paddingBottom: 1,
+              "& .MuiBadge-badge": {
+                color: theme.palette.primary.main,
+                backgroundColor: `${theme.palette.primary.dark}20`,
+              },
+            }}
           />
         </Stack>
       </Stack>
