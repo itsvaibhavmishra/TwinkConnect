@@ -25,14 +25,14 @@ const ChatsList = () => {
     ? isSmallScreen
       ? "3.5"
       : "6.5"
-    : "3.5";
+    : "4.5";
 
   return (
     <Box
       sx={{
         position: "relative",
         height: "100%",
-        width: { xs: "100%", md: 320 },
+        width: { xs: "100%", md: 380 },
         backgroundColor: theme.palette.background.default,
         boxShadow: "0px 0px 2px #00000040",
         overflow: "hidden",
@@ -67,6 +67,10 @@ const ChatsList = () => {
 
         <Divider />
 
+        <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+          Recent Chats
+        </Typography>
+
         {/* Chats setion starts here */}
         <Stack
           direction={"column"}
@@ -82,9 +86,6 @@ const ChatsList = () => {
         >
           {/* All Chats */}
           <Stack spacing={2.4}>
-            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
-              Recent Chats
-            </Typography>
             <Stack
               sx={{
                 borderRadius: 1,

@@ -10,6 +10,7 @@ const OnlineChatElement = ({ id, firstName, lastName, avatar }) => {
     <Box
       sx={{
         minWidth: 70,
+        maxWidth: 75,
         mt: 2,
         height: 50,
         borderRadius: 1,
@@ -37,7 +38,9 @@ const OnlineChatElement = ({ id, firstName, lastName, avatar }) => {
         >
           {getAvatar(avatar, firstName, theme, 35)}
         </StyledBadge>
-        <Typography variant="caption">{firstName}</Typography>
+        <Typography variant="caption" sx={{ userSelect: "none" }}>
+          {firstName}
+        </Typography>
       </Stack>
     </Box>
   );
