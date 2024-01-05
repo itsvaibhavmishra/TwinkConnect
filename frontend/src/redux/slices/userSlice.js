@@ -71,7 +71,6 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(UpdateProfile.rejected, (state, action) => {
-        state.isLoggedIn = false;
         state.isLoading = false;
         state.error = true;
       });

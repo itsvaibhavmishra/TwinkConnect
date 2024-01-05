@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box,
   Stack,
@@ -9,6 +10,9 @@ import {
 import { MagnifyingGlass } from "phosphor-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { GetConversations } from "../../../redux/slices/actions/chatActions";
+
 import { MembersList } from "../../../data";
 import AllChatElement from "./ChatElements/AllChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
@@ -18,14 +22,33 @@ const ChatsList = () => {
   // using theme
   const theme = useTheme();
 
-  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  // from redux
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { conversations } = useSelector((state) => state.chat);
 
-  const slidesPerView = isMediumScreen
-    ? isSmallScreen
-      ? "3.5"
-      : "6.5"
-    : "3.5";
+  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  const isSmallerScreen = useMediaQuery((theme) => theme.breakpoints.up("xs"));
+
+  const getSlidesPerView = () => {
+    if (isMediumScreen) {
+      return "3.5";
+    } else if (isSmallScreen) {
+      return "6.5";
+    } else if (isSmallerScreen) {
+      return "3.5";
+    }
+  };
+  const slidesPerView = getSlidesPerView();
+
+  useEffect(() => {
+    if (user.token) {
+      dispatch(GetConversations());
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <Box
@@ -53,6 +76,8 @@ const ChatsList = () => {
             />
           </Search>
         </Stack>
+
+        {/* Online Friends Slider */}
         <Stack spacing={1}>
           <Swiper spaceBetween={20} slidesPerView={slidesPerView}>
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
@@ -91,7 +116,7 @@ const ChatsList = () => {
                 borderRadius: 1,
               }}
             >
-              {MembersList.filter((e) => !e.pinned).map((e) => {
+              {conversations.map((e) => {
                 return <AllChatElement {...e} key={e._id} />;
               })}
             </Stack>

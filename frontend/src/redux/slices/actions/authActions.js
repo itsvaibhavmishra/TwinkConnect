@@ -272,7 +272,6 @@ export const ResetPassword = createAsyncThunk(
   }
 );
 
-// TODO
 // ------------- Refresh Token Thunk -------------
 export const RefreshToken = createAsyncThunk(
   "auth/refresh-token",

@@ -1,15 +1,15 @@
 import { Badge, Box, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
+
 import StyledBadge from "../../../StyledBadge";
 import getAvatar from "../../../../utils/createAvatar";
+import formatTime from "../../../../utils/timeFormatter";
 
 const AllChatElement = ({
-  id,
-  firstName,
-  lastName,
-  avatar,
-  msg,
-  time,
+  _id,
+  name,
+  latestMessage,
+  picture,
   unread,
   online,
 }) => {
@@ -28,7 +28,7 @@ const AllChatElement = ({
         backgroundColor: "none",
         cursor: "pointer",
       }}
-      p={2}
+      py={2}
     >
       <Stack
         direction={"row"}
@@ -43,20 +43,20 @@ const AllChatElement = ({
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              {getAvatar(avatar, firstName, theme)}
+              {getAvatar(picture, name, theme)}
             </StyledBadge>
           ) : (
-            getAvatar(avatar, firstName, theme)
+            getAvatar(picture, name, theme)
           )}
 
           {/* Name and message */}
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{`${firstName} ${lastName}`}</Typography>
+            <Typography variant="subtitle2">{name}</Typography>
             <Typography
               variant="caption"
               sx={{ color: theme.palette.text.secondary, paddingTop: 0.8 }}
             >
-              {truncateText(msg, 20)}
+              {truncateText(latestMessage?.message, 20)}
             </Typography>
           </Stack>
         </Stack>
@@ -71,7 +71,7 @@ const AllChatElement = ({
               paddingBottom: 0.8,
             }}
           >
-            {time}
+            {formatTime(latestMessage?.updatedAt)}
           </Typography>
           <Badge
             badgeContent={unread}

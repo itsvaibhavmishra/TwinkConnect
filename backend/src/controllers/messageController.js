@@ -5,6 +5,7 @@ import {
   populateMessage,
   updateLatestMessage,
 } from "../services/messageService.js";
+import { ConversationModel } from "../models/index.js";
 
 // -------------------------- Send Message --------------------------
 export const sendMessage = async (req, res, next) => {
@@ -14,6 +15,12 @@ export const sendMessage = async (req, res, next) => {
 
     if (!convo_id || (!message && !files)) {
       throw createHttpError.BadRequest("Invalid conversation id or message");
+    }
+
+    const convo_exisits = await ConversationModel.findById({ _id: convo_id });
+
+    if (!convo_exisits) {
+      throw createHttpError.NotFound("Conversation does not exist");
     }
 
     const msgData = {

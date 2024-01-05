@@ -4,6 +4,8 @@ const conversationSchema = mongoose.Schema(
   {
     name: { type: String, required: [true, "Name is required"], trim: true },
 
+    picture: { type: String },
+
     isGroup: { type: Boolean, required: true, default: false },
 
     users: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
