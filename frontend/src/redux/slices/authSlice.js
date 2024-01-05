@@ -5,6 +5,7 @@ import {
   ForgorPassword,
   LoginUser,
   LogoutUser,
+  RefreshToken,
   RegisterUser,
   ResetPassword,
   SendOTP,
@@ -167,6 +168,20 @@ const slice = createSlice({
       })
       .addCase(ResetPassword.rejected, (state, action) => {
         state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+      // --------- Refresh Token Builder ---------
+      .addCase(RefreshToken.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(RefreshToken.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(RefreshToken.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
       });

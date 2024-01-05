@@ -47,12 +47,14 @@ export const createOpenConversation = async (req, res, next) => {
       if (sender_id.toString() === receiver_id.toString()) {
         convoData = {
           name: `${receiver.firstName} ${receiver.lastName}`,
+          picture: receiver.avatar,
           isGroup: false,
           users: [receiver_id],
         };
       } else {
         convoData = {
           name: `${receiver.firstName} ${receiver.lastName}`,
+          picture: receiver.avatar,
           isGroup: false,
           users: [sender_id, receiver_id],
         };

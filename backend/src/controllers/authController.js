@@ -63,7 +63,7 @@ export const login = async (req, res, next) => {
     // store refresh token to cookies
     res.cookie("refreshToken", refresh_token, {
       httpOnly: true,
-      path: "/api/auth/refreshToken",
+      path: "/api/auth/refresh-token",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
@@ -488,6 +488,7 @@ export const logout = async (req, res, next) => {
 export const refreshToken = async (req, res, next) => {
   try {
     const refresh_token = req.cookies.refreshToken;
+
     if (!refresh_token) throw createHttpError.Unauthorized("Please login");
 
     const check = await verifyToken(

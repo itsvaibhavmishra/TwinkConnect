@@ -211,7 +211,7 @@ const Sidebar = () => {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
               >
-                {getAvatar(avatar, firstName, theme)}
+                {getAvatar(avatar, firstName, theme, 35)}
               </IconButton>
               <Menu
                 id="basic-menu"

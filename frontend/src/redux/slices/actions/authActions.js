@@ -271,3 +271,26 @@ export const ResetPassword = createAsyncThunk(
     }
   }
 );
+
+// ------------- Refresh Token Thunk -------------
+export const RefreshToken = createAsyncThunk(
+  "auth/refresh-token",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/auth/refresh-token/");
+
+      // if user is not verified
+      if (!data.user) {
+        alert("Token expired, Logging you out...");
+        dispatch(LogoutUser());
+      } else {
+        // update user data
+        dispatch(updateUser(data.user));
+      }
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);

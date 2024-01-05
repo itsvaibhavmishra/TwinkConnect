@@ -35,6 +35,7 @@ export default function Router() {
         { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
         { path: "app", element: <GeneralApp /> },
         { path: "profile", element: <ProfilePage /> },
+        { path: "contact", element: <ContactPage /> },
 
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
@@ -48,6 +49,7 @@ const GeneralApp = Loadable(
   lazy(() => import("../pages/dashboard/GeneralApp"))
 );
 const ProfilePage = Loadable(lazy(() => import("../pages/dashboard/Profile")));
+const ContactPage = Loadable(lazy(() => import("../pages/dashboard/Contact")));
 
 // auth pages
 const LoginPage = Loadable(lazy(() => import("../pages/auth/Login")));
