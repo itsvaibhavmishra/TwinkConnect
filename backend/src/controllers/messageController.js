@@ -4,6 +4,7 @@ import {
   getConvoMessages,
   populateMessage,
   updateLatestMessage,
+  validateFriendship,
 } from "../services/messageService.js";
 import { ConversationModel } from "../models/index.js";
 
@@ -17,10 +18,21 @@ export const sendMessage = async (req, res, next) => {
       throw createHttpError.BadRequest("Invalid conversation id or message");
     }
 
-    const convo_exisits = await ConversationModel.findById({ _id: convo_id });
+    const convo_exists = await ConversationModel.findById({ _id: convo_id });
 
-    if (!convo_exisits) {
+    if (!convo_exists) {
       throw createHttpError.NotFound("Conversation does not exist");
+    }
+
+    // Check if there's only one user in the conversation and it's the current user
+    if (
+      !(
+        convo_exists.users.length === 1 &&
+        convo_exists.users[0].toString() === user_id.toString()
+      )
+    ) {
+      // Check if users are friends
+      await validateFriendship(user_id, convo_exists);
     }
 
     const msgData = {

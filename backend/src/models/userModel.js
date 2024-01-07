@@ -37,6 +37,9 @@ const userSchema = mongoose.Schema(
     otp_expiry_time: { type: Date },
     otp_last_sent_time: { type: Date },
     otp_verify_attempts: { type: Number },
+
+    // Users friends
+    friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,
