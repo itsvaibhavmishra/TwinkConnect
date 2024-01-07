@@ -10,7 +10,9 @@ import {
 // -------------------------- Create/Open Direct Conversation --------------------------
 export const createOpenConversation = async (req, res, next) => {
   try {
-    const sender_id = req.user._id;
+    const sender = req.user;
+
+    const sender_id = sender._id;
     const { receiver_id } = req.body;
 
     // check for required fields
@@ -41,20 +43,26 @@ export const createOpenConversation = async (req, res, next) => {
         conversation: existing_conversation,
       });
     } else {
+      // check if users are friends
+      if (
+        !sender.friends.includes(receiver_id) ||
+        !receiver.friends.includes(sender_id)
+      ) {
+        throw createHttpError.Forbidden("You are not friends with this user");
+      }
+
       // creating a new conversation
       let convoData;
 
       if (sender_id.toString() === receiver_id.toString()) {
         convoData = {
           name: `${receiver.firstName} ${receiver.lastName}`,
-          picture: receiver.avatar,
           isGroup: false,
           users: [receiver_id],
         };
       } else {
         convoData = {
           name: `${receiver.firstName} ${receiver.lastName}`,
-          picture: receiver.avatar,
           isGroup: false,
           users: [sender_id, receiver_id],
         };

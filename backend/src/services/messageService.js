@@ -1,5 +1,26 @@
 import createHttpError from "http-errors";
-import { ConversationModel, MessageModel } from "../models/index.js";
+import { ConversationModel, MessageModel, UserModel } from "../models/index.js";
+
+// validate friendship before sending message
+export const validateFriendship = async (sender_id, conversation) => {
+  // extract receiver id from convo
+  const users = conversation.users;
+  const receiver_id = users.find(
+    (user) => user.toString() !== sender_id.toString()
+  );
+
+  // getting sender and receiver
+  const senderUser = await UserModel.findById(sender_id);
+  const receiverUser = await UserModel.findById(receiver_id);
+
+  // Check if users are friends
+  if (
+    !senderUser.friends.includes(receiver_id) ||
+    !receiverUser.friends.includes(sender_id)
+  ) {
+    throw createHttpError.Forbidden("You are no longer friends with this user");
+  }
+};
 
 // send a new message with conversation id
 export const createMessage = async (data) => {
