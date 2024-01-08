@@ -18,4 +18,4 @@ userRouter
 export default userRouter;
 
 // Search Users Route
-userRouter.route("/").get(trimRequest.all, protect, searchUsers);
+userRouter.route("/search").get(trimRequest.all, protect, searchUsers);
