@@ -3,7 +3,7 @@ import trimRequest from "trim-request";
 import multer from "multer";
 
 import { protect } from "../middlewares/authMiddleware.js";
-import { updateProfile } from "../controllers/userController.js";
+import { searchUsers, updateProfile } from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
@@ -16,3 +16,6 @@ userRouter
   .post(trimRequest.all, protect, upload.single("avatar"), updateProfile);
 
 export default userRouter;
+
+// Search Users Route
+userRouter.route("/").get(trimRequest.all, protect, searchUsers);
