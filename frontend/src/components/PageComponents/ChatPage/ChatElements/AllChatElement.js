@@ -112,7 +112,7 @@ const AllChatElement = ({
             />
           ) : (
             <Badge
-              badgeContent={2}
+              badgeContent={unread}
               max={9}
               sx={{
                 paddingBottom: 1,

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { ShowSnackbar } from "../userSlice";
+import { SetLoading, ShowSnackbar } from "../userSlice";
 
 import axios from "../../../utils/axios";
 
@@ -9,10 +9,19 @@ export const GetConversations = createAsyncThunk(
   "chat/get-conversations",
   async (arg, { rejectWithValue, dispatch }) => {
     try {
+      // set user loading to true
+      dispatch(SetLoading(true));
+
       const { data } = await axios.get("/conversation/get-conversations/");
 
+      // set user loading to false
+      dispatch(SetLoading(false));
       return data;
     } catch (error) {
+      // set user loading to false
+      dispatch(SetLoading(false));
+
+      // show snackbar
       dispatch(
         ShowSnackbar({
           severity: error.error.status,

@@ -16,6 +16,9 @@ import { MembersList } from "../../../data";
 import AllChatElement from "./ChatElements/AllChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import OnlineChatElement from "./ChatElements/OnlineChatElement";
+import { SearchFriends } from "../../../redux/slices/actions/userActions";
+import NoData from "../../NoData";
+import { ClearSearch } from "../../../redux/slices/userSlice";
 
 const ChatsList = () => {
   // using theme
@@ -23,8 +26,8 @@ const ChatsList = () => {
 
   // from redux
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
-  const { conversations, isLoading } = useSelector((state) => state.chat);
+  const { user, searchResults, isLoading } = useSelector((state) => state.user);
+  const { conversations } = useSelector((state) => state.chat);
 
   // states
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,16 +45,17 @@ const ChatsList = () => {
   // using debounce method to dispatch action after search
   useEffect(() => {
     const timer = setTimeout(() => {
-      // handleSearch(searchTerm)
       if (searchTerm !== "") {
-        console.log(searchTerm);
+        dispatch(SearchFriends(searchTerm));
+      } else {
+        dispatch(ClearSearch());
       }
     }, 800);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [searchTerm]);
+  }, [dispatch, searchTerm]);
 
   const getOtherUser = (users) => {
     let chatElementProps = null;
@@ -185,9 +189,21 @@ const ChatsList = () => {
         ) : (
           // Search Results
           <Stack spacing={2.4}>
-            {MembersList.map((e) => {
-              return <AllChatElement key={e._id} {...e} isLoading={true} />;
-            })}
+            {isLoading ? (
+              MembersList.map((e) => {
+                return (
+                  <AllChatElement key={e._id} {...e} isLoading={isLoading} />
+                );
+              })
+            ) : searchResults !== null ? (
+              searchResults.map((e) => {
+                return (
+                  <AllChatElement key={e._id} {...e} isLoading={isLoading} />
+                );
+              })
+            ) : (
+              <NoData label={"No Users Found!"} />
+            )}
           </Stack>
         )}
       </Stack>

@@ -19,14 +19,29 @@ export const searchForFriends = async (populatedFriends, keyword, page) => {
     // If the keyword is an email address, search by email
     searchCriteria.email = keyword;
   } else {
-    // If the keyword is not an email, search by firstName or lastName
-    const regex = new RegExp(keyword, "i"); // 'i' for case-insensitive
-    searchCriteria.$or = [{ firstName: regex }, { lastName: regex }];
+    // If the keyword is not an email, search by combined firstName and lastName
+    const combinedNameRegex = new RegExp(keyword, "i"); // 'i' for case-insensitive
+    searchCriteria.$or = [
+      {
+        $or: [
+          { firstName: combinedNameRegex },
+          { lastName: combinedNameRegex },
+          {
+            $expr: {
+              $regexMatch: {
+                input: { $concat: ["$firstName", " ", "$lastName"] },
+                regex: combinedNameRegex,
+              },
+            },
+          },
+        ],
+      },
+    ];
   }
 
   // Perform the search
   friends = await UserModel.find(searchCriteria)
-    .select("_id firstName lastName email")
+    .select("_id firstName lastName email avatar")
     .limit(pageSize)
     .skip(page * pageSize);
 
