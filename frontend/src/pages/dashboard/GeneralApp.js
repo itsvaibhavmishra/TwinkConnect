@@ -1,13 +1,27 @@
+import { useEffect } from "react";
 import {
   Stack,
   // useTheme
 } from "@mui/material";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { GetConversations } from "../../redux/slices/actions/chatActions";
+
 import ChatsList from "../../components/PageComponents/ChatPage/ChatsList";
 
 const GeneralApp = () => {
-  // using theme
-  // const theme = useTheme();
+  // from redux
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (user.token) {
+      dispatch(GetConversations());
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <Stack

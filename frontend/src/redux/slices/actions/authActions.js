@@ -4,6 +4,7 @@ import { ShowSnackbar, logout, updateUser } from "../userSlice";
 
 import axios from "../../../utils/axios";
 import { updateOtpEmail } from "../authSlice";
+import { clearChat } from "../chatSlice";
 
 // ------------- Login Thunk -------------
 export const LoginUser = createAsyncThunk(
@@ -54,6 +55,7 @@ export const LogoutUser = createAsyncThunk(
       try {
         const { data } = await axios.post("/auth/logout");
 
+        dispatch(clearChat());
         dispatch(logout());
 
         // show snackbar

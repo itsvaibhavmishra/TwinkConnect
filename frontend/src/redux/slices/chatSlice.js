@@ -19,6 +19,11 @@ const slice = createSlice({
     setActiveConversation: (state, action) => {
       state.activeConversation = action.payload;
     },
+
+    // clear conversation
+    clearConversation: (state, action) => {
+      state.conversations = [];
+    },
   },
   extraReducers(builder) {
     builder
@@ -38,5 +43,12 @@ const slice = createSlice({
       });
   },
 });
+
+// snackbar functions
+export function clearChat() {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.clearConversation());
+  };
+}
 
 export default slice.reducer;

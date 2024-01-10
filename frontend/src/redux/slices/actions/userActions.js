@@ -58,3 +58,23 @@ export const UpdateProfile = createAsyncThunk(
     }
   }
 );
+
+// ------------- Update Profile Thunk -------------
+export const SearchFriends = createAsyncThunk(
+  "friends/search",
+  async (keyword, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get(`/friends/search/?search=${keyword}`);
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);

@@ -8,6 +8,7 @@ import {
   getFriends,
   getRequests,
   removeFriend,
+  searchFriends,
   sendRequest,
 } from "../controllers/friendsController.js";
 
@@ -35,6 +36,9 @@ friendsRouter
 
 // Get List of Friends
 friendsRouter.route("/get-friends").get(trimRequest.all, protect, getFriends);
+
+// Search for Friends
+friendsRouter.route("/search").get(trimRequest.all, protect, searchFriends);
 
 // Get List of Friend Requests
 friendsRouter.route("/get-requests").get(trimRequest.all, protect, getRequests);

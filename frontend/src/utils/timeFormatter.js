@@ -36,7 +36,7 @@ const formatTime = (time) => {
     return messageDate.toLocaleDateString("en-US", options);
   };
 
-  return <TimeAgo date={time} formatter={customFormatter} />;
+  return <TimeAgo date={time} formatter={customFormatter} title="" />;
 };
 
 export default formatTime;

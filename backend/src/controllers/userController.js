@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import validator from "validator";
 
 import { deleteFile, uploadFiles } from "../services/fileUploadService.js";
-import { validateAvatar } from "../services/userService.js";
+import { searchForUsers, validateAvatar } from "../services/userService.js";
 
 // -------------------------- Update Profile --------------------------
 export const updateProfile = async (req, res, next) => {
@@ -97,6 +97,30 @@ export const updateProfile = async (req, res, next) => {
         avatar: user.avatar,
         activityStatus: user.activityStatus,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -------------------------- Search Users --------------------------
+export const searchUsers = async (req, res, next) => {
+  try {
+    const keyword = req.query.search;
+    const page = req.query.page || "0";
+
+    // check for required fields
+    if (!keyword) {
+      throw createHttpError.BadRequest("Query required");
+    }
+
+    // get list of users matching keyword
+    const { users, totalCount } = await searchForUsers(keyword, page);
+
+    res.status(200).json({
+      status: "success",
+      usersFound: totalCount,
+      users: users,
     });
   } catch (error) {
     next(error);
