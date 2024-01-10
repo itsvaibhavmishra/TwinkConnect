@@ -1,8 +1,8 @@
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme, Skeleton } from "@mui/material";
 import StyledBadge from "../../../StyledBadge";
 import getAvatar from "../../../../utils/createAvatar";
 
-const OnlineChatElement = ({ id, firstName, lastName, avatar }) => {
+const OnlineChatElement = ({ id, firstName, lastName, avatar, isLoading }) => {
   // using theme
   const theme = useTheme();
 
@@ -31,15 +31,28 @@ const OnlineChatElement = ({ id, firstName, lastName, avatar }) => {
           transform: "translateX(-50%)",
         }}
       >
-        <StyledBadge
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          variant="dot"
-        >
-          {getAvatar(avatar, firstName, theme, 35)}
-        </StyledBadge>
+        {isLoading ? (
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={35}
+            height={35}
+          />
+        ) : (
+          <StyledBadge
+            overlap="circular"
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            variant="dot"
+          >
+            {getAvatar(avatar, firstName, theme, 35)}
+          </StyledBadge>
+        )}
         <Typography variant="caption" sx={{ userSelect: "none" }}>
-          {firstName}
+          {isLoading ? (
+            <Skeleton animation="wave" height={20} width="4em" />
+          ) : (
+            firstName
+          )}
         </Typography>
       </Stack>
     </Box>

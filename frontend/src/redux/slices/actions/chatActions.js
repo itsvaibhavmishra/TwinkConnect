@@ -9,7 +9,6 @@ export const GetConversations = createAsyncThunk(
   "chat/get-conversations",
   async (arg, { rejectWithValue, dispatch }) => {
     try {
-      console.log("check");
       const { data } = await axios.get("/conversation/get-conversations/");
 
       return data;

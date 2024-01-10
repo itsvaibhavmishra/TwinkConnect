@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -11,7 +11,6 @@ import { MagnifyingGlass } from "phosphor-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { GetConversations } from "../../../redux/slices/actions/chatActions";
 
 import { MembersList } from "../../../data";
 import AllChatElement from "./ChatElements/AllChatElement";
@@ -25,11 +24,55 @@ const ChatsList = () => {
   // from redux
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { conversations } = useSelector((state) => state.chat);
+  const { conversations, isLoading } = useSelector((state) => state.chat);
+
+  // states
+  const [searchTerm, setSearchTerm] = useState("");
 
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const isSmallerScreen = useMediaQuery((theme) => theme.breakpoints.up("xs"));
+
+  // -------------- inner functions --------------
+  // function to handle searched term
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // using debounce method to dispatch action after search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // handleSearch(searchTerm)
+      if (searchTerm !== "") {
+        console.log(searchTerm);
+      }
+    }, 800);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchTerm]);
+
+  const getOtherUser = (users) => {
+    let chatElementProps = null;
+
+    if (users.length > 1) {
+      const otherUser = users.find((e) => e._id !== user.id);
+
+      if (otherUser) {
+        // Extract data for the other user
+        const { firstName, lastName, avatar } = otherUser;
+        chatElementProps = { firstName, lastName, avatar };
+      }
+    } else if (users.length === 1) {
+      // If there's only one user in the conversation
+      const singleUser = users[0];
+      const { firstName, lastName, avatar } = singleUser;
+      chatElementProps = { firstName, lastName, avatar };
+    }
+
+    return chatElementProps;
+  };
 
   const getSlidesPerView = () => {
     if (isMediumScreen) {
@@ -40,15 +83,10 @@ const ChatsList = () => {
       return "3.5";
     }
   };
+
+  // --------------------------------------------
+
   const slidesPerView = getSlidesPerView();
-
-  useEffect(() => {
-    if (user.token) {
-      dispatch(GetConversations());
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
 
   return (
     <Box
@@ -73,55 +111,85 @@ const ChatsList = () => {
             <StyledInputBase
               placeholder="Search..."
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => handleSearch(e)}
             />
           </Search>
         </Stack>
 
-        {/* Online Friends Slider */}
-        <Stack spacing={1}>
-          <Swiper spaceBetween={20} slidesPerView={slidesPerView}>
-            <Stack direction={"row"} alignItems={"center"} spacing={2}>
-              {MembersList.filter((e) => e.online === true).map((e) => (
-                <SwiperSlide key={e._id}>
-                  <OnlineChatElement {...e} />
-                </SwiperSlide>
-              ))}
+        {!searchTerm ? (
+          <>
+            {/* Online Friends Slider */}
+            <Stack spacing={1}>
+              <Swiper spaceBetween={20} slidesPerView={slidesPerView}>
+                <Stack direction={"row"} alignItems={"center"} spacing={2}>
+                  {MembersList.filter((e) => e.online === true).map((e) => (
+                    <SwiperSlide key={e._id}>
+                      <OnlineChatElement {...e} isLoading={isLoading} />
+                    </SwiperSlide>
+                  ))}
+                </Stack>
+              </Swiper>
             </Stack>
-          </Swiper>
-        </Stack>
 
-        <Divider />
+            <Divider />
 
-        <Typography variant="subtitle2" sx={{ color: "#676767" }}>
-          Recent Chats
-        </Typography>
+            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+              Recent Chats
+            </Typography>
 
-        {/* Chats setion starts here */}
-        <Stack
-          direction={"column"}
-          sx={{
-            flexGrow: 1,
-            overflow: "scroll",
-            height: "100%",
-            overflowY: "auto",
-            overflowX: "hidden",
-          }}
-          spacing={2}
-          className="scrollbar"
-        >
-          {/* All Chats */}
-          <Stack spacing={2.4}>
+            {/* Chats setion starts here */}
             <Stack
+              direction={"column"}
               sx={{
-                borderRadius: 1,
+                flexGrow: 1,
+                overflow: "scroll",
+                height: "100%",
+                overflowY: "auto",
+                overflowX: "hidden",
               }}
+              spacing={2}
+              className="scrollbar"
             >
-              {conversations.map((e) => {
-                return <AllChatElement {...e} key={e._id} />;
-              })}
+              {/* All Chats */}
+              <Stack spacing={2.4}>
+                {/* loding skeleton */}
+                {isLoading
+                  ? MembersList.map((e) => {
+                      return (
+                        <AllChatElement
+                          key={e._id}
+                          {...e}
+                          isLoading={isLoading}
+                        />
+                      );
+                    })
+                  : conversations.map((conversation) => {
+                      const { users } = conversation;
+
+                      const chatElementProps = getOtherUser(users);
+
+                      return (
+                        chatElementProps && (
+                          <AllChatElement
+                            key={conversation._id}
+                            latestMessage={conversation.latestMessage}
+                            {...chatElementProps}
+                            isLoading={isLoading}
+                          />
+                        )
+                      );
+                    })}
+              </Stack>
             </Stack>
+          </>
+        ) : (
+          // Search Results
+          <Stack spacing={2.4}>
+            {MembersList.map((e) => {
+              return <AllChatElement key={e._id} {...e} isLoading={true} />;
+            })}
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </Box>
   );
