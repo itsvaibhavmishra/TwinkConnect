@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 
 import { FriendRequestModel, UserModel } from "../models/index.js";
+import { searchForFriends } from "../services/friendsService.js";
 
 // -------------------------- Send Request --------------------------
 export const sendRequest = async (req, res, next) => {
@@ -218,6 +219,44 @@ export const getFriends = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       friends: user.friends,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ----------------------- Search Friends -----------------------
+export const searchFriends = async (req, res, next) => {
+  try {
+    const current_user = req.user;
+
+    const keyword = req.query.search;
+    const page = req.query.page || "0";
+
+    // check for required fields
+    if (!keyword) {
+      throw createHttpError.BadRequest("Query required");
+    }
+
+    // Populate friends data for the current user
+    const users = await UserModel.findById(current_user._id)
+      .select("friends")
+      .populate({
+        path: "friends",
+        select: "firstName lastName _id email verified",
+      });
+
+    const { friends, totalCount } = await searchForFriends(
+      users,
+      keyword,
+      page
+    );
+
+    // return list of friends for current user
+    res.status(200).json({
+      status: "success",
+      usersFound: totalCount,
+      friends: friends,
     });
   } catch (error) {
     next(error);
