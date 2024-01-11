@@ -1,18 +1,37 @@
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+
+import Lottie from "react-lottie";
+import * as SearchNotFound from "../assets/Illustration/SearchNotFound.json";
 
 const NoData = ({ label = "No Data found" }) => {
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
-      <Stack
-        direction={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
+    <Grid
+      container
+      direction="column"
+      height="60vh"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item sx={{ mb: 5 }}>
+        <Lottie
+          options={{
+            loop: true,
+            autoplay: true,
+            animationData: SearchNotFound,
+            rendererSettings: {
+              preserveAspectRatio: "xMidYMid slice",
+            },
+          }}
+          isClickToPauseDisabled={true}
+        />
+      </Grid>
+      <Divider />
+      <Grid item>
         <Typography variant="body2">{label}</Typography>
-      </Stack>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 export default NoData;
