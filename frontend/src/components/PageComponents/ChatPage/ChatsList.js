@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -11,14 +11,14 @@ import { MagnifyingGlass } from "phosphor-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useDispatch, useSelector } from "react-redux";
+import { SearchFriends } from "../../../redux/slices/actions/userActions";
+import { ClearSearch } from "../../../redux/slices/userSlice";
 
 import { MembersList } from "../../../data";
 import AllChatElement from "./ChatElements/AllChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import OnlineChatElement from "./ChatElements/OnlineChatElement";
-import { SearchFriends } from "../../../redux/slices/actions/userActions";
-import NoData from "../../NoData";
-import { ClearSearch } from "../../../redux/slices/userSlice";
+import ChatSearchResults from "./ChatElements/ChatSearchResults";
 
 const ChatsList = () => {
   // using theme
@@ -50,7 +50,7 @@ const ChatsList = () => {
       } else {
         dispatch(ClearSearch());
       }
-    }, 800);
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -188,23 +188,18 @@ const ChatsList = () => {
           </>
         ) : (
           // Search Results
-          <Stack spacing={2.4}>
-            {isLoading ? (
-              MembersList.map((e) => {
-                return (
-                  <AllChatElement key={e._id} {...e} isLoading={isLoading} />
-                );
-              })
-            ) : searchResults !== null ? (
-              searchResults.map((e) => {
-                return (
-                  <AllChatElement key={e._id} {...e} isLoading={isLoading} />
-                );
-              })
-            ) : (
-              <NoData label={"No Users Found!"} />
-            )}
-          </Stack>
+          <Fragment>
+            <Divider />
+
+            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+              Search Result
+            </Typography>
+
+            <ChatSearchResults
+              isLoading={isLoading}
+              searchResults={searchResults}
+            />
+          </Fragment>
         )}
       </Stack>
     </Box>

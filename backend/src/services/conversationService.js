@@ -9,7 +9,7 @@ export const findConversation = async (sender_id, receiver_id) => {
       isGroup: false,
       users: { $all: [receiver_id], $size: 1 },
     })
-      .populate("users", "-verified -password -passwordChangedAt")
+      .populate("users", "-verified -password -passwordChangedAt -friends")
       .populate("latestMessage");
   } else {
     convos = await ConversationModel.find({
@@ -19,7 +19,7 @@ export const findConversation = async (sender_id, receiver_id) => {
         { users: { $elemMatch: { $eq: receiver_id } } },
       ],
     })
-      .populate("users", "-verified -password -passwordChangedAt")
+      .populate("users", "-verified -password -passwordChangedAt -friends")
       .populate("latestMessage");
   }
 
@@ -49,7 +49,7 @@ export const createConversation = async (convoData) => {
 
   const populatedConvo = await ConversationModel.findOne({
     _id: newConvo._id,
-  }).populate("users", "-verified -password -passwordChangedAt");
+  }).populate("users", "-verified -password -passwordChangedAt -friends");
 
   if (!populatedConvo) {
     throw createHttpError.BadRequest("Unable to populate conversation");
@@ -64,8 +64,8 @@ export const getUserConversations = async (user_id) => {
   await ConversationModel.find({
     users: { $elemMatch: { $eq: user_id } },
   })
-    .populate("users", "-verified -password -passwordChangedAt")
-    .populate("admin", "-verified -password -passwordChangedAt")
+    .populate("users", "-verified -password -passwordChangedAt -friends")
+    .populate("admin", "-verified -password -passwordChangedAt -friends")
     .populate("latestMessage")
     .sort({ updatedAt: -1 })
     .then(async (results) => {

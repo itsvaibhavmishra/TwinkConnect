@@ -2,10 +2,7 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
-import Lottie from "react-lottie";
-import * as SearchNotFound from "../assets/Illustration/SearchNotFound.json";
-
-const NoData = ({ label = "No Data found" }) => {
+const NoData = ({ label = "No Data found", children }) => {
   return (
     <Grid
       container
@@ -15,20 +12,12 @@ const NoData = ({ label = "No Data found" }) => {
       alignItems="center"
     >
       <Grid item sx={{ mb: 5 }}>
-        <Lottie
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: SearchNotFound,
-            rendererSettings: {
-              preserveAspectRatio: "xMidYMid slice",
-            },
-          }}
-          isClickToPauseDisabled={true}
-        />
+        {/* icon */}
+        {children}
       </Grid>
       <Divider />
       <Grid item>
+        {/* label */}
         <Typography variant="body2">{label}</Typography>
       </Grid>
     </Grid>
