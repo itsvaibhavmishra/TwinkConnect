@@ -16,7 +16,7 @@ function getAvatarColor(name) {
   if (SUCCESS_NAME.includes(getFirstCharacter(name))) return "success";
   if (WARNING_NAME.includes(getFirstCharacter(name))) return "warning";
   if (ERROR_NAME.includes(getFirstCharacter(name))) return "error";
-  return "default";
+  return "primary";
 }
 
 export const createAvatar = (name) => {
@@ -32,7 +32,9 @@ export default function getAvatar(avatar, name, theme, size) {
   ) : (
     <Avatar
       sx={{
-        backgroundColor: theme.palette[createAvatar(name).color].main,
+        backgroundColor: theme
+          ? theme.palette[createAvatar(name).color].main
+          : "none",
         fontWeight: 800,
         color: "#fff",
         width: size,
