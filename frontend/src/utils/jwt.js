@@ -35,9 +35,9 @@ const isValidToken = (accessToken, dispatch) => {
 
 const handleSessionExpiration = (exp, dispatch) => {
   const currentTime = Date.now();
-  const timeLeft = exp * 1000 - currentTime - 86386000;
+  const timeLeft = exp * 1000 - currentTime; // - 86386000;
 
-  console.log(timeLeft);
+  // console.log(timeLeft);
 
   clearTimeout(expiredTimer);
 

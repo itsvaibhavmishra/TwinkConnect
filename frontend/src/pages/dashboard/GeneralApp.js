@@ -1,19 +1,22 @@
 import { useEffect } from "react";
-import {
-  Stack,
-  // useTheme
-} from "@mui/material";
+import { Stack, Box, Typography, useTheme } from "@mui/material";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
 import { GetConversations } from "../../redux/slices/actions/chatActions";
 
-import ChatsList from "../../components/PageComponents/ChatPage/ChatsList";
+import {
+  ChatsList,
+  Conversation,
+} from "../../components/PageComponents/GeneralAppPage";
+import NoChat from "../../assets/Illustration/NoChat";
 
 const GeneralApp = () => {
+  const theme = useTheme();
   // from redux
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { activeConversation } = useSelector((state) => state.chat);
 
   useEffect(() => {
     if (user.token) {
@@ -26,20 +29,61 @@ const GeneralApp = () => {
   return (
     <Stack
       direction={"row"}
-      sx={{ width: "100%", height: { xs: "calc(100vh - 65px)", md: "100vh" } }}
+      sx={{
+        width: "100%",
+        height: {
+          xs: activeConversation ? "100vh" : "calc(100vh - 65px)",
+          md: "100vh",
+        },
+      }}
     >
-      {/* Chats area */}
-      <ChatsList />
+      {/* Chats List area */}
+      <Box
+        sx={{
+          display: {
+            xs: activeConversation ? "none" : "block",
+            md: "block",
+          },
+          position: "relative",
+          height: "100%",
+          width: { xs: "100%", md: 320 },
+          backgroundColor: theme.palette.background.default,
+          boxShadow: "0px 0px 2px #00000040",
+          overflow: "hidden",
+        }}
+      >
+        <ChatsList />
+      </Box>
 
       {/* initializing height and width for conversation area */}
-      {/* <Box
+      <Box
         sx={{
+          display: {
+            xs: activeConversation ? "block" : "none",
+            md: "block",
+          },
           height: "100%",
-          width: "calc(100vw - 400px)",
+          width: { xs: "100%", md: "calc(100vw - 400px)" },
           transition: "width 0.1s ease-in-out",
           backgroundColor: theme.palette.background.paper,
         }}
-      ></Box> */}
+      >
+        {activeConversation ? (
+          <Conversation />
+        ) : (
+          // No Chat
+          <Stack
+            sx={{ height: "100%", width: "100%" }}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <NoChat />
+            <Typography variant="subtitle2" sx={{ mt: { xs: -5, md: -10 } }}>
+              Select or Start a new Conversation
+            </Typography>
+          </Stack>
+        )}
+      </Box>
     </Stack>
   );
 };

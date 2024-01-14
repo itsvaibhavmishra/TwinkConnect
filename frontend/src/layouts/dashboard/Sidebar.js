@@ -27,6 +27,7 @@ const Sidebar = () => {
   // using redux
   const dispatch = useDispatch();
 
+  const { activeConversation } = useSelector((state) => state.chat);
   const { avatar, firstName } = useSelector((state) => state.user.user);
 
   const theme = useTheme();
@@ -84,6 +85,7 @@ const Sidebar = () => {
       <Box
         p={3}
         sx={{
+          display: { xs: activeConversation ? "none" : "block", md: "block" },
           height: { xs: "65px", md: "100vh" },
           width: { xs: "100vw", md: "80px" },
           boxShadow: "0px 0px 2px #00000040",

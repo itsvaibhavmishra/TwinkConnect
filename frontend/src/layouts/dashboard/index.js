@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "./Sidebar";
-import { isValidToken, setSession } from "../../utils/jwt";
+import { setSession } from "../../utils/jwt";
 
 const DashboardLayout = () => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -13,7 +13,7 @@ const DashboardLayout = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.user);
 
-  if (!isLoggedIn || !user || !isValidToken(user.token, dispatch)) {
+  if (!isLoggedIn || !user) {
     return <Navigate to={"/auth/login"} />;
   }
   if (user.token) {
