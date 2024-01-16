@@ -32,6 +32,9 @@ const ChatsList = () => {
 
   // states
   const [searchTerm, setSearchTerm] = useState("");
+  const [prevSearchTerm, setPrevSearchTerm] = useState("");
+  const [usersFound, setUsersFound] = useState([]);
+  const [page, setPage] = useState(1);
 
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up("sm"));
@@ -41,14 +44,14 @@ const ChatsList = () => {
   // function to handle searched term
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+    setPage(1);
   };
 
   // using debounce method to dispatch action after search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm !== "") {
-        const searchData = { keyword: searchTerm };
-        console.log(searchData);
+        const searchData = { keyword: searchTerm, page: 0 };
         dispatch(SearchFriends(searchData));
       } else {
         dispatch(ClearSearch());
@@ -59,6 +62,40 @@ const ChatsList = () => {
       clearTimeout(timer);
     };
   }, [dispatch, searchTerm]);
+
+  // function to handle page change
+  const handleSearchPageChange = () => {
+    // Increment the page count and dispatch SearchFriends with the new page
+    setPage((prevpage) => prevpage + 1);
+    const searchData = { keyword: searchTerm, page: page };
+    dispatch(SearchFriends(searchData));
+  };
+
+  // After the searchResults are updated, set them to usersFound
+  useEffect(() => {
+    if (searchResults?.length > 0) {
+      if (
+        prevSearchTerm === searchTerm &&
+        JSON.stringify(usersFound) !== JSON.stringify(searchResults) &&
+        usersFound
+      ) {
+        setUsersFound((prevUsersFound) => [
+          ...prevUsersFound,
+          ...searchResults,
+        ]);
+      } else {
+        setUsersFound(searchResults);
+      }
+    } else if (searchResults === null) {
+      setUsersFound(null);
+    } else {
+      setUsersFound([]);
+    }
+
+    // Update prevSearchTerm
+    setPrevSearchTerm(searchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchResults]);
 
   const getOtherUser = (users) => {
     let chatElementProps = null;
@@ -92,7 +129,6 @@ const ChatsList = () => {
   };
 
   // --------------------------------------------
-
   const slidesPerView = getSlidesPerView();
 
   return (
@@ -190,7 +226,10 @@ const ChatsList = () => {
 
           <ChatSearchResults
             isLoading={isLoading}
-            searchResults={searchResults}
+            searchResults={usersFound}
+            searchCount={searchCount}
+            currentPage={page}
+            onSearchPageChange={handleSearchPageChange}
           />
         </Fragment>
       )}

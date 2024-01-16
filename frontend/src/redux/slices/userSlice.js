@@ -97,6 +97,7 @@ const slice = createSlice({
       .addCase(SearchFriends.fulfilled, (state, action) => {
         if (action.payload.usersFound === 0) {
           state.searchResults = null;
+          state.searchCount = null;
         } else {
           state.searchResults = action.payload.friends;
           state.searchCount = action.payload.usersFound;

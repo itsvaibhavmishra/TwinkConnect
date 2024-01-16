@@ -59,14 +59,16 @@ export const UpdateProfile = createAsyncThunk(
   }
 );
 
-// ------------- Update Profile Thunk -------------
+// ------------- Search Friends Thunk -------------
 export const SearchFriends = createAsyncThunk(
   "friends/search",
   async (searchData, { rejectWithValue, dispatch }) => {
     try {
-      // &page=${searchData.page}
+      console.log(searchData.page);
       const { data } = await axios.get(
-        `/friends/search/?search=${searchData.keyword}`
+        `/friends/search/?search=${searchData.keyword}&page=${
+          searchData.page || 0
+        }`
       );
 
       return data;
