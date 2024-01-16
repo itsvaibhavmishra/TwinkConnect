@@ -24,6 +24,7 @@ const initialState = {
   },
 
   searchResults: [],
+  searchCount: null,
 };
 
 const slice = createSlice({
@@ -53,6 +54,7 @@ const slice = createSlice({
     // update user information
     clearSearch: (state, action) => {
       state.searchResults = [];
+      state.searchCount = null;
     },
 
     // logout reducer | being handled from auth
@@ -93,10 +95,11 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(SearchFriends.fulfilled, (state, action) => {
-        if (action.payload.friends.length === 0) {
+        if (action.payload.usersFound === 0) {
           state.searchResults = null;
         } else {
           state.searchResults = action.payload.friends;
+          state.searchCount = action.payload.usersFound;
         }
         state.isLoading = false;
         state.error = false;

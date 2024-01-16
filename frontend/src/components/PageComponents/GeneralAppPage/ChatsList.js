@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import {
-  Box,
   Stack,
   Typography,
   Divider,
@@ -26,7 +25,9 @@ const ChatsList = () => {
 
   // from redux
   const dispatch = useDispatch();
-  const { user, searchResults, isLoading } = useSelector((state) => state.user);
+  const { user, searchResults, searchCount, isLoading } = useSelector(
+    (state) => state.user
+  );
   const { conversations } = useSelector((state) => state.chat);
 
   // states
@@ -46,7 +47,9 @@ const ChatsList = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm !== "") {
-        dispatch(SearchFriends(searchTerm));
+        const searchData = { keyword: searchTerm };
+        console.log(searchData);
+        dispatch(SearchFriends(searchData));
       } else {
         dispatch(ClearSearch());
       }
@@ -182,7 +185,7 @@ const ChatsList = () => {
           <Divider />
 
           <Typography variant="subtitle2" sx={{ color: "#676767" }}>
-            Search Result
+            Search Result{searchCount > 0 && `: ${searchCount}`}
           </Typography>
 
           <ChatSearchResults
