@@ -14,10 +14,11 @@ import { SearchFriends } from "../../../redux/slices/actions/userActions";
 import { ClearSearch } from "../../../redux/slices/userSlice";
 
 import { MembersList } from "../../../data";
-import AllChatElement from "./ChatElements/AllChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
+import AllChatElement from "./ChatElements/AllChatElement";
 import OnlineChatElement from "./ChatElements/OnlineChatElement";
 import ChatSearchResults from "./ChatElements/ChatSearchResults";
+import { getOtherUser } from "../../../utils/getOtherUser";
 
 const ChatsList = () => {
   // using theme
@@ -96,27 +97,6 @@ const ChatsList = () => {
     setPrevSearchTerm(searchTerm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchResults]);
-
-  const getOtherUser = (users) => {
-    let chatElementProps = null;
-
-    if (users.length > 1) {
-      const otherUser = users.find((e) => e._id !== user.id);
-
-      if (otherUser) {
-        // Extract data for the other user
-        const { firstName, lastName, avatar } = otherUser;
-        chatElementProps = { firstName, lastName, avatar };
-      }
-    } else if (users.length === 1) {
-      // If there's only one user in the conversation
-      const singleUser = users[0];
-      const { firstName, lastName, avatar } = singleUser;
-      chatElementProps = { firstName, lastName, avatar };
-    }
-
-    return chatElementProps;
-  };
 
   const getSlidesPerView = () => {
     if (isMediumScreen) {
@@ -199,7 +179,7 @@ const ChatsList = () => {
                 : conversations.map((conversation) => {
                     const { users } = conversation;
 
-                    const chatElementProps = getOtherUser(users);
+                    const chatElementProps = getOtherUser(users, user._id);
 
                     return (
                       chatElementProps && (
@@ -230,6 +210,7 @@ const ChatsList = () => {
             searchCount={searchCount}
             currentPage={page}
             onSearchPageChange={handleSearchPageChange}
+            currentUser={user._id}
           />
         </Fragment>
       )}

@@ -6,7 +6,7 @@ import axios from "../../../utils/axios";
 
 // ------------- Get Conversation Thunk -------------
 export const GetConversations = createAsyncThunk(
-  "chat/get-conversations",
+  "conversation/get-conversations",
   async (arg, { rejectWithValue, dispatch }) => {
     try {
       // set user loading to true
@@ -21,6 +21,32 @@ export const GetConversations = createAsyncThunk(
       // set user loading to false
       dispatch(SetLoading(false));
 
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Create or Open Conversation -------------
+export const CreateOpenConversation = createAsyncThunk(
+  "conversation/create-open-conversation",
+  async (value, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        "/conversation/create-open-conversation",
+        {
+          receiver_id: value,
+        }
+      );
+
+      return data;
+    } catch (error) {
       // show snackbar
       dispatch(
         ShowSnackbar({

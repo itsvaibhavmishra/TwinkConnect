@@ -71,7 +71,7 @@ export const login = async (req, res, next) => {
       status: "success",
       message: "Logged in successfully",
       user: {
-        id: user._id,
+        _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,
@@ -328,7 +328,7 @@ export const verifyOTP = async (req, res, next) => {
       status: "success",
       message: "OTP verified",
       user: {
-        id: user._id,
+        _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,
@@ -513,7 +513,7 @@ export const refreshToken = async (req, res, next) => {
       status: "success",
       message: "Token Refreshed",
       user: {
-        id: user._id,
+        _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar,

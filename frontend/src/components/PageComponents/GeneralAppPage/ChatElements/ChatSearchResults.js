@@ -14,6 +14,7 @@ const ChatSearchResults = ({
   searchCount,
   currentPage,
   onSearchPageChange,
+  currentUser,
 }) => {
   const containerRef = useRef(null);
   const debounceTimeoutRef = useRef(null);
@@ -73,7 +74,17 @@ const ChatSearchResults = ({
           ))
         ) : // search results
         searchResults !== null ? (
-          searchResults.map((e) => <AllChatElement key={e._id} {...e} />)
+          searchResults.map((e) => (
+            <AllChatElement
+              key={e._id}
+              latestMessage={
+                e._id === currentUser
+                  ? { message: "Message yourself" }
+                  : e.latestMessage
+              }
+              {...e}
+            />
+          ))
         ) : (
           // no results
           <NoData label={"No Users Found!"}>

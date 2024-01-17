@@ -8,6 +8,10 @@ import {
 } from "@mui/material";
 import React from "react";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { CreateOpenConversation } from "../../../../redux/slices/actions/chatActions";
+
 import StyledBadge from "../../../StyledBadge";
 import getAvatar from "../../../../utils/createAvatar";
 import formatTime from "../../../../utils/timeFormatter";
@@ -26,8 +30,17 @@ const AllChatElement = ({
   // using theme
   const theme = useTheme();
 
+  // from redux
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
   const truncateText = (string, n) => {
     return string?.length > n ? `${string?.slice(0, n)}...` : string;
+  };
+
+  // ----------- inner functions -----------
+  const handleConversation = () => {
+    dispatch(CreateOpenConversation(_id));
   };
 
   return (
@@ -39,6 +52,7 @@ const AllChatElement = ({
         cursor: "pointer",
       }}
       pt={2}
+      onClick={handleConversation}
     >
       <Stack
         direction={"row"}
@@ -72,7 +86,7 @@ const AllChatElement = ({
               {isLoading ? (
                 <Skeleton animation="wave" height={20} width="7em" />
               ) : (
-                `${firstName} ${lastName}`
+                `${firstName} ${lastName}${_id === user._id ? "(You)" : ""}`
               )}
             </Typography>
             <Typography
