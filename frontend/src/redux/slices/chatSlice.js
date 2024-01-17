@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetConversations } from "./actions/chatActions";
+import {
+  CreateOpenConversation,
+  GetConversations,
+} from "./actions/chatActions";
 
 // initial state for contacts menu
 const initialState = {
@@ -39,6 +42,20 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(GetConversations.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+      })
+      // --------- Create Open Conversation Builder ---------
+      .addCase(CreateOpenConversation.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(CreateOpenConversation.fulfilled, (state, action) => {
+        state.activeConversation = action.payload.conversation;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(CreateOpenConversation.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
       });

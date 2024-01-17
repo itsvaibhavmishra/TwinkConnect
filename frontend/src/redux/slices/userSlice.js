@@ -14,7 +14,7 @@ const initialState = {
   },
 
   user: {
-    id: "",
+    _id: "",
     firstName: "",
     lastName: "",
     avatar: "",
@@ -62,7 +62,7 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = false;
       state.user = {
-        id: "",
+        _id: "",
         firstName: "",
         lastName: "",
         avatar: "",

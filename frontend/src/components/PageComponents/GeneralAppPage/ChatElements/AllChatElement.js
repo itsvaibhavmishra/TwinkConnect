@@ -8,6 +8,10 @@ import {
 } from "@mui/material";
 import React from "react";
 
+// redux imports
+import { useDispatch } from "react-redux";
+import { CreateOpenConversation } from "../../../../redux/slices/actions/chatActions";
+
 import StyledBadge from "../../../StyledBadge";
 import getAvatar from "../../../../utils/createAvatar";
 import formatTime from "../../../../utils/timeFormatter";
@@ -26,8 +30,16 @@ const AllChatElement = ({
   // using theme
   const theme = useTheme();
 
+  // from redux
+  const dispatch = useDispatch();
+
   const truncateText = (string, n) => {
     return string?.length > n ? `${string?.slice(0, n)}...` : string;
+  };
+
+  // ----------- inner functions -----------
+  const handleConversation = () => {
+    dispatch(CreateOpenConversation(_id));
   };
 
   return (
@@ -39,6 +51,7 @@ const AllChatElement = ({
         cursor: "pointer",
       }}
       pt={2}
+      onClick={handleConversation}
     >
       <Stack
         direction={"row"}

@@ -57,7 +57,7 @@ const AllContactElement = ({
           {/* Name and Status */}
           <Stack spacing={0.3}>
             <Typography variant="subtitle2">
-              {_id === user.id
+              {_id === user._id
                 ? `${firstName} ${lastName} (You)`
                 : `${firstName} ${lastName}`}
             </Typography>
@@ -65,7 +65,7 @@ const AllContactElement = ({
               variant="caption"
               sx={{ color: theme.palette.text.secondary, paddingTop: 0.8 }}
             >
-              {_id === user.id
+              {_id === user._id
                 ? "Message Yourself"
                 : truncateText(activityStatus, 50)}
             </Typography>
