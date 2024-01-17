@@ -9,7 +9,7 @@ import {
 import React from "react";
 
 // redux imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CreateOpenConversation } from "../../../../redux/slices/actions/chatActions";
 
 import StyledBadge from "../../../StyledBadge";
@@ -32,6 +32,7 @@ const AllChatElement = ({
 
   // from redux
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   const truncateText = (string, n) => {
     return string?.length > n ? `${string?.slice(0, n)}...` : string;
@@ -85,7 +86,7 @@ const AllChatElement = ({
               {isLoading ? (
                 <Skeleton animation="wave" height={20} width="7em" />
               ) : (
-                `${firstName} ${lastName}`
+                `${firstName} ${lastName}${_id === user._id ? "(You)" : ""}`
               )}
             </Typography>
             <Typography

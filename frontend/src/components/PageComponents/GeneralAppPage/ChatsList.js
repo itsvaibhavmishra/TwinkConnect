@@ -210,6 +210,7 @@ const ChatsList = () => {
             searchCount={searchCount}
             currentPage={page}
             onSearchPageChange={handleSearchPageChange}
+            currentUser={user._id}
           />
         </Fragment>
       )}
