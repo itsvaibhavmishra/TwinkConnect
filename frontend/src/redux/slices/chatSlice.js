@@ -7,7 +7,7 @@ const initialState = {
   error: false,
 
   conversations: [],
-  activeConversation: {},
+  activeConversation: null,
   notifications: [],
 };
 
@@ -23,6 +23,7 @@ const slice = createSlice({
     // clear conversation
     clearConversation: (state, action) => {
       state.conversations = [];
+      state.activeConversation = null;
     },
   },
   extraReducers(builder) {

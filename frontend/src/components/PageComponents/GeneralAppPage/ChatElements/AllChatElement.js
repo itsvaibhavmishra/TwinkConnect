@@ -17,6 +17,7 @@ const AllChatElement = ({
   firstName,
   lastName,
   latestMessage,
+  activityStatus,
   avatar,
   unread,
   online,
@@ -81,7 +82,10 @@ const AllChatElement = ({
               {isLoading ? (
                 <Skeleton animation="wave" height={20} width="12em" />
               ) : (
-                truncateText(latestMessage?.message, 20)
+                truncateText(
+                  latestMessage ? latestMessage.message : activityStatus,
+                  20
+                )
               )}
             </Typography>
           </Stack>

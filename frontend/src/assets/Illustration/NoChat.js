@@ -10,13 +10,24 @@ const NoChat = ({ ...other }) => {
 
   // breakpoint
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  const responsiveDimension = () => {
+    if (isSmallScreen) {
+      return "300";
+    } else if (isMediumScreen) {
+      return "530";
+    } else {
+      return "600";
+    }
+  };
 
   return (
     <Box {...other} sx={{ mt: -20 }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={isMediumScreen ? "530" : "600"}
-        height={isMediumScreen ? "530" : "600"}
+        width={responsiveDimension()}
+        height={responsiveDimension()}
         fill="none"
         viewBox="0 0 1500 1500"
         id="male-freelancer-working-from-home"
