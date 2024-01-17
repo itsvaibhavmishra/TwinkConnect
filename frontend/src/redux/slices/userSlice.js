@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { SearchFriends, UpdateProfile } from "./actions/userActions";
+import {
+  GetFriends,
+  SearchFriends,
+  UpdateProfile,
+} from "./actions/userActions";
 
 // initial state for contacts menu
 const initialState = {
@@ -22,6 +26,8 @@ const initialState = {
     activityStatus: "",
     token: "",
   },
+
+  friends: [],
 
   searchResults: [],
   searchCount: null,
@@ -70,6 +76,7 @@ const slice = createSlice({
         activityStatus: "",
         token: "",
       };
+      state.friends = [];
     },
   },
   extraReducers(builder) {
@@ -106,6 +113,21 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(SearchFriends.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Get Friends Builder ---------
+      .addCase(GetFriends.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(GetFriends.fulfilled, (state, action) => {
+        state.friends = action.payload.friends;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(GetFriends.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
       });

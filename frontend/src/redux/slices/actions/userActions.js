@@ -64,12 +64,31 @@ export const SearchFriends = createAsyncThunk(
   "friends/search",
   async (searchData, { rejectWithValue, dispatch }) => {
     try {
-      console.log(searchData.page);
       const { data } = await axios.get(
         `/friends/search/?search=${searchData.keyword}&page=${
           searchData.page || 0
         }`
       );
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Get Friends Thunk -------------
+export const GetFriends = createAsyncThunk(
+  "friends/get-friends",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get("/friends/get-friends");
 
       return data;
     } catch (error) {

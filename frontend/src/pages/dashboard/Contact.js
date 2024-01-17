@@ -1,13 +1,23 @@
-import {
-  Stack,
-  // useTheme
-} from "@mui/material";
+import { useEffect } from "react";
+import { Stack } from "@mui/material";
+
+// redux imports
+import { useSelector, useDispatch } from "react-redux";
 
 import ContactList from "../../components/PageComponents/ContactPage/ContactList";
+import { GetFriends } from "../../redux/slices/actions/userActions";
 
 const Contact = () => {
-  // using theme
-  // const theme = useTheme();
+  // from redux
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user.token) {
+      dispatch(GetFriends());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <Stack
