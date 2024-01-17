@@ -212,7 +212,7 @@ export const getFriends = async (req, res, next) => {
     // find the user and populate the friends list
     const user = await UserModel.findById(user_id).populate(
       "friends",
-      "_id firstName lastName avatar email"
+      "_id firstName lastName avatar activityStatus email"
     );
 
     // return list of friends for current user

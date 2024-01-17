@@ -10,6 +10,8 @@ import {
   Divider,
   Typography,
   useMediaQuery,
+  Tooltip,
+  capitalize,
 } from "@mui/material";
 import { SignOut } from "phosphor-react";
 
@@ -127,54 +129,16 @@ const Sidebar = () => {
           {isSmallScreen ? (
             Nav_Buttons.map((e) =>
               e.index === selected ? (
-                <Box
+                <Tooltip
+                  title={capitalize(e.address)}
+                  placement="top"
                   key={e.index}
-                  p={0.5}
-                  sx={{
-                    backgroundColor: theme.palette.primary.main,
-                    borderRadius: 1,
-                  }}
                 >
-                  <Link to={e.address}>
-                    <IconButton sx={{ width: "max-content", color: "#fff" }}>
-                      {e.icon}
-                    </IconButton>
-                  </Link>
-                </Box>
-              ) : (
-                <Link to={e.address} key={e.index}>
-                  <IconButton
-                    onClick={() => setSelected(e.index)}
-                    key={e.index}
-                    sx={{
-                      width: "100%",
-                      color:
-                        theme.palette.mode === "dark"
-                          ? theme.palette.text.primary
-                          : "#000",
-                    }}
-                  >
-                    {e.icon}
-                  </IconButton>
-                </Link>
-              )
-            )
-          ) : (
-            <Stack
-              direction={"column"}
-              spacing={3}
-              alignItems="center"
-              sx={{ width: "max-content" }}
-              display={"flex"}
-            >
-              {Nav_Buttons.map((e) =>
-                e.index === selected ? (
                   <Box
-                    key={e.index}
-                    p={0.8}
+                    p={0.5}
                     sx={{
                       backgroundColor: theme.palette.primary.main,
-                      borderRadius: 5,
+                      borderRadius: 1,
                     }}
                   >
                     <Link to={e.address}>
@@ -183,8 +147,14 @@ const Sidebar = () => {
                       </IconButton>
                     </Link>
                   </Box>
-                ) : (
-                  <Link to={e.address} key={e.index}>
+                </Tooltip>
+              ) : (
+                <Tooltip
+                  title={capitalize(e.address)}
+                  placement="top"
+                  key={e.index}
+                >
+                  <Link to={e.address}>
                     <IconButton
                       onClick={() => setSelected(e.index)}
                       key={e.index}
@@ -199,6 +169,62 @@ const Sidebar = () => {
                       {e.icon}
                     </IconButton>
                   </Link>
+                </Tooltip>
+              )
+            )
+          ) : (
+            <Stack
+              direction={"column"}
+              spacing={3}
+              alignItems="center"
+              sx={{ width: "max-content" }}
+              display={"flex"}
+            >
+              {Nav_Buttons.map((e) =>
+                e.index === selected ? (
+                  <Tooltip
+                    title={capitalize(e.address)}
+                    placement="right"
+                    key={e.index}
+                  >
+                    <Box
+                      p={0.8}
+                      sx={{
+                        backgroundColor: theme.palette.primary.main,
+                        borderRadius: 5,
+                      }}
+                    >
+                      <Link to={e.address}>
+                        <IconButton
+                          sx={{ width: "max-content", color: "#fff" }}
+                        >
+                          {e.icon}
+                        </IconButton>
+                      </Link>
+                    </Box>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    title={capitalize(e.address)}
+                    placement="right"
+                    key={e.index}
+                  >
+                    <Link to={e.address}>
+                      <IconButton
+                        onClick={() => setSelected(e.index)}
+                        key={e.index}
+                        sx={{
+                          width: "100%",
+                          color:
+                            theme.palette.mode === "dark"
+                              ? theme.palette.text.primary
+                              : "#000",
+                        }}
+                      >
+                        {e.icon}
+                      </IconButton>
+                    </Link>
+                  </Tooltip>
                 )
               )}
             </Stack>

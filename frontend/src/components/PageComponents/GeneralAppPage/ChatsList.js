@@ -14,8 +14,8 @@ import { SearchFriends } from "../../../redux/slices/actions/userActions";
 import { ClearSearch } from "../../../redux/slices/userSlice";
 
 import { MembersList } from "../../../data";
-import AllChatElement from "./ChatElements/AllChatElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
+import AllChatElement from "./ChatElements/AllChatElement";
 import OnlineChatElement from "./ChatElements/OnlineChatElement";
 import ChatSearchResults from "./ChatElements/ChatSearchResults";
 import { getOtherUser } from "../../../utils/getOtherUser";

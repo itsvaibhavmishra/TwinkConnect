@@ -14,9 +14,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { SearchFriends } from "../../../redux/slices/actions/userActions";
 import { ClearSearch } from "../../../redux/slices/userSlice";
 
-import AllContactElement from "./ContactElements/AllContactElement";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import ChatSearchResults from "../GeneralAppPage/ChatElements/ChatSearchResults";
+import AllChatElement from "../GeneralAppPage/ChatElements/AllChatElement";
+import { MembersList } from "../../../data";
 
 const ContactList = () => {
   // using theme
@@ -160,15 +161,34 @@ const ContactList = () => {
               spacing={4}
               className="scrollbar"
             >
-              {/* Render contacts grouped by first letter */}
-              {Object.entries(groupedContacts).map(([letter, contacts]) => (
-                <Stack spacing={0.5} key={letter}>
-                  <Typography variant="subtitle2">{letter}</Typography>
-                  {contacts.map((contact) => (
-                    <AllContactElement {...contact} key={contact._id} />
+              {isLoading
+                ? MembersList.map((e) => {
+                    return (
+                      <AllChatElement
+                        key={e._id}
+                        {...e}
+                        isLoading={isLoading}
+                      />
+                    );
+                  })
+                : //Render contacts grouped by first letter
+                  Object.entries(groupedContacts).map(([letter, contacts]) => (
+                    <Stack spacing={0.5} key={letter}>
+                      <Typography variant="subtitle2">{letter}</Typography>
+                      {contacts.map((contact) => (
+                        <AllChatElement
+                          key={contact._id}
+                          {...contact}
+                          latestMessage={
+                            contact._id === user._id
+                              ? { message: "Message yourself" }
+                              : contact.latestMessage
+                          }
+                          isLoading={isLoading}
+                        />
+                      ))}
+                    </Stack>
                   ))}
-                </Stack>
-              ))}
             </Stack>
           </>
         ) : (
