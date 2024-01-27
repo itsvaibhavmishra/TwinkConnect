@@ -45,6 +45,29 @@ export const CreateOpenConversation = createAsyncThunk(
         }
       );
 
+      await dispatch(GetMessages(data.conversation._id));
+
+      return data;
+    } catch (error) {
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Get Messages -------------
+export const GetMessages = createAsyncThunk(
+  "message/get-messages",
+  async (convoId, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get(`/message/get-messages/${convoId}`);
+
       return data;
     } catch (error) {
       // show snackbar

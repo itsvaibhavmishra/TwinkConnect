@@ -1,16 +1,29 @@
 import { Box, Stack, useTheme } from "@mui/material";
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ fromChat }) => {
   // using theme
   const theme = useTheme();
 
   // Check if /auth is present in the URL
   const isAuthRoute = window.location.pathname.includes("/auth");
 
+  let height, width;
+
+  if (isAuthRoute) {
+    height = "50vh";
+    width = "100%";
+  } else if (fromChat) {
+    height = "100%";
+    width = "100%";
+  } else {
+    height = "100vh";
+    width = "100vw";
+  }
+
   return (
     <Stack
-      height={isAuthRoute ? "50vh" : "100vh"}
-      width={isAuthRoute ? "100%" : "100vw"}
+      height={height}
+      width={width}
       direction={"row"}
       justifyContent={"center"}
       alignItems={"center"}
