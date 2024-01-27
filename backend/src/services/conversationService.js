@@ -5,14 +5,14 @@ import { ConversationModel, UserModel } from "../models/index.js";
 export const findConversation = async (sender_id, receiver_id) => {
   let convos;
   if (sender_id.toString() === receiver_id.toString()) {
-    convos = await ConversationModel.findOne({
+    convos = await ConversationModel.find({
       isGroup: false,
       users: { $all: [receiver_id], $size: 1 },
     })
       .populate("users", "-verified -password -passwordChangedAt -friends")
       .populate("latestMessage");
   } else {
-    convos = await ConversationModel.findOne({
+    convos = await ConversationModel.find({
       isGroup: false,
       $and: [
         { users: { $elemMatch: { $eq: sender_id } } },

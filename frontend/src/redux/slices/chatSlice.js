@@ -69,4 +69,6 @@ export function clearChat() {
   };
 }
 
+export const { setActiveConversation } = slice.actions;
+
 export default slice.reducer;
