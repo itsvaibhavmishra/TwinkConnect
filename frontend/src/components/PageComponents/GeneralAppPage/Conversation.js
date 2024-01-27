@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 
+// redux imports
 import { useSelector } from "react-redux";
 
 import { getOtherUser } from "../../../utils/getOtherUser";

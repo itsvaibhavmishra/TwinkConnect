@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   CreateOpenConversation,
   GetConversations,
+  GetMessages,
 } from "./actions/chatActions";
 
 // initial state for contacts menu
@@ -12,6 +13,8 @@ const initialState = {
   conversations: [],
   activeConversation: null,
   notifications: [],
+
+  messages: [],
 };
 
 const slice = createSlice({
@@ -56,6 +59,20 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(CreateOpenConversation.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Get Messages Builder ---------
+      .addCase(GetMessages.pending, (state, action) => {
+        state.error = false;
+      })
+      .addCase(GetMessages.fulfilled, (state, action) => {
+        state.messages = action.payload.messages;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(GetMessages.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
       });

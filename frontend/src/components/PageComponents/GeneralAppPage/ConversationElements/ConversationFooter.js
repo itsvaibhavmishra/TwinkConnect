@@ -5,6 +5,7 @@ const ConversationFooter = () => {
 
   return (
     <Box
+      p={2}
       sx={{
         height: 100,
         backgroundColor: theme.palette.background.default,
