@@ -1,6 +1,10 @@
 export const getOtherUser = (users, current_id) => {
   let chatElementProps = null;
 
+  if (!users || !current_id) {
+    return null;
+  }
+
   if (users.length > 1) {
     const otherUser = users.find((e) => e._id !== current_id);
 

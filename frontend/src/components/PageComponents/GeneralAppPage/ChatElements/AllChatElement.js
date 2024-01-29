@@ -97,7 +97,11 @@ const AllChatElement = ({
                 <Skeleton animation="wave" height={20} width="12em" />
               ) : (
                 truncateText(
-                  latestMessage ? latestMessage.message : activityStatus,
+                  latestMessage
+                    ? latestMessage.sender._id === user._id
+                      ? `You: ${latestMessage.message}`
+                      : latestMessage.message
+                    : activityStatus,
                   20
                 )
               )}

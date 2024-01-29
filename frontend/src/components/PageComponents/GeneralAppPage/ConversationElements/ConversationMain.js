@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Box, useTheme, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import MessageContainer from "./ConvoSubElements/MessageContainer";
@@ -8,6 +9,9 @@ const ConversationMain = () => {
   const { messages } = useSelector((state) => state.chat);
 
   let currentSender = null;
+
+  // Reference to the scrollable element
+  const scrollContainerRef = useRef(null);
 
   // -------------- inner functions --------------
   // Function to check if the text only contains emojis
@@ -30,7 +34,22 @@ const ConversationMain = () => {
     index < messages.length - 1 &&
     containsOnlyEmojis(messages[index + 1].message);
 
+  // Function to scroll to the bottom
+  const scrollToBottom = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  };
+
   // ------------------------------------------
+
+  useEffect(() => {
+    // Auto-scroll to the bottom with an animation when the component mounts
+    if (scrollContainerRef.current) {
+      scrollToBottom();
+    }
+  }, []);
 
   return (
     <Box
@@ -42,11 +61,14 @@ const ConversationMain = () => {
         flexGrow: 1,
         overflowY: "scroll",
         backgroundColor: theme.palette.background.paper,
+        scrollBehavior: "smooth", // Enable smooth scrolling
+        transition: "scroll-behavior 300ms",
       }}
       className="scrollbar"
+      ref={scrollContainerRef}
     >
       <Stack spacing={0.5}>
-        {messages.map((e, index) => {
+        {messages?.map((e, index) => {
           const isStartOfSequence =
             currentSender === null || e.sender._id !== currentSender;
 

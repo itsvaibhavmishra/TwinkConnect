@@ -58,6 +58,7 @@ const MessageContainer = ({
         p={commonPadding}
         sx={{
           width: "max-content",
+          maxWidth: { xs: "12em", md: "30em" },
           backgroundColor:
             msgType === "text"
               ? me
