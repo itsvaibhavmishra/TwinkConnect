@@ -29,7 +29,7 @@ const MessageContainer = ({
     borderRadiusStyle = "5px 20px 20px 5px";
   }
 
-  const commonPadding = msgType === "text" ? 1.5 : 0.5;
+  const commonPadding = msgType === "text" ? 1.5 : "3px 0px";
 
   return (
     <Stack
@@ -42,7 +42,7 @@ const MessageContainer = ({
         <Box
           sx={{
             position: "absolute",
-            top: 10,
+            top: msgType === "text" ? 10 : 18,
             left: -25,
           }}
         >
@@ -69,7 +69,7 @@ const MessageContainer = ({
         }}
       >
         <Typography
-          variant={msgType === "text" ? "body2" : "h5"}
+          variant={msgType === "text" ? "body2" : "h3"}
           color={me ? "#fff" : theme.palette.text}
         >
           {message.message}
@@ -80,7 +80,7 @@ const MessageContainer = ({
           sx={{
             position: "absolute",
             top: 25,
-            right: -15,
+            right: -16,
           }}
         >
           {getAvatar(

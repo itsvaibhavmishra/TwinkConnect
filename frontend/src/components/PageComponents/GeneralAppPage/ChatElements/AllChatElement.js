@@ -98,7 +98,7 @@ const AllChatElement = ({
               ) : (
                 truncateText(
                   latestMessage
-                    ? latestMessage.sender._id === user._id
+                    ? latestMessage?.sender?._id === user._id
                       ? `You: ${latestMessage.message}`
                       : latestMessage.message
                     : activityStatus,

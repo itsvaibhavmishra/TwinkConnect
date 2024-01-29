@@ -55,7 +55,7 @@ const ConversationMain = () => {
     <Box
       width="100%"
       pl={4}
-      pr={2}
+      pr={2.2}
       py={1}
       sx={{
         flexGrow: 1,
