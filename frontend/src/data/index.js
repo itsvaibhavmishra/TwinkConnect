@@ -8,6 +8,13 @@ import {
 
   //   Profile Menu
   IdentificationCard,
+
+  // Text Field Actions
+  Image,
+  Sticker,
+  Camera,
+  File,
+  User,
 } from "phosphor-react";
 
 const MembersList = [
@@ -102,4 +109,42 @@ const Profile_Menu = [
   },
 ];
 
-export { Nav_Buttons, MembersList, Profile_Menu };
+const Actions = [
+  {
+    color: "darker",
+    contrast: "#fff",
+    icon: <Image size={24} />,
+    y: 102,
+    title: "Photo/Video",
+  },
+  {
+    color: "dark",
+    contrast: "#fff",
+    icon: <Sticker size={24} />,
+    y: 172,
+    title: "Stickers",
+  },
+  {
+    color: "main",
+    contrast: "#fff",
+    icon: <Camera size={24} />,
+    y: 242,
+    title: "Image",
+  },
+  {
+    color: "light",
+    contrast: "#333",
+    icon: <File size={24} />,
+    y: 312,
+    title: "Document",
+  },
+  {
+    color: "lighter",
+    contrast: "#222",
+    icon: <User size={24} />,
+    y: 382,
+    title: "Contact",
+  },
+];
+
+export { Nav_Buttons, MembersList, Profile_Menu, Actions };

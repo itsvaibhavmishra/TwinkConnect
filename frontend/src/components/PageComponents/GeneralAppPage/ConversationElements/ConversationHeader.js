@@ -50,11 +50,11 @@ const ConversationHeader = ({ otherUser }) => {
             }}
             variant="dot"
           >
-            {getAvatar(otherUser.avatar, otherUser.firstName, theme)}
+            {getAvatar(otherUser?.avatar, otherUser?.firstName, theme)}
           </StyledBadge>
 
           <Stack spacing={0.2}>
-            <Typography variant="subtitle2">{`${otherUser.firstName} ${otherUser.lastName}`}</Typography>
+            <Typography variant="subtitle2">{`${otherUser?.firstName} ${otherUser?.lastName}`}</Typography>
             <Typography variant="caption">Online</Typography>
           </Stack>
         </Stack>

@@ -15,7 +15,7 @@ const Conversation = () => {
   const { activeConversation, isLoading } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
 
-  const otherUser = getOtherUser(activeConversation.users, user._id);
+  const otherUser = getOtherUser(activeConversation?.users, user._id);
 
   if (isLoading) {
     return <LoadingScreen fromChat={true} />;
