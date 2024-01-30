@@ -33,8 +33,11 @@ const ConversationFooter = ({ convo_id }) => {
           value.substring(selectionEnd)
       );
 
-      // Move the cursor to the end of the inserted emoji
-      input.selectionStart = input.selectionEnd = selectionStart + 1;
+      // Move the cursor to the end of the inserted emoji with a slight delay
+      setTimeout(() => {
+        const newPosition = selectionStart + emoji.length;
+        input.setSelectionRange(newPosition, newPosition);
+      }, 0);
     }
   };
 
@@ -47,7 +50,7 @@ const ConversationFooter = ({ convo_id }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (value && value !== "") {
+    if (value && value.trim() !== "") {
       // send message
       dispatch(SendMessage({ message: value, convo_id: convo_id }));
       // Clear the input field

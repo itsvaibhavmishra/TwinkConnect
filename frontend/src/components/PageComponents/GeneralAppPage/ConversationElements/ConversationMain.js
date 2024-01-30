@@ -62,7 +62,6 @@ const ConversationMain = () => {
         overflowY: "scroll",
         backgroundColor: theme.palette.background.paper,
         scrollBehavior: "smooth", // Enable smooth scrolling
-        transition: "scroll-behavior 300ms",
       }}
       className="scrollbar"
       ref={scrollContainerRef}

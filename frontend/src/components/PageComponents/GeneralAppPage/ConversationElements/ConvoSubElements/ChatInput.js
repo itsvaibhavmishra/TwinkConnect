@@ -58,6 +58,7 @@ const ChatInput = ({
         sx: {
           borderRadius: 20,
           backgroundColor: theme.palette.background.paper,
+          minHeight: 55,
           "& textarea": {
             scrollbarColor: `${theme.palette.primary.main} transparent`,
             scrollbarWidth: "thin",
