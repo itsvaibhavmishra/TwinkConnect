@@ -44,9 +44,9 @@ export const sendMessage = async (req, res, next) => {
 
     const newMessage = await createMessage(msgData);
 
-    const populatedMessage = await populateMessage(newMessage._id);
-
     await updateLatestMessage(convo_id, newMessage);
+
+    const populatedMessage = await populateMessage(newMessage._id);
 
     res.status(200).json({ status: "success", message: populatedMessage });
   } catch (error) {
