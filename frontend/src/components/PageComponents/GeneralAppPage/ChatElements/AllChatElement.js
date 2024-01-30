@@ -15,6 +15,7 @@ import { CreateOpenConversation } from "../../../../redux/slices/actions/chatAct
 import StyledBadge from "../../../StyledBadge";
 import getAvatar from "../../../../utils/createAvatar";
 import formatTime from "../../../../utils/timeFormatter";
+import truncateText from "../../../../utils/truncateText";
 
 const AllChatElement = ({
   _id,
@@ -26,6 +27,7 @@ const AllChatElement = ({
   unread,
   online,
   isLoading,
+  convo_id,
 }) => {
   // using theme
   const theme = useTheme();
@@ -33,25 +35,40 @@ const AllChatElement = ({
   // from redux
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { activeConversation } = useSelector((state) => state.chat);
 
-  const truncateText = (string, n) => {
-    return string?.length > n ? `${string?.slice(0, n)}...` : string;
-  };
+  // const truncateText = (string, n) => {
+  //   return string?.length > n ? `${string?.slice(0, n)}...` : string;
+  // };
 
   // ----------- inner functions -----------
   const handleConversation = () => {
     dispatch(CreateOpenConversation(_id));
   };
+  // ---------------------------------------
 
+  const selectedChat = () => {
+    if (!activeConversation) {
+      return "none";
+    } else if (theme.palette.mode === "dark") {
+      return activeConversation?._id === convo_id
+        ? theme.palette.primary.lighterFaded
+        : "none";
+    } else {
+      return activeConversation?._id === convo_id
+        ? theme.palette.primary.lighter
+        : "none";
+    }
+  };
   return (
     <Box
       sx={{
         width: "100%",
         borderRadius: 1,
-        backgroundColor: "none",
+        backgroundColor: selectedChat,
         cursor: "pointer",
       }}
-      pt={2}
+      p={1.5}
       onClick={handleConversation}
     >
       <Stack
@@ -117,6 +134,7 @@ const AllChatElement = ({
               fontWeight: 600,
               color: theme.palette.text.secondary,
               paddingBottom: 0.8,
+              textWrap: "nowrap",
             }}
           >
             {isLoading ? (
@@ -140,7 +158,7 @@ const AllChatElement = ({
                 paddingBottom: 1,
                 "& .MuiBadge-badge": {
                   color: theme.palette.primary.main,
-                  backgroundColor: `${theme.palette.primary.dark}20`,
+                  backgroundColor: `${theme.palette.primary.main}15`,
                 },
               }}
             />

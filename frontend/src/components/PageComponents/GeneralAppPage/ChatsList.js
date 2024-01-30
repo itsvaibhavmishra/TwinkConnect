@@ -193,6 +193,7 @@ const ChatsList = () => {
                         chatElementProps && (
                           <AllChatElement
                             key={conversation._id}
+                            convo_id={conversation._id}
                             latestMessage={conversation.latestMessage}
                             {...chatElementProps}
                             isLoading={isLoading}
@@ -219,6 +220,7 @@ const ChatsList = () => {
             currentPage={page}
             onSearchPageChange={handleSearchPageChange}
             currentUser={user._id}
+            activeConversation={activeConversation}
           />
         </Fragment>
       )}
