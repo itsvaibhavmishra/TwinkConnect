@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Box, useTheme, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import MessageContainer from "./ConvoSubElements/MessageContainer";
+import { scrollToBottom } from "../../../../utils/scrollToBottom";
 
 const ConversationMain = () => {
   const theme = useTheme();
@@ -34,20 +35,12 @@ const ConversationMain = () => {
     index < messages.length - 1 &&
     containsOnlyEmojis(messages[index + 1].message);
 
-  // Function to scroll to the bottom
-  const scrollToBottom = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
-  };
-
   // ------------------------------------------
 
   useEffect(() => {
     // Auto-scroll to the bottom with an animation when the component mounts
     if (scrollContainerRef.current) {
-      scrollToBottom();
+      scrollToBottom(scrollContainerRef);
     }
   }, [messages]);
 

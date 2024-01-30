@@ -37,13 +37,13 @@ const AllChatElement = ({
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
 
-  // const truncateText = (string, n) => {
-  //   return string?.length > n ? `${string?.slice(0, n)}...` : string;
-  // };
+  const isActiveConvo = activeConversation?._id === convo_id;
 
   // ----------- inner functions -----------
   const handleConversation = () => {
-    dispatch(CreateOpenConversation(_id));
+    if (!isActiveConvo && !isLoading) {
+      dispatch(CreateOpenConversation(_id));
+    }
   };
   // ---------------------------------------
 
@@ -51,13 +51,9 @@ const AllChatElement = ({
     if (!activeConversation) {
       return "none";
     } else if (theme.palette.mode === "dark") {
-      return activeConversation?._id === convo_id
-        ? theme.palette.primary.lighterFaded
-        : "none";
+      return isActiveConvo ? theme.palette.primary.lighterFaded : "none";
     } else {
-      return activeConversation?._id === convo_id
-        ? theme.palette.primary.lighter
-        : "none";
+      return isActiveConvo ? theme.palette.primary.lighter : "none";
     }
   };
   return (
@@ -66,7 +62,12 @@ const AllChatElement = ({
         width: "100%",
         borderRadius: 1,
         backgroundColor: selectedChat,
-        cursor: "pointer",
+        cursor: !isActiveConvo && !isLoading ? "pointer" : "default",
+        transition: "background-color 0.2s ease",
+        "&:hover": {
+          backgroundColor:
+            !isActiveConvo && !isLoading && `${theme.palette.primary.main}20`,
+        },
       }}
       p={1.5}
       onClick={handleConversation}
