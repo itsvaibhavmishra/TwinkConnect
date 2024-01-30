@@ -81,3 +81,23 @@ export const GetMessages = createAsyncThunk(
     }
   }
 );
+
+// ------------- Get Messages -------------
+export const SendMessage = createAsyncThunk(
+  "message/send-message",
+  async (messageData, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/message/send-message", messageData);
+      return data;
+    } catch (error) {
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);

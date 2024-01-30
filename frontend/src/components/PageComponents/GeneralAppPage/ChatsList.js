@@ -29,7 +29,9 @@ const ChatsList = () => {
   const { user, searchResults, searchCount, isLoading } = useSelector(
     (state) => state.user
   );
-  const { conversations } = useSelector((state) => state.chat);
+  const { conversations, activeConversation } = useSelector(
+    (state) => state.chat
+  );
 
   // states
   const [searchTerm, setSearchTerm] = useState("");
@@ -176,22 +178,28 @@ const ChatsList = () => {
                       />
                     );
                   })
-                : conversations.map((conversation) => {
-                    const { users } = conversation;
+                : conversations
+                    .filter(
+                      (e) =>
+                        e.latestMessage?.message ||
+                        e._id === activeConversation?._id
+                    )
+                    .map((conversation) => {
+                      const { users } = conversation;
 
-                    const chatElementProps = getOtherUser(users, user._id);
+                      const chatElementProps = getOtherUser(users, user._id);
 
-                    return (
-                      chatElementProps && (
-                        <AllChatElement
-                          key={conversation._id}
-                          latestMessage={conversation.latestMessage}
-                          {...chatElementProps}
-                          isLoading={isLoading}
-                        />
-                      )
-                    );
-                  })}
+                      return (
+                        chatElementProps && (
+                          <AllChatElement
+                            key={conversation._id}
+                            latestMessage={conversation.latestMessage}
+                            {...chatElementProps}
+                            isLoading={isLoading}
+                          />
+                        )
+                      );
+                    })}
             </Stack>
           </Stack>
         </>

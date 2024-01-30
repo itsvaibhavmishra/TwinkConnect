@@ -71,6 +71,7 @@ const MessageContainer = ({
         <Typography
           variant={msgType === "text" ? "body2" : "h3"}
           color={me ? "#fff" : theme.palette.text}
+          sx={{ whiteSpace: "pre-line" }}
         >
           {message.message}
         </Typography>

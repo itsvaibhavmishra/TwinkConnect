@@ -27,7 +27,7 @@ const Conversation = () => {
 
       <ConversationMain />
 
-      <ConversationFooter />
+      <ConversationFooter convo_id={activeConversation._id} />
     </Stack>
   );
 };

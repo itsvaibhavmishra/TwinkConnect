@@ -49,7 +49,7 @@ const ConversationMain = () => {
     if (scrollContainerRef.current) {
       scrollToBottom();
     }
-  }, []);
+  }, [messages]);
 
   return (
     <Box

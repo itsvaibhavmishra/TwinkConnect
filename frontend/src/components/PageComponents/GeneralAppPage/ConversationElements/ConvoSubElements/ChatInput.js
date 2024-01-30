@@ -7,19 +7,10 @@ import {
   IconButton,
   InputAdornment,
   Popover,
-  styled,
 } from "@mui/material";
 import { LinkSimple, Smiley } from "phosphor-react";
 
 import { Actions } from "../../../../../data";
-
-const StyledInput = styled(TextField)(({ theme }) => ({
-  "& .MuiInputBase-input": {
-    paddingTop: "12px !important",
-    paddingBottom: "12px !important",
-    // maxHeight: 20,
-  },
-}));
 
 const ChatInput = ({
   openPicker,
@@ -27,6 +18,7 @@ const ChatInput = ({
   setValue,
   value,
   inputRef,
+  handleSubmit,
   theme,
 }) => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
@@ -39,17 +31,26 @@ const ChatInput = ({
     setPopoverAnchor(null);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+
+      handleSubmit(event);
+    }
+  };
+
   return (
-    <StyledInput
+    <TextField
       inputRef={inputRef}
       value={value}
       onChange={(event) => {
         setValue(event.target.value);
       }}
+      onKeyDown={handleKeyPress}
       fullWidth
-      //   multiline
-      //   size="small"
-      //   rows={1}
+      multiline
+      maxRows={3}
+      autoComplete="off"
       autoFocus
       placeholder="Write a message..."
       variant="outlined"
@@ -57,6 +58,20 @@ const ChatInput = ({
         sx: {
           borderRadius: 20,
           backgroundColor: theme.palette.background.paper,
+          "& textarea": {
+            scrollbarColor: `${theme.palette.primary.main} transparent`,
+            scrollbarWidth: "thin",
+            "&::-webkit-scrollbar": {
+              width: "5px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: theme.palette.primary.main,
+              borderRadius: "10px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "transparent",
+            },
+          },
         },
         startAdornment: (
           <Stack>

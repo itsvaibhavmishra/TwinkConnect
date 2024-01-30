@@ -5,10 +5,15 @@ import { PaperPlaneTilt } from "phosphor-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
+// redux imports
+import { useDispatch } from "react-redux";
+import { SendMessage } from "../../../../redux/slices/actions/chatActions";
+
 import ChatInput from "./ConvoSubElements/ChatInput";
 
-const ConversationFooter = () => {
+const ConversationFooter = ({ convo_id }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const [value, setValue] = useState("");
   const [openPicker, setOpenPicker] = useState(false);
@@ -43,7 +48,8 @@ const ConversationFooter = () => {
     e.preventDefault();
 
     if (value && value !== "") {
-      console.log(value);
+      // send message
+      dispatch(SendMessage({ message: value, convo_id: convo_id }));
       // Clear the input field
       setValue("");
     }
@@ -76,11 +82,12 @@ const ConversationFooter = () => {
                   zIndex: 10,
                   position: "fixed",
                   bottom: { xs: 80, md: 65 },
-                  right: { xs: 5, sm: 80, md: 100 },
+                  right: { xs: 15, sm: 80, md: 100 },
                 }}
               >
                 <Picker
                   perLine={8}
+                  autoFocus={true}
                   theme={theme.palette.mode}
                   data={data}
                   onEmojiSelect={(emoji) => {
@@ -96,6 +103,7 @@ const ConversationFooter = () => {
               inputRef={inputRef}
               value={value}
               setValue={setValue}
+              handleSubmit={handleSubmit}
               theme={theme}
             />
           </Stack>
