@@ -4,6 +4,7 @@ A Real-Time web-based Chat App built using MERN Stack.
 { Development in Progress }
 
 ## ✅ Site Status
+
 Live At: <a href=""></a>
 
 ## 💻 Tech Stack
@@ -24,31 +25,33 @@ Live At: <a href=""></a>
 ## 📃 Features List
 
     - { Multiple Features }
-    
-    - { Multiple Features }
-    
-    - { Multiple Features }
-    
-    - { Multiple Features }
-    
+
     - { Multiple Features }
 
+    - { Multiple Features }
+
+    - { Multiple Features }
+
+    - { Multiple Features }
 
 ## 👾 Installation
 
 ### Server:
 
 From root directory, move to the server using command
+
 ```bash
 $ cd server/
 ```
 
 Installs dependencies for server
+
 ```bash
 $ npm install
 ```
 
 Starts the server using nodemon
+
 ```bash
 $ npm start
 ```
@@ -56,21 +59,25 @@ $ npm start
 ## Client:
 
 From root directory, move to the client using command
+
 ```bash
 $ cd client/
 ```
 
 Installs dependencies for client
+
 ```bash
 $ npm install
 ```
 
 Runs client on localhost(React App)
+
 ```bash
 $ npm start
 ```
 
 Creates an optimized production build
+
 ```bash
 $ npm run build
 ```
@@ -84,7 +91,7 @@ Coming Soon
 <br/>
 
 <div align="center">
-<img src="https://komarev.com/ghpvc/?username=itsvaibhavmishra&&style=flat-square" align="center" />
+<img src="https://komarev.com/ghpvc/?username=itsvaibhavmishra&&style=for-the-badge" align="center" />
 </div>
 
 <br/>
