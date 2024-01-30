@@ -43,13 +43,24 @@ export const populateMessage = async (id) => {
     })
     .populate({
       path: "conversation",
-      select: "name isGroup users",
+      select: "name picture isGroup users latestMessage",
       model: "Conversation",
-      populate: {
-        path: "users",
-        select: "firstName lastName avatar email activityStatus",
-        model: "User",
-      },
+      populate: [
+        {
+          path: "users",
+          select: "firstName lastName avatar email activityStatus",
+          model: "User",
+        },
+        {
+          path: "latestMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            select: "firstName lastName avatar email activityStatus",
+            model: "User",
+          },
+        },
+      ],
     });
 
   if (!msg) {

@@ -7,6 +7,7 @@ import AllChatElement from "./AllChatElement";
 
 import Lottie from "react-lottie";
 import * as SearchNotFound from "../../../../assets/Illustration/SearchNotFound.json";
+import { scrollToBottom } from "../../../../utils/scrollToBottom";
 
 const ChatSearchResults = ({
   isLoading,
@@ -18,6 +19,12 @@ const ChatSearchResults = ({
 }) => {
   const containerRef = useRef(null);
   const debounceTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    if (currentPage - 1 !== 0) {
+      scrollToBottom(containerRef);
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     const container = containerRef.current;

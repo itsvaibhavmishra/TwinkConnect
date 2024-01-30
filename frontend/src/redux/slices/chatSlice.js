@@ -3,6 +3,7 @@ import {
   CreateOpenConversation,
   GetConversations,
   GetMessages,
+  SendMessage,
 } from "./actions/chatActions";
 
 // initial state for contacts menu
@@ -73,6 +74,35 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(GetMessages.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Send Message Builder ---------
+      .addCase(SendMessage.pending, (state, action) => {
+        state.error = false;
+      })
+      .addCase(SendMessage.fulfilled, (state, action) => {
+        // updating messages list
+        state.messages = [...state.messages, action.payload.message];
+
+        // updating conversations
+        const conversation = {
+          ...action.payload.message.conversation,
+        };
+        let newConvos = [...state.conversations].filter(
+          (e) => e._id !== conversation._id
+        );
+        newConvos.unshift(conversation);
+
+        console.log(conversation);
+
+        state.conversations = newConvos;
+
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(SendMessage.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
       });

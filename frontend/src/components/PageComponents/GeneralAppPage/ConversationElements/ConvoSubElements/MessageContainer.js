@@ -57,7 +57,11 @@ const MessageContainer = ({
       <Box
         p={commonPadding}
         sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           width: "max-content",
+          minWidth: 40,
           maxWidth: { xs: "12em", md: "30em" },
           backgroundColor:
             msgType === "text"
@@ -71,6 +75,7 @@ const MessageContainer = ({
         <Typography
           variant={msgType === "text" ? "body2" : "h3"}
           color={me ? "#fff" : theme.palette.text}
+          sx={{ whiteSpace: "preserve" }}
         >
           {message.message}
         </Typography>

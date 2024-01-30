@@ -5,7 +5,7 @@ function createGradient(color1, color2) {
 }
 
 const PRIMARY = {
-  lighterFaded: "#1B8CFE40",
+  lighterFaded: "#0754a340",
   lighterFade: "#1B8CFEBF",
   lighter: "#9BCBFA",
   light: "#5DA8F5",

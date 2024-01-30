@@ -10,13 +10,14 @@ import {
   Conversation,
 } from "../../components/PageComponents/GeneralAppPage";
 import NoChat from "../../assets/Illustration/NoChat";
+import LoadingScreen from "../../components/LoadingScreen";
 
 const GeneralApp = () => {
   const theme = useTheme();
   // from redux
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { activeConversation } = useSelector((state) => state.chat);
+  const { activeConversation, isLoading } = useSelector((state) => state.chat);
 
   useEffect(() => {
     if (user.token) {
@@ -68,7 +69,9 @@ const GeneralApp = () => {
           backgroundColor: theme.palette.background.paper,
         }}
       >
-        {activeConversation ? (
+        {isLoading ? (
+          <LoadingScreen fromChat={true} />
+        ) : activeConversation ? (
           <Conversation />
         ) : (
           // No Chat

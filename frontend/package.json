@@ -36,6 +36,7 @@
     "react-timeago": "^7.2.0",
     "redux": "^5.0.0",
     "redux-persist": "^6.0.0",
+    "stringz": "^2.1.0",
     "stylis-plugin-rtl": "^2.0.2",
     "swiper": "^11.0.5",
     "web-vitals": "^2.1.4",

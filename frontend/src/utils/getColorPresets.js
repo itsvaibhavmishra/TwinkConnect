@@ -9,6 +9,7 @@ export const colorPresets = [
   // PURPLE PRESET
   {
     name: "purple",
+    lighterFaded: "#200A6940",
     lighter: "#EBD6FD",
     light: "#B985F4",
     main: "#7635dc",
@@ -19,6 +20,7 @@ export const colorPresets = [
   // CYAN PRESET
   {
     name: "cyan",
+    lighterFaded: "#053D7A40",
     lighter: "#D1FFFC",
     light: "#76F2FF",
     main: "#1CCAFF",
@@ -29,6 +31,7 @@ export const colorPresets = [
   // BLUE PRESET
   {
     name: "blue",
+    lighterFaded: "#061B6440",
     lighter: "#D1E9FC",
     light: "#76B0F1",
     main: "#2065D1",
@@ -40,6 +43,7 @@ export const colorPresets = [
   // ORANGE PRESET
   {
     name: "orange",
+    lighterFaded: "#79390840",
     lighter: "#FEF4D4",
     light: "#FED680",
     main: "#fda92d",
@@ -50,6 +54,7 @@ export const colorPresets = [
   // RED PRESET
   {
     name: "red",
+    lighterFaded: "#7A093040",
     lighter: "#FFE3D5",
     light: "#FFC1AC",
     main: "#FF3030",
