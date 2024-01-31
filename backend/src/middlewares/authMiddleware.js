@@ -47,7 +47,9 @@ export const protect = async (req, res, next) => {
     });
 
     if (!this_user) {
-      return next(createHttpError.Unauthorized("Unidentified User"));
+      return next(
+        createHttpError.Unauthorized("Unidentified User, Please login again")
+      );
     }
 
     // check if the user changed the password after the new token was created
@@ -60,6 +62,8 @@ export const protect = async (req, res, next) => {
     req.user = this_user;
     next();
   } catch (error) {
-    return next(createHttpError.Unauthorized("Invalid token"));
+    return next(
+      createHttpError.Unauthorized("Invalid token, Please login again")
+    );
   }
 };

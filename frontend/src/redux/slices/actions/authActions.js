@@ -5,6 +5,7 @@ import { ShowSnackbar, logout, updateUser } from "../userSlice";
 import axios from "../../../utils/axios";
 import { updateOtpEmail } from "../authSlice";
 import { clearChat } from "../chatSlice";
+import { socket } from "../../../utils/socket";
 
 // ------------- Login Thunk -------------
 export const LoginUser = createAsyncThunk(
@@ -57,6 +58,7 @@ export const LogoutUser = createAsyncThunk(
 
         dispatch(clearChat());
         dispatch(logout());
+        socket.disconnect();
 
         // show snackbar
         dispatch(

@@ -2,6 +2,7 @@ import http from "http";
 import mongoose from "mongoose";
 
 import app from "./app.js";
+import { initializeSocket } from "./socket.js";
 
 // env variables
 const port = process.env.PORT || "5000";
@@ -25,7 +26,11 @@ mongoose
 
 // ------------------------------------
 
+// create server
 const server = http.createServer(app);
+
+// Initialize Socket.io
+initializeSocket(server);
 
 server.listen(port, () => {
   console.log(`Server on port ${port}`);
