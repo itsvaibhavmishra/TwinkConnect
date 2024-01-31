@@ -57,8 +57,7 @@ function App() {
     <>
       <ThemeProvider>
         <ThemeSettings>
-          {" "}
-          <Router />{" "}
+          <Router />
         </ThemeSettings>
       </ThemeProvider>
 
