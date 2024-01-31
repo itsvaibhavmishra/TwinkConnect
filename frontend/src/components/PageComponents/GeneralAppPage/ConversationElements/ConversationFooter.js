@@ -1,5 +1,12 @@
 import { useRef, useState, useEffect } from "react";
-import { Box, Stack, IconButton, useTheme, Grow } from "@mui/material";
+import {
+  Box,
+  Stack,
+  IconButton,
+  CircularProgress,
+  useTheme,
+  Grow,
+} from "@mui/material";
 import { PaperPlaneTilt } from "phosphor-react";
 
 import data from "@emoji-mart/data";
@@ -11,7 +18,7 @@ import { SendMessage } from "../../../../redux/slices/actions/chatActions";
 
 import ChatInput from "./ConvoSubElements/ChatInput";
 
-const ConversationFooter = ({ convo_id }) => {
+const ConversationFooter = ({ convo_id, sendMsgLoading }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -112,16 +119,28 @@ const ConversationFooter = ({ convo_id }) => {
           </Stack>
 
           <IconButton
+            loading={sendMsgLoading}
             type="submit"
             sx={{
               height: 40,
               width: 40,
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: sendMsgLoading
+                ? theme.palette.background.paper
+                : theme.palette.primary.main,
               borderRadius: 20,
               transition: "background-color 0.2s ease",
             }}
           >
-            <PaperPlaneTilt color="#ffffff" size={20} />
+            {sendMsgLoading ? (
+              <Stack alignItems={"center"} justifyContent={"center"}>
+                <CircularProgress
+                  color="primary"
+                  sx={{ maxWidth: 15, maxHeight: 15 }}
+                />
+              </Stack>
+            ) : (
+              <PaperPlaneTilt color="#ffffff" size={20} />
+            )}
           </IconButton>
         </Stack>
       </form>

@@ -9,6 +9,7 @@ import {
 // initial state for contacts menu
 const initialState = {
   isLoading: false,
+  sendMsgLoading: false,
   error: false,
 
   conversations: [],
@@ -81,6 +82,7 @@ const slice = createSlice({
       // --------- Send Message Builder ---------
       .addCase(SendMessage.pending, (state, action) => {
         state.error = false;
+        state.sendMsgLoading = true;
       })
       .addCase(SendMessage.fulfilled, (state, action) => {
         // updating messages list
@@ -95,14 +97,14 @@ const slice = createSlice({
         );
         newConvos.unshift(conversation);
 
-        console.log(conversation);
-
         state.conversations = newConvos;
 
+        state.sendMsgLoading = false;
         state.isLoading = false;
         state.error = false;
       })
       .addCase(SendMessage.rejected, (state, action) => {
+        state.sendMsgLoading = false;
         state.isLoading = false;
         state.error = true;
       });

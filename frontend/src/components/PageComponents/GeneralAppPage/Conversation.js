@@ -11,7 +11,9 @@ import {
 } from "./ConversationElements";
 
 const Conversation = () => {
-  const { activeConversation } = useSelector((state) => state.chat);
+  const { activeConversation, sendMsgLoading } = useSelector(
+    (state) => state.chat
+  );
   const { user } = useSelector((state) => state.user);
 
   const otherUser = getOtherUser(activeConversation?.users, user._id);
@@ -22,7 +24,10 @@ const Conversation = () => {
 
       <ConversationMain />
 
-      <ConversationFooter convo_id={activeConversation._id} />
+      <ConversationFooter
+        convo_id={activeConversation._id}
+        sendMsgLoading={sendMsgLoading}
+      />
     </Stack>
   );
 };
