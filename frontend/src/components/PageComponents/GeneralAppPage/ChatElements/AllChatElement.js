@@ -25,7 +25,7 @@ const AllChatElement = ({
   activityStatus,
   avatar,
   unread,
-  online,
+  onlineStatus,
   isLoading,
   convo_id,
 }) => {
@@ -37,7 +37,9 @@ const AllChatElement = ({
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
 
-  const isActiveConvo = activeConversation?._id === convo_id;
+  const isActiveConvo =
+    (activeConversation && convo_id && activeConversation?._id === convo_id) ||
+    false;
 
   // ----------- inner functions -----------
   const handleConversation = () => {
@@ -86,7 +88,7 @@ const AllChatElement = ({
               width={35}
               height={35}
             />
-          ) : online ? (
+          ) : onlineStatus === "online" ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

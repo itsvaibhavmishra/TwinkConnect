@@ -1,7 +1,7 @@
-import createHttpError from "http-errors";
 import { Server } from "socket.io"; // socket io
 
 import { socketMiddleware } from "./src/middlewares/socketMiddleware.js";
+import { emitFriendStatus } from "./src/controllers/friendsController.js";
 
 export const initializeSocket = (server) => {
   // creating socket.io instence
@@ -27,20 +27,31 @@ export const initializeSocket = (server) => {
 
   // listen to socket connection
   io.on("connection", async (socket) => {
-    const user = socket.user._id.toString();
     const socket_id = socket.id;
 
+    // ---------------Updating socket and user---------------
+    const user = socket.user;
+    const user_id = socket.user._id.toString();
+
     // join user with socket
-    socket.join(user);
+    socket.join(user_id);
 
-    console.log(
-      `${socket.user.firstName} ${socket.user.lastName}: ${socket_id}`
-    );
+    // set user online
+    user.onlineStatus = "online";
+    await user.save();
 
+    emitFriendStatus(io, socket, user, "online");
+
+    // ------------------------------------------------------
+
+    // ---------------User Disconnects---------------
     socket.on("disconnect", () => {
-      console.log(`${socket_id} Disconnected`);
+      user.onlineStatus = "offline";
+      user.save();
+
+      emitFriendStatus(io, socket, user, "offline");
     });
-    // ------------------------------------------------------------
+    // ------------------------------------------------------
 
     // ---------------Send Message Hanling---------------
     socket.on("send_message", (message) => {

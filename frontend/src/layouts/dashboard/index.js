@@ -49,11 +49,16 @@ const DashboardLayout = () => {
         dispatch(UpdateMsgConvo(message));
       });
 
+      socket.on("online_friends", (friend) => {
+        console.log(friend);
+      });
+
       return () => {
         if (socket) {
           socket.off("connect_error");
           socket.off("error");
           socket.off("message_received");
+          socket.off("online_friends");
         }
       };
     }
