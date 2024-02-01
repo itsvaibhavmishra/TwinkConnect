@@ -233,7 +233,7 @@ export const getOnlineFriends = async (req, res, next) => {
     // find the user and populate the friends list
     const user = await UserModel.findById(user_id).populate(
       "friends",
-      "_id firstName lastName onlineStatus"
+      "_id firstName lastName avatar onlineStatus"
     );
 
     // filter online friends
@@ -319,6 +319,7 @@ export const emitFriendStatus = async (io, socket, user, onlineStatus) => {
         _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
+        avatar: user.avatar,
         onlineStatus: onlineStatus,
       });
     });

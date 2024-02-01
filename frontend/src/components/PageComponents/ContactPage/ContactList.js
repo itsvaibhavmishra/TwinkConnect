@@ -17,6 +17,7 @@ import { ClearSearch } from "../../../redux/slices/userSlice";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import ChatSearchResults from "../GeneralAppPage/ChatElements/ChatSearchResults";
 import AllChatElement from "../GeneralAppPage/ChatElements/AllChatElement";
+import OnlineFriendsElement from "../OnlineFriendsElement/OnlineFriendsElement";
 import { MembersList } from "../../../data";
 
 const ContactList = () => {
@@ -142,6 +143,8 @@ const ContactList = () => {
 
         {!searchTerm ? (
           <>
+            {/* Online Friends Slider */}
+            <OnlineFriendsElement fromContact={true} />
             <Divider />
 
             <Typography variant="subtitle2" sx={{ color: "#676767" }}>
