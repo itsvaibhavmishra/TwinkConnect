@@ -19,6 +19,11 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "Hey There! I ❤️ Using TwinkChat 😸",
     },
+    onlineStatus: {
+      type: String,
+      default: "offline",
+      enum: ["online", "offline"],
+    },
 
     // Passwords schema
     password: { type: String, required: [true, "Password is required"] },
@@ -65,6 +70,20 @@ userSchema.pre("save", async function (next) {
     if (!this.isModified("otp") || !this.otp) return next();
     // hasing otp
     this.otp = await bcrypt.hash(this.otp.toString(), 14);
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// hook for default friend
+userSchema.pre("save", async function (next) {
+  try {
+    // If friends array is empty, add the user's own _id
+    if (this.friends.length === 0) {
+      this.friends.push(this._id);
+    }
 
     next();
   } catch (error) {

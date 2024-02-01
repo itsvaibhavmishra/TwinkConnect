@@ -16,10 +16,14 @@ const Conversation = () => {
   const { activeConversation, sendMsgLoading } = useSelector(
     (state) => state.chat
   );
-  const { user } = useSelector((state) => state.user);
+  const { user, onlineFriends } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const otherUser = getOtherUser(activeConversation?.users, user._id);
+  const otherUser = getOtherUser(
+    activeConversation?.users,
+    user._id,
+    onlineFriends
+  );
 
   useEffect(() => {
     dispatch(GetMessages(activeConversation?._id));

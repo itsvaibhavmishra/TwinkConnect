@@ -1,13 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
-import {
-  Stack,
-  Typography,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Stack, Typography, Divider, useTheme } from "@mui/material";
 import { MagnifyingGlass } from "phosphor-react";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { SearchFriends } from "../../../redux/slices/actions/userActions";
@@ -16,9 +9,9 @@ import { ClearSearch } from "../../../redux/slices/userSlice";
 import { MembersList } from "../../../data";
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import AllChatElement from "./ChatElements/AllChatElement";
-import OnlineChatElement from "./ChatElements/OnlineChatElement";
 import ChatSearchResults from "./ChatElements/ChatSearchResults";
 import { getOtherUser } from "../../../utils/getOtherUser";
+import OnlineFriendsElement from "../OnlineFriendsElement/OnlineFriendsElement";
 
 const ChatsList = () => {
   // using theme
@@ -26,9 +19,8 @@ const ChatsList = () => {
 
   // from redux
   const dispatch = useDispatch();
-  const { user, searchResults, searchCount, isLoading } = useSelector(
-    (state) => state.user
-  );
+  const { user, onlineFriends, searchResults, searchCount, isLoading } =
+    useSelector((state) => state.user);
   const { conversations, activeConversation } = useSelector(
     (state) => state.chat
   );
@@ -38,10 +30,6 @@ const ChatsList = () => {
   const [prevSearchTerm, setPrevSearchTerm] = useState("");
   const [usersFound, setUsersFound] = useState([]);
   const [page, setPage] = useState(1);
-
-  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up("sm"));
-  const isSmallerScreen = useMediaQuery((theme) => theme.breakpoints.up("xs"));
 
   // -------------- inner functions --------------
   // function to handle searched term
@@ -100,18 +88,7 @@ const ChatsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchResults]);
 
-  const getSlidesPerView = () => {
-    if (isMediumScreen) {
-      return "3.5";
-    } else if (isSmallScreen) {
-      return "6.5";
-    } else if (isSmallerScreen) {
-      return "3.5";
-    }
-  };
-
   // --------------------------------------------
-  const slidesPerView = getSlidesPerView();
 
   return (
     <Stack p={3} spacing={2} sx={{ height: "100%" }}>
@@ -134,17 +111,7 @@ const ChatsList = () => {
       {!searchTerm ? (
         <>
           {/* Online Friends Slider */}
-          <Stack spacing={1}>
-            <Swiper spaceBetween={20} slidesPerView={slidesPerView}>
-              <Stack direction={"row"} alignItems={"center"} spacing={2}>
-                {MembersList.filter((e) => e.online === true).map((e) => (
-                  <SwiperSlide key={e._id}>
-                    <OnlineChatElement {...e} isLoading={isLoading} />
-                  </SwiperSlide>
-                ))}
-              </Stack>
-            </Swiper>
-          </Stack>
+          <OnlineFriendsElement />
 
           <Divider />
 
@@ -187,7 +154,11 @@ const ChatsList = () => {
                     .map((conversation) => {
                       const { users } = conversation;
 
-                      const chatElementProps = getOtherUser(users, user._id);
+                      const chatElementProps = getOtherUser(
+                        users,
+                        user._id,
+                        onlineFriends
+                      );
 
                       return (
                         chatElementProps && (

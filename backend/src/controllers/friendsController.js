@@ -212,13 +212,39 @@ export const getFriends = async (req, res, next) => {
     // find the user and populate the friends list
     const user = await UserModel.findById(user_id).populate(
       "friends",
-      "_id firstName lastName avatar activityStatus email"
+      "_id firstName lastName avatar activityStatus onlineStatus email"
     );
 
     // return list of friends for current user
     res.status(200).json({
       status: "success",
       friends: user.friends,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ----------------------- Get Online Friends List -----------------------
+export const getOnlineFriends = async (req, res, next) => {
+  try {
+    const user_id = req.user._id;
+
+    // find the user and populate the friends list
+    const user = await UserModel.findById(user_id).populate(
+      "friends",
+      "_id firstName lastName avatar onlineStatus"
+    );
+
+    // filter online friends
+    const onlineFriends = user.friends.filter(
+      (friend) => friend.onlineStatus === "online"
+    );
+
+    // return list of friends for current user
+    res.status(200).json({
+      status: "success",
+      onlineFriends: onlineFriends,
     });
   } catch (error) {
     next(error);
@@ -279,5 +305,25 @@ export const getRequests = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+// --------------------------------------------------------------------
+
+// ----------------------- Socket: Friend Status -----------------------
+export const emitFriendStatus = async (io, socket, user, onlineStatus) => {
+  try {
+    user.friends.forEach((friend) => {
+      const friend_id = friend._id.toString();
+      io.to(friend_id).emit("online_friends", {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar,
+        onlineStatus: onlineStatus,
+      });
+    });
+  } catch (error) {
+    socket.errorHandler("Socket: Online friends error");
   }
 };

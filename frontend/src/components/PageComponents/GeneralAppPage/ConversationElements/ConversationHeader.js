@@ -42,20 +42,26 @@ const ConversationHeader = ({ otherUser }) => {
           alignItems={"center"}
           spacing={2}
         >
-          <StyledBadge
-            overlap="circular"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            variant="dot"
-          >
-            {getAvatar(otherUser?.avatar, otherUser?.firstName, theme)}
-          </StyledBadge>
+          {otherUser?.onlineStatus === "online" ? (
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              variant="dot"
+            >
+              {getAvatar(otherUser?.avatar, otherUser?.firstName, theme)}
+            </StyledBadge>
+          ) : (
+            getAvatar(otherUser?.avatar, otherUser?.firstName, theme)
+          )}
 
           <Stack spacing={0.2}>
             <Typography variant="subtitle2">{`${otherUser?.firstName} ${otherUser?.lastName}`}</Typography>
-            <Typography variant="caption">Online</Typography>
+            <Typography variant="caption" sx={{ textTransform: "capitalize" }}>
+              {otherUser?.onlineStatus}
+            </Typography>
           </Stack>
         </Stack>
         {/* header actions */}

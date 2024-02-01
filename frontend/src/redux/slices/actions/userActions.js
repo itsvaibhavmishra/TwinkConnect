@@ -102,3 +102,23 @@ export const GetFriends = createAsyncThunk(
     }
   }
 );
+
+// ------------- Get Online Friends Thunk -------------
+export const GetOnlineFriends = createAsyncThunk(
+  "friends/online-friends",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get("/friends/online-friends");
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);

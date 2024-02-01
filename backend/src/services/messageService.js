@@ -48,7 +48,7 @@ export const populateMessage = async (id) => {
       populate: [
         {
           path: "users",
-          select: "firstName lastName avatar email activityStatus",
+          select: "firstName lastName avatar email activityStatus onlineStatus",
           model: "User",
         },
         {
@@ -56,7 +56,8 @@ export const populateMessage = async (id) => {
           model: "Message",
           populate: {
             path: "sender",
-            select: "firstName lastName avatar email activityStatus",
+            select:
+              "firstName lastName avatar email activityStatus onlineStatus",
             model: "User",
           },
         },

@@ -41,7 +41,7 @@ export const searchForFriends = async (populatedFriends, keyword, page) => {
 
   // Perform the search
   friends = await UserModel.find(searchCriteria)
-    .select("_id firstName lastName email avatar activityStatus")
+    .select("_id firstName lastName email avatar activityStatus onlineStatus")
     .limit(pageSize)
     .skip(page * pageSize);
 
