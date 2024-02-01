@@ -7,8 +7,9 @@ import { setSession } from "../../utils/jwt";
 import { connectSocket, socket } from "../../utils/socket";
 
 import { useDispatch, useSelector } from "react-redux";
-import { ShowSnackbar } from "../../redux/slices/userSlice";
+import { ShowSnackbar, updateOnlineUsers } from "../../redux/slices/userSlice";
 import { UpdateMsgConvo } from "../../redux/slices/chatSlice";
+import { GetOnlineFriends } from "../../redux/slices/actions/userActions";
 
 const DashboardLayout = () => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -19,6 +20,7 @@ const DashboardLayout = () => {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
+    dispatch(GetOnlineFriends());
     if ((!socket || !socket.connected) && user._id) {
       connectSocket(user.token);
     }
@@ -50,7 +52,7 @@ const DashboardLayout = () => {
       });
 
       socket.on("online_friends", (friend) => {
-        console.log(friend);
+        dispatch(updateOnlineUsers(friend));
       });
 
       return () => {

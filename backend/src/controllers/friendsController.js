@@ -225,6 +225,32 @@ export const getFriends = async (req, res, next) => {
   }
 };
 
+// ----------------------- Get Online Friends List -----------------------
+export const getOnlineFriends = async (req, res, next) => {
+  try {
+    const user_id = req.user._id;
+
+    // find the user and populate the friends list
+    const user = await UserModel.findById(user_id).populate(
+      "friends",
+      "_id firstName lastName onlineStatus"
+    );
+
+    // filter online friends
+    const onlineFriends = user.friends.filter(
+      (friend) => friend.onlineStatus === "online"
+    );
+
+    // return list of friends for current user
+    res.status(200).json({
+      status: "success",
+      onlineFriends: onlineFriends,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ----------------------- Search Friends -----------------------
 export const searchFriends = async (req, res, next) => {
   try {

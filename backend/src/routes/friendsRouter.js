@@ -6,6 +6,7 @@ import {
   acceptRequest,
   cancelRequest,
   getFriends,
+  getOnlineFriends,
   getRequests,
   removeFriend,
   searchFriends,
@@ -36,6 +37,11 @@ friendsRouter
 
 // Get List of Friends
 friendsRouter.route("/get-friends").get(trimRequest.all, protect, getFriends);
+
+// Get List of Online Friends
+friendsRouter
+  .route("/online-friends")
+  .get(trimRequest.all, protect, getOnlineFriends);
 
 // Search for Friends
 friendsRouter.route("/search").get(trimRequest.all, protect, searchFriends);

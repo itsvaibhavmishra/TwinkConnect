@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import {
   GetFriends,
+  GetOnlineFriends,
   SearchFriends,
   UpdateProfile,
 } from "./actions/userActions";
@@ -28,6 +29,7 @@ const initialState = {
   },
 
   friends: [],
+  onlineFriends: [],
 
   searchResults: [],
   searchCount: null,
@@ -50,6 +52,27 @@ const slice = createSlice({
     // update user information
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
+    },
+
+    // update online users
+    updateOnlineUsers: (state, action) => {
+      const { _id, firstName, lastName, onlineStatus } = action.payload;
+      const index = state.onlineFriends.findIndex(
+        (friend) => friend._id === _id
+      );
+
+      if (index !== -1) {
+        // If user is already in onlineFriends array, update onlineStatus
+        state.onlineFriends[index].onlineStatus = onlineStatus;
+      } else {
+        // If user is not in onlineFriends array, add the whole object to the array
+        state.onlineFriends.push({
+          _id,
+          firstName,
+          lastName,
+          onlineStatus,
+        });
+      }
     },
 
     // update user information
@@ -77,6 +100,7 @@ const slice = createSlice({
         token: "",
       };
       state.friends = [];
+      state.onlineFriends = [];
     },
   },
   extraReducers(builder) {
@@ -130,6 +154,21 @@ const slice = createSlice({
       .addCase(GetFriends.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
+      })
+
+      // --------- Get Online Friends Builder ---------
+      .addCase(GetOnlineFriends.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(GetOnlineFriends.fulfilled, (state, action) => {
+        state.onlineFriends = action.payload.onlineFriends;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(GetOnlineFriends.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
       });
   },
 });
@@ -162,6 +201,6 @@ export function ClearSearch() {
   };
 }
 
-export const { updateUser, logout, user } = slice.actions;
+export const { updateUser, updateOnlineUsers, logout, user } = slice.actions;
 
 export default slice.reducer;

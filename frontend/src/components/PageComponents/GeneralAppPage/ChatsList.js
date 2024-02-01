@@ -26,9 +26,8 @@ const ChatsList = () => {
 
   // from redux
   const dispatch = useDispatch();
-  const { user, searchResults, searchCount, isLoading } = useSelector(
-    (state) => state.user
-  );
+  const { user, onlineFriends, searchResults, searchCount, isLoading } =
+    useSelector((state) => state.user);
   const { conversations, activeConversation } = useSelector(
     (state) => state.chat
   );
@@ -187,7 +186,11 @@ const ChatsList = () => {
                     .map((conversation) => {
                       const { users } = conversation;
 
-                      const chatElementProps = getOtherUser(users, user._id);
+                      const chatElementProps = getOtherUser(
+                        users,
+                        user._id,
+                        onlineFriends
+                      );
 
                       return (
                         chatElementProps && (
