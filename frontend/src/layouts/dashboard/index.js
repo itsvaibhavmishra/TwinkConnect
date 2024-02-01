@@ -8,7 +8,7 @@ import { connectSocket, socket } from "../../utils/socket";
 
 import { useDispatch, useSelector } from "react-redux";
 import { ShowSnackbar } from "../../redux/slices/userSlice";
-import { UpdateMessages } from "../../redux/slices/chatSlice";
+import { UpdateMsgConvo } from "../../redux/slices/chatSlice";
 
 const DashboardLayout = () => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -46,7 +46,7 @@ const DashboardLayout = () => {
       });
 
       socket.on("message_received", (message) => {
-        dispatch(UpdateMessages(message));
+        dispatch(UpdateMsgConvo(message));
       });
 
       return () => {

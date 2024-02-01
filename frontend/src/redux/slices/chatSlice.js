@@ -23,11 +23,6 @@ const slice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    // active conversation
-    setActiveConversation: (state, action) => {
-      state.activeConversation = action.payload;
-    },
-
     // close active conversation
     closeActiveConversation: (state, action) => {
       state.activeConversation = null;
@@ -41,11 +36,23 @@ const slice = createSlice({
     },
 
     // update messages from socket
-    UpdateMessages: (state, action) => {
-      const conversation = state.activeConversation;
-      if (conversation._id === action.payload.conversation._id) {
+    UpdateMsgConvo: (state, action) => {
+      const currentConvo = state.activeConversation;
+
+      // updating messages
+      if (currentConvo?._id === action.payload.conversation._id) {
         state.messages = [...state.messages, action.payload];
       }
+      // update conversations
+      const conversation = {
+        ...action.payload.conversation,
+      };
+      let newConvos = [...state.conversations].filter(
+        (e) => e._id !== conversation._id
+      );
+      newConvos.unshift(conversation);
+
+      state.conversations = newConvos;
     },
   },
   extraReducers(builder) {
@@ -132,10 +139,6 @@ export function clearChat() {
   };
 }
 
-export const {
-  setActiveConversation,
-  closeActiveConversation,
-  UpdateMessages,
-} = slice.actions;
+export const { closeActiveConversation, UpdateMsgConvo } = slice.actions;
 
 export default slice.reducer;

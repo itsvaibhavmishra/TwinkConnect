@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Stack, Box, Typography, useTheme } from "@mui/material";
+import { Stack, Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,9 @@ const GeneralApp = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation, isLoading } = useSelector((state) => state.chat);
+
+  // breakpoint
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (user.token) {
@@ -53,7 +56,7 @@ const GeneralApp = () => {
           overflow: "hidden",
         }}
       >
-        <ChatsList />
+        {isLoading && isSmallScreen ? <LoadingScreen /> : <ChatsList />}
       </Box>
 
       {/* initializing height and width for conversation area */}

@@ -4,6 +4,7 @@ import { SetLoading, ShowSnackbar } from "../userSlice";
 
 import axios from "../../../utils/axios";
 import { socket } from "../../../utils/socket";
+import { closeActiveConversation } from "../chatSlice";
 
 // ------------- Get Conversation Thunk -------------
 export const GetConversations = createAsyncThunk(
@@ -45,6 +46,8 @@ export const CreateOpenConversation = createAsyncThunk(
           receiver_id: value,
         }
       );
+
+      dispatch(closeActiveConversation());
 
       return data;
     } catch (error) {
