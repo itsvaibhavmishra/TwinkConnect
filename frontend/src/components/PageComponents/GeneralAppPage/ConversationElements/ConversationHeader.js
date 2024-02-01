@@ -11,7 +11,7 @@ import { VideoCamera, Phone, XCircle } from "phosphor-react";
 
 // redux imports
 import { useDispatch } from "react-redux";
-import { setActiveConversation } from "../../../../redux/slices/chatSlice";
+import { closeActiveConversation } from "../../../../redux/slices/chatSlice";
 
 import getAvatar from "../../../../utils/createAvatar";
 import StyledBadge from "../../../StyledBadge";
@@ -79,7 +79,7 @@ const ConversationHeader = ({ otherUser }) => {
           {/* search action */}
           <IconButton
             onClick={() => {
-              dispatch(setActiveConversation(null));
+              dispatch(closeActiveConversation());
             }}
           >
             <XCircle />

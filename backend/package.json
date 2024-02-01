@@ -43,6 +43,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7",
     "otp-generator": "^4.0.1",
+    "socket.io": "^4.7.4",
     "streamifier": "^0.1.1",
     "trim-request": "^1.0.6",
     "validator": "^13.11.0"

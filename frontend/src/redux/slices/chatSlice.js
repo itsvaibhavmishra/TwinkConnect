@@ -9,6 +9,7 @@ import {
 // initial state for contacts menu
 const initialState = {
   isLoading: false,
+  sendMsgLoading: false,
   error: false,
 
   conversations: [],
@@ -22,15 +23,36 @@ const slice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    // active conversation
-    setActiveConversation: (state, action) => {
-      state.activeConversation = action.payload;
+    // close active conversation
+    closeActiveConversation: (state, action) => {
+      state.activeConversation = null;
+      state.messages = [];
     },
 
     // clear conversation
     clearConversation: (state, action) => {
       state.conversations = [];
       state.activeConversation = null;
+    },
+
+    // update messages from socket
+    UpdateMsgConvo: (state, action) => {
+      const currentConvo = state.activeConversation;
+
+      // updating messages
+      if (currentConvo?._id === action.payload.conversation._id) {
+        state.messages = [...state.messages, action.payload];
+      }
+      // update conversations
+      const conversation = {
+        ...action.payload.conversation,
+      };
+      let newConvos = [...state.conversations].filter(
+        (e) => e._id !== conversation._id
+      );
+      newConvos.unshift(conversation);
+
+      state.conversations = newConvos;
     },
   },
   extraReducers(builder) {
@@ -81,6 +103,7 @@ const slice = createSlice({
       // --------- Send Message Builder ---------
       .addCase(SendMessage.pending, (state, action) => {
         state.error = false;
+        state.sendMsgLoading = true;
       })
       .addCase(SendMessage.fulfilled, (state, action) => {
         // updating messages list
@@ -95,14 +118,14 @@ const slice = createSlice({
         );
         newConvos.unshift(conversation);
 
-        console.log(conversation);
-
         state.conversations = newConvos;
 
+        state.sendMsgLoading = false;
         state.isLoading = false;
         state.error = false;
       })
       .addCase(SendMessage.rejected, (state, action) => {
+        state.sendMsgLoading = false;
         state.isLoading = false;
         state.error = true;
       });
@@ -116,6 +139,6 @@ export function clearChat() {
   };
 }
 
-export const { setActiveConversation } = slice.actions;
+export const { closeActiveConversation, UpdateMsgConvo } = slice.actions;
 
 export default slice.reducer;

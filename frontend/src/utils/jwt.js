@@ -76,8 +76,14 @@ const setSession = (accessToken, dispatch) => {
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     // Function for handling token expiry
-    const { exp } = jwtDecode(accessToken);
-    handleSessionExpiration(exp, dispatch);
+    try {
+      const { exp } = jwtDecode(accessToken);
+      handleSessionExpiration(exp, dispatch);
+    } catch (error) {
+      alert("Invalid Token, Please login again");
+      dispatch(LogoutUser());
+      isLogoutDispatched = true;
+    }
   } else {
     clearSession();
     if (!isLogoutDispatched) {
