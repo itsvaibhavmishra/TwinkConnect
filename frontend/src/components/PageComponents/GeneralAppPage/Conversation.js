@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Stack } from "@mui/material";
 
 // redux imports
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { getOtherUser } from "../../../utils/getOtherUser";
 import {
@@ -9,14 +10,21 @@ import {
   ConversationHeader,
   ConversationMain,
 } from "./ConversationElements";
+import { GetMessages } from "../../../redux/slices/actions/chatActions";
 
 const Conversation = () => {
   const { activeConversation, sendMsgLoading } = useSelector(
     (state) => state.chat
   );
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const otherUser = getOtherUser(activeConversation?.users, user._id);
+
+  useEffect(() => {
+    dispatch(GetMessages(activeConversation?._id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Stack height={"100%"} maxHeight={"100vh"} width={"auto"}>

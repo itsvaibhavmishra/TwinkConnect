@@ -119,7 +119,6 @@ const ConversationFooter = ({ convo_id, sendMsgLoading }) => {
           </Stack>
 
           <IconButton
-            loading={sendMsgLoading}
             type="submit"
             sx={{
               height: 40,

@@ -28,10 +28,24 @@ const slice = createSlice({
       state.activeConversation = action.payload;
     },
 
+    // close active conversation
+    closeActiveConversation: (state, action) => {
+      state.activeConversation = null;
+      state.messages = [];
+    },
+
     // clear conversation
     clearConversation: (state, action) => {
       state.conversations = [];
       state.activeConversation = null;
+    },
+
+    // update messages from socket
+    UpdateMessages: (state, action) => {
+      const conversation = state.activeConversation;
+      if (conversation._id === action.payload.conversation._id) {
+        state.messages = [...state.messages, action.payload];
+      }
     },
   },
   extraReducers(builder) {
@@ -118,6 +132,10 @@ export function clearChat() {
   };
 }
 
-export const { setActiveConversation } = slice.actions;
+export const {
+  setActiveConversation,
+  closeActiveConversation,
+  UpdateMessages,
+} = slice.actions;
 
 export default slice.reducer;

@@ -12,27 +12,53 @@ export const initializeSocket = (server) => {
     pingTimeout: 20000,
   });
 
-  // socket middleware
+  // socket protect middleware
   io.use(socketMiddleware);
+
+  // socket error middleware
+  io.use((socket, next) => {
+    socket.errorHandler = (error) => {
+      // Emit an error event to the client
+      socket.emit("error", { status: "error", message: error });
+    };
+
+    next();
+  });
 
   // listen to socket connection
   io.on("connection", async (socket) => {
+    const user = socket.user._id.toString();
     const socket_id = socket.id;
 
+    // join user with socket
+    socket.join(user);
+
     console.log(
-      "------------------\n" +
-        `${socket.user.firstName} ${socket.user.lastName} Connected` +
-        "\n" +
-        `SockedID: ${socket_id}` +
-        "\n------------------"
+      `${socket.user.firstName} ${socket.user.lastName}: ${socket_id}`
     );
 
     socket.on("disconnect", () => {
-      console.log(
-        "------------------\n" +
-          `${socket.user.firstName} ${socket.user.lastName} Disconnected` +
-          "\n------------------"
-      );
+      console.log(`${socket_id} Disconnected`);
+    });
+    // ------------------------------------------------------------
+
+    // ---------------Send Message Hanling---------------
+    socket.on("send_message", (message) => {
+      try {
+        const conversation = message.conversation;
+
+        if (!conversation.users) return;
+
+        // emit message to each user(could be fr group)
+        conversation.users.forEach((user) => {
+          if (user._id !== message.sender._id) {
+            socket.in(user._id).emit("message_received", message);
+          }
+        });
+      } catch (error) {
+        console.log("error occured");
+        socket.errorHandler("Socket: Error sending message");
+      }
     });
   });
 };

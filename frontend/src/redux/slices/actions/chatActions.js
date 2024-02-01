@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SetLoading, ShowSnackbar } from "../userSlice";
 
 import axios from "../../../utils/axios";
+import { socket } from "../../../utils/socket";
 
 // ------------- Get Conversation Thunk -------------
 export const GetConversations = createAsyncThunk(
@@ -45,8 +46,6 @@ export const CreateOpenConversation = createAsyncThunk(
         }
       );
 
-      await dispatch(GetMessages(data.conversation._id));
-
       return data;
     } catch (error) {
       // show snackbar
@@ -88,6 +87,9 @@ export const SendMessage = createAsyncThunk(
   async (messageData, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await axios.post("/message/send-message", messageData);
+
+      // emit send message to socket
+      socket.emit("send_message", data.message);
       return data;
     } catch (error) {
       // show snackbar
