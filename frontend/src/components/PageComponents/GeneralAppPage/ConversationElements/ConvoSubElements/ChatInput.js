@@ -7,6 +7,7 @@ import {
   IconButton,
   InputAdornment,
   Popover,
+  useMediaQuery,
 } from "@mui/material";
 import { LinkSimple, Smiley } from "phosphor-react";
 
@@ -60,8 +61,10 @@ const ChatInput = ({
     }
 
     clearTimeout(typingTimeoutRef.current);
-    typingTimeoutRef.current = setTimeout(stopTyping, 2000); // 2 seconds
+    typingTimeoutRef.current = setTimeout(stopTyping, 1000); // 1 seconds
   };
+
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   return (
     <TextField
@@ -76,7 +79,7 @@ const ChatInput = ({
       maxRows={3}
       autoComplete="off"
       autoFocus
-      placeholder="Write a message..."
+      placeholder={isSmallScreen ? "Message..." : "Write a message..."}
       variant="outlined"
       InputProps={{
         sx: {
