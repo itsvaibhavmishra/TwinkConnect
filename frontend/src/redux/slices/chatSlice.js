@@ -17,6 +17,7 @@ const initialState = {
   notifications: [],
 
   messages: [],
+  typingConversation: [],
 };
 
 const slice = createSlice({
@@ -33,10 +34,12 @@ const slice = createSlice({
     clearConversation: (state, action) => {
       state.conversations = [];
       state.activeConversation = null;
+      state.messages = [];
+      state.typingConversation = [];
     },
 
     // update messages from socket
-    UpdateMsgConvo: (state, action) => {
+    updateMsgConvo: (state, action) => {
       const currentConvo = state.activeConversation;
 
       // updating messages
@@ -53,6 +56,26 @@ const slice = createSlice({
       newConvos.unshift(conversation);
 
       state.conversations = newConvos;
+    },
+
+    // update typing state from socket
+    updateTypingConvo: (state, action) => {
+      const { typing, conversation_id } = action.payload;
+
+      const index = state.typingConversation.findIndex(
+        (convo) => convo.conversation_id === conversation_id
+      );
+
+      if (index !== -1) {
+        // If typing data is present for that convo
+        state.typingConversation[index].typing = typing;
+      } else {
+        // If typing data doesn't exist
+        state.typingConversation.push({
+          typing,
+          conversation_id,
+        });
+      }
     },
   },
   extraReducers(builder) {
@@ -139,6 +162,7 @@ export function clearChat() {
   };
 }
 
-export const { closeActiveConversation, UpdateMsgConvo } = slice.actions;
+export const { closeActiveConversation, updateMsgConvo, updateTypingConvo } =
+  slice.actions;
 
 export default slice.reducer;

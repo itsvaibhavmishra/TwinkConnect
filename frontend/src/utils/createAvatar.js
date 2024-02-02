@@ -39,7 +39,7 @@ export default function getAvatar(avatar, name, theme, size) {
         color: "#fff",
         width: size,
         height: size,
-        fontSize: size - 15,
+        fontSize: size <= 20 ? size - 5 : size - 15,
       }}
       alt={name}
     >

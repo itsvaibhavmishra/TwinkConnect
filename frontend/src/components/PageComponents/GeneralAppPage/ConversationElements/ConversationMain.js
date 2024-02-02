@@ -7,7 +7,9 @@ import { scrollToBottom } from "../../../../utils/scrollToBottom";
 const ConversationMain = () => {
   const theme = useTheme();
   const { user } = useSelector((state) => state.user);
-  const { messages } = useSelector((state) => state.chat);
+  const { messages, activeConversation, typingConversation } = useSelector(
+    (state) => state.chat
+  );
 
   let currentSender = null;
 
@@ -35,14 +37,23 @@ const ConversationMain = () => {
     index < messages.length - 1 &&
     containsOnlyEmojis(messages[index + 1].message);
 
+  const setTyping = () => {
+    const typingObject = typingConversation?.find(
+      (obj) => obj.conversation_id === activeConversation?._id
+    );
+    return typingObject ? typingObject.typing : false;
+  };
+
   // ------------------------------------------
+
+  const isTyping = setTyping();
 
   useEffect(() => {
     // Auto-scroll to the bottom with an animation when the component mounts
     if (scrollContainerRef.current) {
       scrollToBottom(scrollContainerRef);
     }
-  }, [messages]);
+  }, [messages, isTyping]);
 
   return (
     <Box
@@ -59,7 +70,10 @@ const ConversationMain = () => {
       className="scrollbar"
       ref={scrollContainerRef}
     >
-      <Stack spacing={0.5}>
+      <Stack
+        spacing={0.5}
+        sx={{ marginTop: "100%", transition: "margin 0.5s ease" }}
+      >
         {messages?.map((e, index) => {
           const isStartOfSequence =
             currentSender === null || e.sender._id !== currentSender;
@@ -86,6 +100,18 @@ const ConversationMain = () => {
             />
           );
         })}
+
+        {isTyping && (
+          <MessageContainer
+            message={{ message: "Typing" }}
+            me={false}
+            isStartOfSequence={true}
+            isEndOfSequence={true}
+            msgType={"typing"}
+            isLastMessage={true}
+            isTyping={isTyping}
+          />
+        )}
       </Stack>
     </Box>
   );

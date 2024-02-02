@@ -49,6 +49,9 @@ export const CreateOpenConversation = createAsyncThunk(
 
       dispatch(closeActiveConversation());
 
+      // emit join conversation to socket
+      socket.emit("join_conversation", data.conversation._id);
+
       return data;
     } catch (error) {
       // show snackbar

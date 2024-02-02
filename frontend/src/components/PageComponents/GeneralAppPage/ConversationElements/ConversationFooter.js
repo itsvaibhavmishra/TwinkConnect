@@ -115,6 +115,7 @@ const ConversationFooter = ({ convo_id, sendMsgLoading }) => {
               setValue={setValue}
               handleSubmit={handleSubmit}
               theme={theme}
+              convo_id={convo_id}
             />
           </Stack>
 

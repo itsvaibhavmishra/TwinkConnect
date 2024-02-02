@@ -2,6 +2,7 @@ import { Server } from "socket.io"; // socket io
 
 import { socketMiddleware } from "./src/middlewares/socketMiddleware.js";
 import { emitFriendStatus } from "./src/controllers/friendsController.js";
+import { joinConvo } from "./src/controllers/conversationController.js";
 
 export const initializeSocket = (server) => {
   // creating socket.io instence
@@ -41,6 +42,7 @@ export const initializeSocket = (server) => {
     await user.save();
 
     emitFriendStatus(io, socket, user, "online");
+    joinConvo(socket, user_id);
 
     // ------------------------------------------------------
 
@@ -67,8 +69,29 @@ export const initializeSocket = (server) => {
           }
         });
       } catch (error) {
-        console.log("error occured");
         socket.errorHandler("Socket: Error sending message");
+      }
+    });
+
+    // ---------------Typing Message Hanling---------------
+    socket.on("start_typing", (conversation_id) => {
+      try {
+        socket.in(conversation_id).emit("start_typing", {
+          typing: true,
+          conversation_id: conversation_id,
+        });
+      } catch (error) {
+        socket.errorHandler("Socket: Error with typing");
+      }
+    });
+    socket.on("stop_typing", (conversation_id) => {
+      try {
+        socket.in(conversation_id).emit("stop_typing", {
+          typing: false,
+          conversation_id: conversation_id,
+        });
+      } catch (error) {
+        socket.errorHandler("Socket: Error with typing");
       }
     });
   });

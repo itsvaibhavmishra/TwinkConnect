@@ -8,7 +8,10 @@ import { connectSocket, socket } from "../../utils/socket";
 
 import { useDispatch, useSelector } from "react-redux";
 import { ShowSnackbar, updateOnlineUsers } from "../../redux/slices/userSlice";
-import { UpdateMsgConvo } from "../../redux/slices/chatSlice";
+import {
+  updateMsgConvo,
+  updateTypingConvo,
+} from "../../redux/slices/chatSlice";
 import { GetOnlineFriends } from "../../redux/slices/actions/userActions";
 
 const DashboardLayout = () => {
@@ -48,11 +51,19 @@ const DashboardLayout = () => {
       });
 
       socket.on("message_received", (message) => {
-        dispatch(UpdateMsgConvo(message));
+        dispatch(updateMsgConvo(message));
       });
 
       socket.on("online_friends", (friend) => {
         dispatch(updateOnlineUsers(friend));
+      });
+
+      socket.on("start_typing", (typingData) => {
+        dispatch(updateTypingConvo(typingData));
+      });
+
+      socket.on("stop_typing", (typingData) => {
+        dispatch(updateTypingConvo(typingData));
       });
 
       return () => {
@@ -61,6 +72,8 @@ const DashboardLayout = () => {
           socket.off("error");
           socket.off("message_received");
           socket.off("online_friends");
+          socket.off("start_typing");
+          socket.off("stop_typing");
         }
       };
     }
