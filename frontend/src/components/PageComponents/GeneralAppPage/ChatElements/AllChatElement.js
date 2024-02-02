@@ -35,7 +35,9 @@ const AllChatElement = ({
   // from redux
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { activeConversation } = useSelector((state) => state.chat);
+  const { activeConversation, typingConversation } = useSelector(
+    (state) => state.chat
+  );
 
   const isActiveConvo =
     (activeConversation && convo_id && activeConversation?._id === convo_id) ||
@@ -47,7 +49,6 @@ const AllChatElement = ({
       dispatch(CreateOpenConversation(_id));
     }
   };
-  // ---------------------------------------
 
   const selectedChat = () => {
     if (!activeConversation) {
@@ -58,6 +59,16 @@ const AllChatElement = ({
       return isActiveConvo ? theme.palette.primary.lighter : "none";
     }
   };
+
+  const setTyping = () => {
+    const typingObject = typingConversation?.find(
+      (obj) => obj.conversation_id === convo_id
+    );
+    return typingObject ? typingObject.typing : false;
+  };
+  // ---------------------------------------
+  const isTyping = setTyping();
+
   return (
     <Box
       sx={{
@@ -115,6 +126,8 @@ const AllChatElement = ({
             >
               {isLoading ? (
                 <Skeleton animation="wave" height={20} width="12em" />
+              ) : isTyping ? (
+                <Typography>Typing...</Typography>
               ) : (
                 truncateText(
                   latestMessage

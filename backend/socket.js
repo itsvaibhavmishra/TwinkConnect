@@ -84,14 +84,20 @@ export const initializeSocket = (server) => {
     // ---------------Typing Message Hanling---------------
     socket.on("start_typing", (conversation_id) => {
       try {
-        socket.in(conversation_id).emit("start_typing");
+        socket.in(conversation_id).emit("start_typing", {
+          typing: true,
+          conversation_id: conversation_id,
+        });
       } catch (error) {
         socket.errorHandler("Socket: Error with typing");
       }
     });
     socket.on("stop_typing", (conversation_id) => {
       try {
-        socket.in(conversation_id).emit("stop_typing");
+        socket.in(conversation_id).emit("stop_typing", {
+          typing: false,
+          conversation_id: conversation_id,
+        });
       } catch (error) {
         socket.errorHandler("Socket: Error with typing");
       }
