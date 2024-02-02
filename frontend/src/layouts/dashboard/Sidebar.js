@@ -87,7 +87,13 @@ const Sidebar = () => {
       <Box
         p={3}
         sx={{
-          display: { xs: activeConversation ? "none" : "block", md: "block" },
+          display: {
+            xs:
+              activeConversation && location.pathname.startsWith("/app")
+                ? "none"
+                : "block",
+            md: "block",
+          },
           height: { xs: "65px", md: "100vh" },
           width: { xs: "100vw", md: "80px" },
           boxShadow: "0px 0px 2px #00000040",

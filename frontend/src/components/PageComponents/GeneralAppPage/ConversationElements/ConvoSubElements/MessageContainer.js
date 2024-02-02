@@ -72,6 +72,8 @@ const MessageContainer = ({
               ? me
                 ? theme.palette.primary.main
                 : theme.palette.background.default
+              : msgType === "emoji"
+              ? ""
               : theme.palette.background.default,
           borderRadius: borderRadiusStyle,
         }}

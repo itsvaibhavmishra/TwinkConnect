@@ -20,6 +20,9 @@ dotenv.config();
 // creating express app
 const app = express();
 
+// Enable trust proxy
+app.set("trust proxy", 1);
+
 // cors setup
 app.use(
   cors({
