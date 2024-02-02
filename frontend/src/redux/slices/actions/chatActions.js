@@ -94,8 +94,9 @@ export const SendMessage = createAsyncThunk(
     try {
       const { data } = await axios.post("/message/send-message", messageData);
 
-      // emit send message to socket
-      socket.emit("send_message", data.message);
+      // uncomment for Pessimistic Approach
+      // // emit send message to socket
+      // socket.emit("send_message", data.message);
       return data;
     } catch (error) {
       // show snackbar

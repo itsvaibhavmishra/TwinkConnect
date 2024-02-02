@@ -17,8 +17,16 @@ import { useDispatch } from "react-redux";
 import { SendMessage } from "../../../../redux/slices/actions/chatActions";
 
 import ChatInput from "./ConvoSubElements/ChatInput";
+import { optimisticMessageUpdate } from "../../../../redux/slices/chatSlice";
+import { socket } from "../../../../utils/socket";
 
-const ConversationFooter = ({ convo_id, sendMsgLoading }) => {
+const ConversationFooter = ({
+  convo_id,
+  sendMsgLoading,
+  currentUser,
+  otherUser,
+  activeConversation,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -58,6 +66,44 @@ const ConversationFooter = ({ convo_id, sendMsgLoading }) => {
     e.preventDefault();
 
     if (value && value.trim() !== "") {
+      // --------- Optimistic Approach ---------
+      const currentDate = new Date().getTime();
+      const messageData = {
+        _id: currentDate,
+        sender: {
+          _id: currentUser._id,
+          firstName: currentUser.firstName,
+          lastName: currentUser.lastName,
+          avatar: currentUser.avatar,
+        },
+        message: value,
+        conversation: {
+          _id: activeConversation._id,
+          name: activeConversation.name,
+          isGroup: activeConversation.isGroup,
+          users: [currentUser._id, otherUser._id],
+          latestMessage: currentDate + 2500,
+        },
+        files: [],
+        createdAt: new Date(currentDate).toISOString(),
+        updatedAt: new Date(currentDate).toISOString(),
+        __v: 0,
+      };
+
+      const socketMessageData = {
+        ...messageData,
+        conversation: {
+          ...messageData.conversation,
+          users: [{ _id: currentUser._id }, { _id: otherUser._id }],
+        },
+      };
+
+      // Optimistic Message Update
+      socket.emit("send_message", socketMessageData);
+      dispatch(optimisticMessageUpdate({ message: messageData }));
+
+      // ------------------------------------------
+
       // send message
       dispatch(SendMessage({ message: value, convo_id: convo_id }));
       // Clear the input field
