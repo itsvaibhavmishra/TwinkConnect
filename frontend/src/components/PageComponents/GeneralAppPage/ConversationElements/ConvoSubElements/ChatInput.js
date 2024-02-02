@@ -60,7 +60,7 @@ const ChatInput = ({
     }
 
     clearTimeout(typingTimeoutRef.current);
-    typingTimeoutRef.current = setTimeout(stopTyping, 5000); // 5 seconds
+    typingTimeoutRef.current = setTimeout(stopTyping, 2000); // 2 seconds
   };
 
   return (

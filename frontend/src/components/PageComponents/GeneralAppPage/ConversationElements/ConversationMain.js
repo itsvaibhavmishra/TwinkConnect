@@ -7,7 +7,9 @@ import { scrollToBottom } from "../../../../utils/scrollToBottom";
 const ConversationMain = () => {
   const theme = useTheme();
   const { user } = useSelector((state) => state.user);
-  const { messages } = useSelector((state) => state.chat);
+  const { messages, activeConversation, typingConversation } = useSelector(
+    (state) => state.chat
+  );
 
   let currentSender = null;
 
@@ -35,7 +37,16 @@ const ConversationMain = () => {
     index < messages.length - 1 &&
     containsOnlyEmojis(messages[index + 1].message);
 
+  const setTyping = () => {
+    const typingObject = typingConversation?.find(
+      (obj) => obj.conversation_id === activeConversation?._id
+    );
+    return typingObject ? typingObject.typing : false;
+  };
+
   // ------------------------------------------
+
+  const isTyping = setTyping();
 
   useEffect(() => {
     // Auto-scroll to the bottom with an animation when the component mounts
@@ -86,6 +97,18 @@ const ConversationMain = () => {
             />
           );
         })}
+
+        {isTyping && (
+          <MessageContainer
+            message={{ message: "Typing" }}
+            me={false}
+            isStartOfSequence={true}
+            isEndOfSequence={true}
+            msgType={"typing"}
+            isLastMessage={true}
+            isTyping={isTyping}
+          />
+        )}
       </Stack>
     </Box>
   );

@@ -59,7 +59,6 @@ const DashboardLayout = () => {
       });
 
       socket.on("start_typing", (typingData) => {
-        console.log("check");
         dispatch(updateTypingConvo(typingData));
       });
 

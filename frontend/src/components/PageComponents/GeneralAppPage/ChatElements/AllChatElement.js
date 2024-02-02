@@ -6,7 +6,7 @@ import {
   Skeleton,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import BeatLoader from "react-spinners/BeatLoader";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -66,6 +66,12 @@ const AllChatElement = ({
     );
     return typingObject ? typingObject.typing : false;
   };
+  const override = {
+    padding: "5px",
+    backgroundColor: `${theme.palette.primary.main}15`,
+    borderRadius: 20,
+  };
+
   // ---------------------------------------
   const isTyping = setTyping();
 
@@ -127,7 +133,37 @@ const AllChatElement = ({
               {isLoading ? (
                 <Skeleton animation="wave" height={20} width="12em" />
               ) : isTyping ? (
-                <Typography>Typing...</Typography>
+                <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: theme.palette.primary.main,
+                      animation: "fade 3s ease infinite",
+                      "@keyframes fade": {
+                        "0%": {
+                          opacity: 0.5,
+                        },
+                        "50%": {
+                          opacity: 1,
+                        },
+                        "100%": {
+                          opacity: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    Typing
+                  </Typography>
+                  <BeatLoader
+                    size={5}
+                    height={0.5}
+                    width={1}
+                    color={theme.palette.primary.main}
+                    speedMultiplier={0.5}
+                    margin={2}
+                    cssOverride={override}
+                  />
+                </Stack>
               ) : (
                 truncateText(
                   latestMessage
