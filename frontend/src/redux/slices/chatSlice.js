@@ -77,6 +77,24 @@ const slice = createSlice({
         });
       }
     },
+
+    // --------- Optimistic Approach ---------
+    // Optimistic Approach Message update
+    optimisticMessageUpdate: (state, action) => {
+      state.messages = [...state.messages, action.payload.message];
+
+      // updating conversations
+      const conversation = {
+        ...action.payload.message.conversation,
+      };
+      let newConvos = [...state.conversations].filter(
+        (e) => e._id !== conversation._id
+      );
+      newConvos.unshift(conversation);
+
+      state.conversations = newConvos;
+    },
+    // ---------------------------------------
   },
   extraReducers(builder) {
     builder
@@ -126,22 +144,24 @@ const slice = createSlice({
       // --------- Send Message Builder ---------
       .addCase(SendMessage.pending, (state, action) => {
         state.error = false;
-        state.sendMsgLoading = true;
+        state.sendMsgLoading = false; //change to true for Pessimistic Approach
       })
       .addCase(SendMessage.fulfilled, (state, action) => {
-        // updating messages list
-        state.messages = [...state.messages, action.payload.message];
+        // Uncomment for Pessimistic Approach
 
-        // updating conversations
-        const conversation = {
-          ...action.payload.message.conversation,
-        };
-        let newConvos = [...state.conversations].filter(
-          (e) => e._id !== conversation._id
-        );
-        newConvos.unshift(conversation);
+        // // updating messages list
+        // state.messages = [...state.messages, action.payload.message];
 
-        state.conversations = newConvos;
+        // // updating conversations
+        // const conversation = {
+        //   ...action.payload.message.conversation,
+        // };
+        // let newConvos = [...state.conversations].filter(
+        //   (e) => e._id !== conversation._id
+        // );
+        // newConvos.unshift(conversation);
+
+        // state.conversations = newConvos;
 
         state.sendMsgLoading = false;
         state.isLoading = false;
@@ -162,7 +182,13 @@ export function clearChat() {
   };
 }
 
-export const { closeActiveConversation, updateMsgConvo, updateTypingConvo } =
-  slice.actions;
+export const {
+  closeActiveConversation,
+  updateMsgConvo,
+  updateTypingConvo,
+  // --------- Optimistic Approach ---------
+  optimisticMessageUpdate,
+  // ---------------------------------------
+} = slice.actions;
 
 export default slice.reducer;

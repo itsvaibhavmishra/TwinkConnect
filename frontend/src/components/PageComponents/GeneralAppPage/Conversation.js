@@ -39,6 +39,11 @@ const Conversation = () => {
       <ConversationFooter
         convo_id={activeConversation._id}
         sendMsgLoading={sendMsgLoading}
+        // --------- Optimistic Approach ---------
+        currentUser={user}
+        otherUser={otherUser}
+        activeConversation={activeConversation}
+        // ---------------------------------------
       />
     </Stack>
   );
