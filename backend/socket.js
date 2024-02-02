@@ -2,6 +2,7 @@ import { Server } from "socket.io"; // socket io
 
 import { socketMiddleware } from "./src/middlewares/socketMiddleware.js";
 import { emitFriendStatus } from "./src/controllers/friendsController.js";
+import { joinConvo } from "./src/controllers/conversationController.js";
 
 export const initializeSocket = (server) => {
   // creating socket.io instence
@@ -41,6 +42,7 @@ export const initializeSocket = (server) => {
     await user.save();
 
     emitFriendStatus(io, socket, user, "online");
+    joinConvo(socket, user_id);
 
     // ------------------------------------------------------
 
@@ -52,16 +54,6 @@ export const initializeSocket = (server) => {
       emitFriendStatus(io, socket, user, "offline");
     });
     // ------------------------------------------------------
-
-    // ---------------Join Conversation Hanling---------------
-    socket.on("join_conversation", (conversation_id) => {
-      try {
-        // join conversation id to socket
-        socket.join(conversation_id);
-      } catch (error) {
-        socket.errorHandler("Socket: Error joining conversation");
-      }
-    });
 
     // ---------------Send Message Hanling---------------
     socket.on("send_message", (message) => {

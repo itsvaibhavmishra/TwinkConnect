@@ -92,3 +92,18 @@ export const getConversations = async (req, res, next) => {
     next(error);
   }
 };
+
+// ------------------------------------------------------------------------------
+
+// ----------------------- Socket: Join Convo -----------------------
+export const joinConvo = async (socket, user_id) => {
+  try {
+    const conversations = await getUserConversations(user_id);
+
+    conversations.map((convo) => {
+      socket.join(convo._id.toString());
+    });
+  } catch (error) {
+    socket.errorHandler("Socket: Join convo error");
+  }
+};
