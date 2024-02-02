@@ -53,7 +53,7 @@ const ConversationMain = () => {
     if (scrollContainerRef.current) {
       scrollToBottom(scrollContainerRef);
     }
-  }, [messages]);
+  }, [messages, isTyping]);
 
   return (
     <Box
@@ -70,7 +70,10 @@ const ConversationMain = () => {
       className="scrollbar"
       ref={scrollContainerRef}
     >
-      <Stack spacing={0.5}>
+      <Stack
+        spacing={0.5}
+        sx={{ marginTop: "100%", transition: "margin 0.5s ease" }}
+      >
         {messages?.map((e, index) => {
           const isStartOfSequence =
             currentSender === null || e.sender._id !== currentSender;

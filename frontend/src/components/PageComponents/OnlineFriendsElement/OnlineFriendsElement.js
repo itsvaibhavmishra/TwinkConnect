@@ -36,7 +36,9 @@ const OnlineFriendsElement = ({ fromContact }) => {
                 </SwiperSlide>
               ))
             : onlineFriends
-                .filter((e) => e._id !== user._id)
+                .filter(
+                  (e) => e._id !== user._id && e.onlineStatus === "online"
+                )
                 .map((e) => (
                   <SwiperSlide key={e._id}>
                     <OnlineChatElement
