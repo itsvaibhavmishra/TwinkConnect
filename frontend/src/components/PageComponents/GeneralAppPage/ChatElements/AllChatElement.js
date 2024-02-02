@@ -29,7 +29,6 @@ const AllChatElement = ({
   isLoading,
   convo_id,
 }) => {
-  console.log(onlineStatus);
   // using theme
   const theme = useTheme();
 

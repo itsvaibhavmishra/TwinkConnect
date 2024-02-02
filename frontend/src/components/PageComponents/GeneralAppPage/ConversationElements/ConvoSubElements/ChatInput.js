@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Stack,
   TextField,
@@ -11,6 +11,7 @@ import {
 import { LinkSimple, Smiley } from "phosphor-react";
 
 import { Actions } from "../../../../../data";
+import { socket } from "../../../../../utils/socket";
 
 const ChatInput = ({
   openPicker,
@@ -20,8 +21,11 @@ const ChatInput = ({
   inputRef,
   handleSubmit,
   theme,
+  convo_id,
 }) => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef(null);
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchor(event.currentTarget);
@@ -34,9 +38,29 @@ const ChatInput = ({
   const handleKeyPress = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-
       handleSubmit(event);
     }
+  };
+
+  const startTyping = () => {
+    socket.emit("start_typing", convo_id);
+    setIsTyping(true);
+  };
+
+  const stopTyping = () => {
+    socket.emit("stop_typing", convo_id);
+    setIsTyping(false);
+  };
+
+  const onChangeHandler = (event) => {
+    setValue(event.target.value);
+
+    if (!isTyping && value.trim() !== "") {
+      startTyping();
+    }
+
+    clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = setTimeout(stopTyping, 5000); // 5 seconds
   };
 
   return (
@@ -44,7 +68,7 @@ const ChatInput = ({
       inputRef={inputRef}
       value={value}
       onChange={(event) => {
-        setValue(event.target.value);
+        onChangeHandler(event);
       }}
       onKeyDown={handleKeyPress}
       fullWidth

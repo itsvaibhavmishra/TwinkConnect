@@ -53,6 +53,16 @@ export const initializeSocket = (server) => {
     });
     // ------------------------------------------------------
 
+    // ---------------Join Conversation Hanling---------------
+    socket.on("join_conversation", (conversation_id) => {
+      try {
+        // join conversation id to socket
+        socket.join(conversation_id);
+      } catch (error) {
+        socket.errorHandler("Socket: Error joining conversation");
+      }
+    });
+
     // ---------------Send Message Hanling---------------
     socket.on("send_message", (message) => {
       try {
@@ -67,8 +77,23 @@ export const initializeSocket = (server) => {
           }
         });
       } catch (error) {
-        console.log("error occured");
         socket.errorHandler("Socket: Error sending message");
+      }
+    });
+
+    // ---------------Typing Message Hanling---------------
+    socket.on("start_typing", (conversation_id) => {
+      try {
+        socket.in(conversation_id).emit("start_typing");
+      } catch (error) {
+        socket.errorHandler("Socket: Error with typing");
+      }
+    });
+    socket.on("stop_typing", (conversation_id) => {
+      try {
+        socket.in(conversation_id).emit("stop_typing");
+      } catch (error) {
+        socket.errorHandler("Socket: Error with typing");
       }
     });
   });
