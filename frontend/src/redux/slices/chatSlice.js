@@ -81,6 +81,7 @@ const slice = createSlice({
     // --------- Optimistic Approach ---------
     // Optimistic Approach Message update
     optimisticMessageUpdate: (state, action) => {
+      console.log(action.payload.message);
       state.messages = [...state.messages, action.payload.message];
 
       // updating conversations

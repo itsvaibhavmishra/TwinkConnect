@@ -81,8 +81,14 @@ const ConversationFooter = ({
           _id: activeConversation._id,
           name: activeConversation.name,
           isGroup: activeConversation.isGroup,
-          users: [currentUser._id, otherUser._id],
-          latestMessage: currentDate + 2500,
+          users: [currentUser, otherUser],
+          latestMessage: {
+            _id: currentDate + 2500,
+            sender: currentUser,
+            message: value,
+            createdAt: new Date(currentDate).toISOString(),
+            updatedAt: new Date(currentDate).toISOString(),
+          },
         },
         files: [],
         createdAt: new Date(currentDate).toISOString(),
@@ -90,16 +96,8 @@ const ConversationFooter = ({
         __v: 0,
       };
 
-      const socketMessageData = {
-        ...messageData,
-        conversation: {
-          ...messageData.conversation,
-          users: [{ _id: currentUser._id }, { _id: otherUser._id }],
-        },
-      };
-
       // Optimistic Message Update
-      socket.emit("send_message", socketMessageData);
+      socket.emit("send_message", messageData);
       dispatch(optimisticMessageUpdate({ message: messageData }));
 
       // ------------------------------------------
