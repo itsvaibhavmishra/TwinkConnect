@@ -69,7 +69,7 @@ export const initializeSocket = (server) => {
           }
         });
       } catch (error) {
-        socket.errorHandler("Socket: Error sending message");
+        socket.errorHandler("Error sending message");
       }
     });
 
@@ -81,7 +81,7 @@ export const initializeSocket = (server) => {
           conversation_id: conversation_id,
         });
       } catch (error) {
-        socket.errorHandler("Socket: Error with typing");
+        socket.errorHandler("Error with typing");
       }
     });
     socket.on("stop_typing", (conversation_id) => {
@@ -91,7 +91,7 @@ export const initializeSocket = (server) => {
           conversation_id: conversation_id,
         });
       } catch (error) {
-        socket.errorHandler("Socket: Error with typing");
+        socket.errorHandler("Error with typing");
       }
     });
   });

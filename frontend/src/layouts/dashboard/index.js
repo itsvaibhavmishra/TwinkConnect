@@ -48,7 +48,7 @@ const DashboardLayout = () => {
         dispatch(
           ShowSnackbar({
             severity: "error",
-            message: error.message,
+            message: `Socket: ${error.message}`,
           })
         );
       });
@@ -58,7 +58,7 @@ const DashboardLayout = () => {
         dispatch(
           ShowSnackbar({
             severity: error.status,
-            message: error.message,
+            message: `Socket: ${error.message}`,
           })
         );
       });
