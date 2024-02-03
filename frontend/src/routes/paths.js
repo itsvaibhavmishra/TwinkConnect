@@ -17,3 +17,10 @@ export const PATH_AUTH = {
     login: path(ROOTS_DASHBOARD, "auth/login"),
   },
 };
+
+export const PATH_DOCS = {
+  root: ROOTS_DASHBOARD,
+  general: {
+    login: path(ROOTS_DASHBOARD, "docs/tnc"),
+  },
+};
