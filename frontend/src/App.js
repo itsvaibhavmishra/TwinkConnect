@@ -9,6 +9,12 @@ import MuiAlert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { HideSnackbar } from "./redux/slices/userSlice";
 
+import ReactGA from "react-ga4";
+
+if (process.env.REACT_APP_GA_ID !== "") {
+  ReactGA.initialize(process.env.REACT_APP_GA_ID);
+}
+
 const vertical = "top";
 const horizontal = "right";
 
