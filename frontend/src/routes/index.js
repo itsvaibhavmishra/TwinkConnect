@@ -2,9 +2,10 @@ import { Suspense, lazy } from "react";
 import { useRoutes, Navigate } from "react-router-dom";
 
 import LoadingScreen from "../components/LoadingScreen";
+import { DEFAULT_AUTH, DEFAULT_DOCS, DEFAULT_PATH } from "../config";
 import DashboardLayout from "../layouts/dashboard";
-import { DEFAULT_AUTH, DEFAULT_PATH } from "../config";
 import AuthLayout from "../layouts/auth";
+import DocsLayout from "../layouts/docs";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -16,6 +17,14 @@ const Loadable = (Component) => (props) => {
 
 export default function Router() {
   return useRoutes([
+    {
+      path: "/docs",
+      element: <DocsLayout />,
+      children: [
+        { element: <Navigate to={DEFAULT_DOCS} replace />, index: true },
+        { path: "tnc", element: <TnCPage /> },
+      ],
+    },
     {
       path: "/auth",
       element: <AuthLayout />,
@@ -61,5 +70,8 @@ const ForgotPasswordPage = Loadable(
 const ResetPasswordPage = Loadable(
   lazy(() => import("../pages/auth/ResetPassword"))
 );
+
+// docs pages
+const TnCPage = Loadable(lazy(() => import("../pages/docs/TnC")));
 
 const Page404 = Loadable(lazy(() => import("../pages/404")));

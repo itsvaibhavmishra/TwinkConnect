@@ -56,7 +56,7 @@ const slice = createSlice({
 
     // update online users
     updateOnlineUsers: (state, action) => {
-      const { _id, firstName, lastName, onlineStatus } = action.payload;
+      const { _id, firstName, lastName, avatar, onlineStatus } = action.payload;
       const index = state.onlineFriends.findIndex(
         (friend) => friend._id === _id
       );
@@ -70,6 +70,7 @@ const slice = createSlice({
           _id,
           firstName,
           lastName,
+          avatar,
           onlineStatus,
         });
       }

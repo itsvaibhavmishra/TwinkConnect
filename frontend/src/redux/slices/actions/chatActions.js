@@ -90,13 +90,15 @@ export const GetMessages = createAsyncThunk(
 // ------------- Get Messages -------------
 export const SendMessage = createAsyncThunk(
   "message/send-message",
-  async (messageData, { rejectWithValue, dispatch }) => {
+  async (messageData, { rejectWithValue, dispatch, getState }) => {
     try {
       const { data } = await axios.post("/message/send-message", messageData);
 
-      // uncomment for Pessimistic Approach
-      // // emit send message to socket
-      // socket.emit("send_message", data.message);
+      // Approach check
+      if (!getState().chat.isOptimistic) {
+        // emit send message to socket
+        socket.emit("send_message", data.message);
+      }
       return data;
     } catch (error) {
       // show snackbar

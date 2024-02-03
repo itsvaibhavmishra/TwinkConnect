@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { Stack, Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 // redux imports
-import { useDispatch, useSelector } from "react-redux";
-import { GetConversations } from "../../redux/slices/actions/chatActions";
+import { useSelector } from "react-redux";
 
 import {
   ChatsList,
@@ -14,21 +12,10 @@ import LoadingScreen from "../../components/LoadingScreen";
 
 const GeneralApp = () => {
   const theme = useTheme();
-  // from redux
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
   const { activeConversation, isLoading } = useSelector((state) => state.chat);
 
   // breakpoint
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
-
-  useEffect(() => {
-    if (user.token) {
-      dispatch(GetConversations());
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
 
   return (
     <Stack

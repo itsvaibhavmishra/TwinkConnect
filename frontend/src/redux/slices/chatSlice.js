@@ -8,6 +8,7 @@ import {
 
 // initial state for contacts menu
 const initialState = {
+  isOptimistic: true, // default approach set to optimistic
   isLoading: false,
   sendMsgLoading: false,
   error: false,
@@ -24,6 +25,11 @@ const slice = createSlice({
   name: "chat",
   initialState,
   reducers: {
+    // update approach to use (true: Optimistic, false: Pessimistic)
+    setIsOptimistic: (state, action) => {
+      state.isOptimistic = action.payload.isOptimistic;
+    },
+
     // close active conversation
     closeActiveConversation: (state, action) => {
       state.activeConversation = null;
@@ -81,19 +87,20 @@ const slice = createSlice({
     // --------- Optimistic Approach ---------
     // Optimistic Approach Message update
     optimisticMessageUpdate: (state, action) => {
-      console.log(action.payload.message);
-      state.messages = [...state.messages, action.payload.message];
+      if (state.isOptimistic) {
+        state.messages = [...state.messages, action.payload.message];
 
-      // updating conversations
-      const conversation = {
-        ...action.payload.message.conversation,
-      };
-      let newConvos = [...state.conversations].filter(
-        (e) => e._id !== conversation._id
-      );
-      newConvos.unshift(conversation);
+        // updating conversations
+        const conversation = {
+          ...action.payload.message.conversation,
+        };
+        let newConvos = [...state.conversations].filter(
+          (e) => e._id !== conversation._id
+        );
+        newConvos.unshift(conversation);
 
-      state.conversations = newConvos;
+        state.conversations = newConvos;
+      }
     },
     // ---------------------------------------
   },
@@ -145,24 +152,26 @@ const slice = createSlice({
       // --------- Send Message Builder ---------
       .addCase(SendMessage.pending, (state, action) => {
         state.error = false;
-        state.sendMsgLoading = false; //change to true for Pessimistic Approach
+        state.sendMsgLoading = state.isOptimistic ? false : true; //change to true for Pessimistic Approach
       })
       .addCase(SendMessage.fulfilled, (state, action) => {
         // Uncomment for Pessimistic Approach
 
-        // // updating messages list
-        // state.messages = [...state.messages, action.payload.message];
+        if (!state.isOptimistic) {
+          // updating messages list
+          state.messages = [...state.messages, action.payload.message];
 
-        // // updating conversations
-        // const conversation = {
-        //   ...action.payload.message.conversation,
-        // };
-        // let newConvos = [...state.conversations].filter(
-        //   (e) => e._id !== conversation._id
-        // );
-        // newConvos.unshift(conversation);
+          // updating conversations
+          const conversation = {
+            ...action.payload.message.conversation,
+          };
+          let newConvos = [...state.conversations].filter(
+            (e) => e._id !== conversation._id
+          );
+          newConvos.unshift(conversation);
 
-        // state.conversations = newConvos;
+          state.conversations = newConvos;
+        }
 
         state.sendMsgLoading = false;
         state.isLoading = false;
@@ -188,6 +197,7 @@ export const {
   updateMsgConvo,
   updateTypingConvo,
   // --------- Optimistic Approach ---------
+  setIsOptimistic,
   optimisticMessageUpdate,
   // ---------------------------------------
 } = slice.actions;

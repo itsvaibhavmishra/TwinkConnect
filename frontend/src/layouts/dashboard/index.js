@@ -9,10 +9,12 @@ import { connectSocket, socket } from "../../utils/socket";
 import { useDispatch, useSelector } from "react-redux";
 import { ShowSnackbar, updateOnlineUsers } from "../../redux/slices/userSlice";
 import {
+  setIsOptimistic,
   updateMsgConvo,
   updateTypingConvo,
 } from "../../redux/slices/chatSlice";
 import { GetOnlineFriends } from "../../redux/slices/actions/userActions";
+import { GetConversations } from "../../redux/slices/actions/chatActions";
 
 const DashboardLayout = () => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -23,7 +25,18 @@ const DashboardLayout = () => {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(GetOnlineFriends());
+    // toggle approach between Optimistic & Pessimistic (true means use optimistic)
+    dispatch(setIsOptimistic({ isOptimistic: true }));
+
+    if (user.token) {
+      // get all conversations
+      dispatch(GetConversations());
+
+      // get online friends
+      dispatch(GetOnlineFriends());
+    }
+
+    // socket connection
     if ((!socket || !socket.connected) && user._id) {
       connectSocket(user.token);
     }
