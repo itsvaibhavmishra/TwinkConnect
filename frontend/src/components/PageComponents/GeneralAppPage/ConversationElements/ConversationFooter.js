@@ -26,6 +26,7 @@ const ConversationFooter = ({
   currentUser,
   otherUser,
   activeConversation,
+  isOptimistic,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -67,39 +68,40 @@ const ConversationFooter = ({
 
     if (value && value.trim() !== "") {
       // --------- Optimistic Approach ---------
-      const currentDate = new Date().getTime();
-      const messageData = {
-        _id: currentDate,
-        sender: {
-          _id: currentUser._id,
-          firstName: currentUser.firstName,
-          lastName: currentUser.lastName,
-          avatar: currentUser.avatar,
-        },
-        message: value,
-        conversation: {
-          _id: activeConversation._id,
-          name: activeConversation.name,
-          isGroup: activeConversation.isGroup,
-          users: [currentUser, otherUser],
-          latestMessage: {
-            _id: currentDate + 2500,
-            sender: currentUser,
-            message: value,
-            createdAt: new Date(currentDate).toISOString(),
-            updatedAt: new Date(currentDate).toISOString(),
+      if (isOptimistic) {
+        const currentDate = new Date().getTime();
+        const messageData = {
+          _id: currentDate,
+          sender: {
+            _id: currentUser._id,
+            firstName: currentUser.firstName,
+            lastName: currentUser.lastName,
+            avatar: currentUser.avatar,
           },
-        },
-        files: [],
-        createdAt: new Date(currentDate).toISOString(),
-        updatedAt: new Date(currentDate).toISOString(),
-        __v: 0,
-      };
+          message: value,
+          conversation: {
+            _id: activeConversation._id,
+            name: activeConversation.name,
+            isGroup: activeConversation.isGroup,
+            users: [currentUser, otherUser],
+            latestMessage: {
+              _id: currentDate + 2500,
+              sender: currentUser,
+              message: value,
+              createdAt: new Date(currentDate).toISOString(),
+              updatedAt: new Date(currentDate).toISOString(),
+            },
+          },
+          files: [],
+          createdAt: new Date(currentDate).toISOString(),
+          updatedAt: new Date(currentDate).toISOString(),
+          __v: 0,
+        };
 
-      // Optimistic Message Update
-      socket.emit("send_message", messageData);
-      dispatch(optimisticMessageUpdate({ message: messageData }));
-
+        // Optimistic Message Update
+        socket.emit("send_message", messageData);
+        dispatch(optimisticMessageUpdate({ message: messageData }));
+      }
       // ------------------------------------------
 
       // send message

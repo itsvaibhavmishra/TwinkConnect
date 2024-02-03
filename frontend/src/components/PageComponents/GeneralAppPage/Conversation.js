@@ -13,7 +13,7 @@ import {
 import { GetMessages } from "../../../redux/slices/actions/chatActions";
 
 const Conversation = () => {
-  const { activeConversation, sendMsgLoading } = useSelector(
+  const { activeConversation, sendMsgLoading, isOptimistic } = useSelector(
     (state) => state.chat
   );
   const { user, onlineFriends } = useSelector((state) => state.user);
@@ -40,6 +40,7 @@ const Conversation = () => {
         convo_id={activeConversation._id}
         sendMsgLoading={sendMsgLoading}
         // --------- Optimistic Approach ---------
+        isOptimistic={isOptimistic}
         currentUser={user}
         otherUser={otherUser}
         activeConversation={activeConversation}
