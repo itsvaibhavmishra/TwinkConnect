@@ -77,6 +77,7 @@ export const login = async (req, res, next) => {
         avatar: user.avatar,
         email: user.email,
         activityStatus: user.activityStatus,
+        onlineStatus: user.onlineStatus,
         token: access_token,
       },
     });
@@ -334,6 +335,7 @@ export const verifyOTP = async (req, res, next) => {
         avatar: user.avatar,
         email: user.email,
         activityStatus: user.activityStatus,
+        onlineStatus: user.onlineStatus,
         token: access_token,
       },
     });
@@ -519,6 +521,7 @@ export const refreshToken = async (req, res, next) => {
         avatar: user.avatar,
         email: user.email,
         activityStatus: user.activityStatus,
+        onlineStatus: user.onlineStatus,
         token: access_token,
       },
     });

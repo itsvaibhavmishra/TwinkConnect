@@ -104,6 +104,6 @@ export const joinConvo = async (socket, user_id) => {
       socket.join(convo._id.toString());
     });
   } catch (error) {
-    socket.errorHandler("Socket: Join convo error");
+    socket.errorHandler("Join convo error");
   }
 };
