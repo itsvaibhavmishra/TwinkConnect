@@ -70,8 +70,8 @@ const ConversationFooter = ({
       // --------- Optimistic Approach ---------
       if (isOptimistic) {
         const currentDate = new Date().getTime();
-        const messageData = {
-          _id: currentDate,
+        let messageData = {
+          _id: `${currentDate}`,
           sender: {
             _id: currentUser._id,
             firstName: currentUser.firstName,
@@ -85,7 +85,7 @@ const ConversationFooter = ({
             isGroup: activeConversation.isGroup,
             users: [currentUser, otherUser],
             latestMessage: {
-              _id: currentDate + 2500,
+              _id: `currentDate + 2500`,
               sender: currentUser,
               message: value,
               createdAt: new Date(currentDate).toISOString(),
@@ -97,6 +97,16 @@ const ConversationFooter = ({
           updatedAt: new Date(currentDate).toISOString(),
           __v: 0,
         };
+
+        if (currentUser._id === otherUser._id) {
+          messageData = {
+            ...messageData,
+            conversation: {
+              ...messageData.conversation,
+              users: [currentUser],
+            },
+          };
+        }
 
         // Optimistic Message Update
         socket.emit("send_message", messageData);

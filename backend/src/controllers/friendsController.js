@@ -324,6 +324,6 @@ export const emitFriendStatus = async (io, socket, user, onlineStatus) => {
       });
     });
   } catch (error) {
-    socket.errorHandler("Socket: Online friends error");
+    socket.errorHandler("Online friends error");
   }
 };
