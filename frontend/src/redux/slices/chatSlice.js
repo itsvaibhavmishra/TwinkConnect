@@ -83,26 +83,6 @@ const slice = createSlice({
         });
       }
     },
-
-    // --------- Optimistic Approach ---------
-    // Optimistic Approach Message update
-    optimisticMessageUpdate: (state, action) => {
-      if (state.isOptimistic) {
-        state.messages = [...state.messages, action.payload.message];
-
-        // updating conversations
-        const conversation = {
-          ...action.payload.message.conversation,
-        };
-        let newConvos = [...state.conversations].filter(
-          (e) => e._id !== conversation._id
-        );
-        newConvos.unshift(conversation);
-
-        state.conversations = newConvos;
-      }
-    },
-    // ---------------------------------------
   },
   extraReducers(builder) {
     builder
@@ -198,7 +178,6 @@ export const {
   updateTypingConvo,
   // --------- Optimistic Approach ---------
   setIsOptimistic,
-  optimisticMessageUpdate,
   // ---------------------------------------
 } = slice.actions;
 

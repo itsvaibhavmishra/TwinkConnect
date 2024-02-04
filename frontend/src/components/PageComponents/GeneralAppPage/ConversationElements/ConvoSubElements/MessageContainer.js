@@ -91,7 +91,7 @@ const MessageContainer = ({
           <Typography
             variant={msgType === "text" ? "body2" : "h3"}
             color={me ? "#fff" : theme.palette.text}
-            sx={{ whiteSpace: "preserve" }}
+            sx={{ whiteSpace: "preserve", wordBreak: "break-word" }}
           >
             {message.message}
           </Typography>

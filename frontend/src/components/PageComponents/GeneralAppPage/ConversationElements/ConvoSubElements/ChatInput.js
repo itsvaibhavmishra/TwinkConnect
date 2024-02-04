@@ -23,6 +23,7 @@ const ChatInput = ({
   handleSubmit,
   theme,
   convo_id,
+  isOptimistic,
 }) => {
   const [popoverAnchor, setPopoverAnchor] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -61,7 +62,8 @@ const ChatInput = ({
     }
 
     clearTimeout(typingTimeoutRef.current);
-    typingTimeoutRef.current = setTimeout(stopTyping, 1000); // 1 seconds
+    const timer = isOptimistic ? 1000 : 5000;
+    typingTimeoutRef.current = setTimeout(stopTyping, timer); // 1 seconds
   };
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));

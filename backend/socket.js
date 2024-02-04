@@ -1,8 +1,10 @@
 import { Server } from "socket.io"; // socket io
+import mongoose from "mongoose";
 
 import { socketMiddleware } from "./src/middlewares/socketMiddleware.js";
 import { emitFriendStatus } from "./src/controllers/friendsController.js";
 import { joinConvo } from "./src/controllers/conversationController.js";
+import { socketSendMessage } from "./src/controllers/messageController.js";
 
 export const initializeSocket = (server) => {
   // creating socket.io instence
@@ -61,6 +63,19 @@ export const initializeSocket = (server) => {
         const conversation = message.conversation;
 
         if (!conversation.users) return;
+
+        if (
+          message.approach &&
+          message.approach.toLowerCase() === "optimistic"
+        ) {
+          const msg_id = new mongoose.Types.ObjectId();
+
+          message._id = msg_id;
+
+          socketSendMessage(socket, user_id, message);
+
+          socket.emit("message_received", message);
+        }
 
         // emit message to each user(could be fr group)
         conversation.users.forEach((user) => {
