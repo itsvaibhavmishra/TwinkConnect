@@ -17,7 +17,6 @@ import { useDispatch } from "react-redux";
 import { SendMessage } from "../../../../redux/slices/actions/chatActions";
 
 import ChatInput from "./ConvoSubElements/ChatInput";
-import { optimisticMessageUpdate } from "../../../../redux/slices/chatSlice";
 import { socket } from "../../../../utils/socket";
 
 const ConversationFooter = ({
@@ -71,6 +70,7 @@ const ConversationFooter = ({
       if (isOptimistic) {
         const currentDate = new Date().getTime();
         let messageData = {
+          approach: "optimistic",
           _id: `${currentDate}`,
           sender: {
             _id: currentUser._id,
@@ -85,7 +85,7 @@ const ConversationFooter = ({
             isGroup: activeConversation.isGroup,
             users: [currentUser, otherUser],
             latestMessage: {
-              _id: `currentDate + 2500`,
+              _id: `${currentDate} + 2500`,
               sender: currentUser,
               message: value,
               createdAt: new Date(currentDate).toISOString(),
@@ -110,12 +110,13 @@ const ConversationFooter = ({
 
         // Optimistic Message Update
         socket.emit("send_message", messageData);
-        dispatch(optimisticMessageUpdate({ message: messageData }));
       }
       // ------------------------------------------
+      else {
+        // send message
+        dispatch(SendMessage({ message: value, convo_id: convo_id }));
+      }
 
-      // send message
-      dispatch(SendMessage({ message: value, convo_id: convo_id }));
       // Clear the input field
       setValue("");
     }
@@ -172,6 +173,7 @@ const ConversationFooter = ({
               handleSubmit={handleSubmit}
               theme={theme}
               convo_id={convo_id}
+              isOptimistic={isOptimistic}
             />
           </Stack>
 
