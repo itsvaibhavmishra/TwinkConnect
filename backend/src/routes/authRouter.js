@@ -10,6 +10,7 @@ import {
   forgotPassword,
   resetPassword,
 } from "../controllers/authController.js";
+import { googleAuth } from "../controllers/socialController.js";
 
 const authRouter = express.Router();
 
@@ -36,5 +37,10 @@ authRouter.route("/reset-password").post(trimRequest.all, resetPassword);
 
 // Refresh Token Route
 authRouter.route("/refresh-token").post(trimRequest.all, refreshToken);
+
+// ------------- Social Auth -------------
+
+// Google Auth Route
+authRouter.route("/google").post(trimRequest.all, googleAuth);
 
 export default authRouter;
