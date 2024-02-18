@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Container, Stack, IconButton, Grow, Tooltip } from "@mui/material";
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Trash } from "phosphor-react";
 
 import Logo from "../../assets/icons/logo/TwinkChat.png";
+import { StartServer } from "../../redux/slices/actions/authActions";
 
 const AuthLayout = () => {
+  const dispatch = useDispatch();
   const { isLoggedIn, isLoading } = useSelector((state) => state.auth);
 
   const [showClear, setShowClear] = useState(false);
@@ -30,6 +32,14 @@ const AuthLayout = () => {
       clearTimeout(timer);
     };
   }, [isLoading]);
+
+  // start server
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(StartServer());
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoggedIn) {
     return <Navigate to={"/"} />;

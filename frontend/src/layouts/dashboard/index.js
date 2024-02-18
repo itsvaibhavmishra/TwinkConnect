@@ -15,6 +15,7 @@ import {
 } from "../../redux/slices/chatSlice";
 import { GetOnlineFriends } from "../../redux/slices/actions/userActions";
 import { GetConversations } from "../../redux/slices/actions/chatActions";
+import { StartServer } from "../../redux/slices/actions/authActions";
 
 const DashboardLayout = () => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -25,6 +26,9 @@ const DashboardLayout = () => {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
+    // start server
+    dispatch(StartServer());
+
     // toggle approach between Optimistic & Pessimistic (true means use optimistic)
     dispatch(setIsOptimistic({ isOptimistic: true }));
 

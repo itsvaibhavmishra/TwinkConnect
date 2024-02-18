@@ -73,8 +73,8 @@ export const LogoutUser = createAsyncThunk(
       } catch (error) {
         dispatch(
           ShowSnackbar({
-            severity: error.error.status,
-            message: error.error.message,
+            severity: error?.error?.status || "error",
+            message: error?.error?.message || "logout failed",
           })
         );
 
@@ -294,6 +294,122 @@ export const RefreshToken = createAsyncThunk(
 
       return data;
     } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Start Server Thunk -------------
+export const StartServer = createAsyncThunk(
+  "start/server",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      await axios.get("/start-server");
+    } catch (error) {
+      console.log(error);
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// ------------- Google Login Thunk -------------
+export const GoogleLogin = createAsyncThunk(
+  "auth/google",
+  async (token, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/auth/google", {
+        code: token.access_token,
+      });
+
+      console.clear();
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      // update user data
+      dispatch(updateUser(data.user));
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- GitHub Login Thunk -------------
+export const GithubLogin = createAsyncThunk(
+  "auth/github",
+  async (code, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/auth/github", { code: code });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      // update user data
+      dispatch(updateUser(data.user));
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- GitHub Login Thunk -------------
+export const LinkedinLogin = createAsyncThunk(
+  "auth/linkedin",
+  async (code, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/auth/linkedin", { code: code });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      // update user data
+      dispatch(updateUser(data.user));
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
       return rejectWithValue(error.error);
     }
   }
