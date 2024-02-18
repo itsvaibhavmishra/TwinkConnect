@@ -45,11 +45,15 @@ export const googleAuth = async (req, res, next) => {
     let user = await UserModel.findOne({ email }).select("-password");
 
     if (user) {
-      // If user exisits
       user.verified = true;
+
       // Check if Google is already connected
       if (!user.socialsConnected.includes("google")) {
         user.socialsConnected.push("google");
+      }
+
+      if (!user.avatar || user.avatar === "") {
+        user.avatar = picture;
       }
 
       await user.save();

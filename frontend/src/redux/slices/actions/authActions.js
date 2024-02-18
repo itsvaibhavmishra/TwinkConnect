@@ -308,6 +308,8 @@ export const GoogleLogin = createAsyncThunk(
         code: token.access_token,
       });
 
+      console.clear();
+
       // show snackbar
       dispatch(
         ShowSnackbar({
