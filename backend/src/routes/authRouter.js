@@ -10,7 +10,7 @@ import {
   forgotPassword,
   resetPassword,
 } from "../controllers/authController.js";
-import { googleAuth } from "../controllers/socialController.js";
+import { githubAuth, googleAuth } from "../controllers/socialController.js";
 
 const authRouter = express.Router();
 
@@ -41,6 +41,9 @@ authRouter.route("/refresh-token").post(trimRequest.all, refreshToken);
 // ------------- Social Auth -------------
 
 // Google Auth Route
-authRouter.route("/google").post(trimRequest.all, googleAuth);
+authRouter.route("/google").post(googleAuth);
+
+// GitHub Auth Route
+authRouter.route("/github").post(githubAuth);
 
 export default authRouter;

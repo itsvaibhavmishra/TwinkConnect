@@ -299,6 +299,25 @@ export const RefreshToken = createAsyncThunk(
   }
 );
 
+// ------------- Start Server Thunk -------------
+export const StartServer = createAsyncThunk(
+  "start/server",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      await axios.get("/start-server");
+    } catch (error) {
+      console.log(error);
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error);
+    }
+  }
+);
+
 // ------------- Google Login Thunk -------------
 export const GoogleLogin = createAsyncThunk(
   "auth/google",
@@ -334,21 +353,34 @@ export const GoogleLogin = createAsyncThunk(
   }
 );
 
-// ------------- Start Server Thunk -------------
-export const StartServer = createAsyncThunk(
-  "start/server",
-  async (arg, { rejectWithValue, dispatch }) => {
+// ------------- GitHub Login Thunk -------------
+export const GithubLogin = createAsyncThunk(
+  "auth/github",
+  async (code, { rejectWithValue, dispatch }) => {
+    console.log("Authorization code:", code);
     try {
-      await axios.get("/start-server");
+      const { data } = await axios.post("/auth/github", { code: code });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      // update user data
+      dispatch(updateUser(data.user));
+
+      return data;
     } catch (error) {
-      console.log(error);
       dispatch(
         ShowSnackbar({
           severity: error.error.status,
           message: error.error.message,
         })
       );
-      return rejectWithValue(error);
+      return rejectWithValue(error.error);
     }
   }
 );

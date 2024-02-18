@@ -3,16 +3,34 @@ import { GithubLogo, GoogleLogo, TwitterLogo } from "phosphor-react";
 import { useGoogleLogin } from "@react-oauth/google";
 
 import { useDispatch } from "react-redux";
-import { GoogleLogin } from "../../redux/slices/actions/authActions";
+import {
+  GithubLogin,
+  GoogleLogin,
+} from "../../redux/slices/actions/authActions";
+
+import { getGithubCode } from "../../utils/socialLoginHelpers";
 
 const AuthSocial = () => {
   const dispatch = useDispatch();
+
+  // ---------- inner functions ----------
   const googleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      console.log(tokenResponse);
       dispatch(GoogleLogin(tokenResponse));
     },
   });
+
+  const githubLogin = async () => {
+    try {
+      const code = await getGithubCode();
+
+      dispatch(GithubLogin(code));
+    } catch (error) {
+      console.log("Github Error:", error.message);
+    }
+  };
+
+  // -------------------------------------
 
   return (
     <>
@@ -29,7 +47,7 @@ const AuthSocial = () => {
         <IconButton onClick={() => googleLogin()}>
           <GoogleLogo color="#DF3E30" />
         </IconButton>
-        <IconButton color="inherit">
+        <IconButton color="inherit" onClick={() => githubLogin()}>
           <GithubLogo />
         </IconButton>
         <IconButton>
