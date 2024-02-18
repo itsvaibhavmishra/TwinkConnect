@@ -49,7 +49,7 @@ const userSchema = mongoose.Schema(
     // Socials Added
     socialsConnected: {
       type: [String],
-      enum: ["google", "github"],
+      enum: ["google", "github", "linkedin"],
     },
   },
   {

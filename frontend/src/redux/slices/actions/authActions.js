@@ -357,9 +357,39 @@ export const GoogleLogin = createAsyncThunk(
 export const GithubLogin = createAsyncThunk(
   "auth/github",
   async (code, { rejectWithValue, dispatch }) => {
-    console.log("Authorization code:", code);
     try {
       const { data } = await axios.post("/auth/github", { code: code });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      // update user data
+      dispatch(updateUser(data.user));
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- GitHub Login Thunk -------------
+export const LinkedinLogin = createAsyncThunk(
+  "auth/linkedin",
+  async (code, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/auth/linkedin", { code: code });
 
       // show snackbar
       dispatch(

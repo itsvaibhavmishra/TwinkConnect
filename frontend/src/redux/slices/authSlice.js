@@ -5,6 +5,7 @@ import {
   ForgorPassword,
   GithubLogin,
   GoogleLogin,
+  LinkedinLogin,
   LoginUser,
   LogoutUser,
   RefreshToken,
@@ -49,6 +50,11 @@ const slice = createSlice({
       .addCase(GithubLogin.pending, handlePending)
       .addCase(GithubLogin.fulfilled, handleLoginSuccess)
       .addCase(GithubLogin.rejected, handleRejected)
+
+      // --------- LinkedIn Login Builder ---------
+      .addCase(LinkedinLogin.pending, handlePending)
+      .addCase(LinkedinLogin.fulfilled, handleLoginSuccess)
+      .addCase(LinkedinLogin.rejected, handleRejected)
 
       // --------- Logout Builder ---------
       .addCase(LogoutUser.pending, handlePending)
