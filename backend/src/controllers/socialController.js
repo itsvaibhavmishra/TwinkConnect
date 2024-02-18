@@ -1,30 +1,45 @@
 import createHttpError from "http-errors";
-
-// social auth libs
-import { OAuth2Client } from "google-auth-library";
+import axios from "axios";
 
 import { UserModel } from "../models/index.js";
-import { generateToken } from "../services/tokenService.js";
 import { generatePassword } from "../utils/generatePassword.js";
+import { generateLoginTokens } from "../services/userService.js";
+
+const userData = (user, access_token) => {
+  return {
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    avatar: user.avatar,
+    email: user.email,
+    activityStatus: user.activityStatus,
+    onlineStatus: user.onlineStatus,
+    token: access_token,
+  };
+};
 
 // -------------------------- Google Auth --------------------------
 export const googleAuth = async (req, res, next) => {
   try {
-    const { tokenId } = req.body;
-    const client = new OAuth2Client(
-      process.env.GOOGLE_AUTH_CLIENT_ID,
-      process.env.GOOGLE_AUTH_CLIENT_SECRET
+    const { code } = req.body;
+
+    if (!code) {
+      throw createHttpError.BadRequest("Unable to sign in using Google");
+    }
+
+    const { data } = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${code}`,
+        },
+      }
     );
 
-    const ticket = await client.verifyIdToken({
-      idToken: tokenId,
-      audience: process.env.GOOGLE_AUTH_CLIENT_ID,
-    });
-
-    const { email_verified, email, name, picture } = ticket.payload;
+    const { email_verified, email, name, picture } = data;
 
     if (!email_verified) {
-      throw createHttpError.Unauthorized("Email Not Verified");
+      throw createHttpError.Unauthorized("Google Email is Not Verified");
     }
 
     let user = await UserModel.findOne({ email }).select("-password");
@@ -32,8 +47,10 @@ export const googleAuth = async (req, res, next) => {
     if (user) {
       // If user exisits
       user.verified = true;
-      user.googleAuthAdded = true;
-      user.onlineStatus = "online";
+      // Check if Google is already connected
+      if (!user.socialsConnected.includes("google")) {
+        user.socialsConnected.push("google");
+      }
 
       await user.save();
     } else {
@@ -61,50 +78,19 @@ export const googleAuth = async (req, res, next) => {
         verified: true,
         googleAuthAdded: true,
         password: newPass,
-        onlineStatus: "online",
+        socialsConnected: ["google"],
       });
 
       await user.save();
     }
 
-    // generating user token
-    const access_token = await generateToken(
-      { userId: user._id },
-      "1d",
-      process.env.JWT_ACCESS_SECRET
-    );
-    const refresh_token = await generateToken(
-      { userId: user._id },
-      "30d",
-      process.env.JWT_REFRESH_SECRET
-    );
-
-    // store access token to cookies
-    res.cookie("accessToken", access_token, {
-      httpOnly: true,
-      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-    });
-
-    // store refresh token to cookies
-    res.cookie("refreshToken", refresh_token, {
-      httpOnly: true,
-      path: "/api/auth/refresh-token",
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
+    // generating login tokens
+    const access_token = await generateLoginTokens(user, res);
 
     return res.status(200).json({
       status: "success",
       message: "Logged In",
-      user: {
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        avatar: user.avatar,
-        email: user.email,
-        activityStatus: user.activityStatus,
-        onlineStatus: user.onlineStatus,
-        token: access_token,
-      },
+      user: userData(user, access_token),
     });
   } catch (error) {
     next(error);

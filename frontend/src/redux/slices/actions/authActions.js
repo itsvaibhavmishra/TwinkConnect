@@ -73,8 +73,8 @@ export const LogoutUser = createAsyncThunk(
       } catch (error) {
         dispatch(
           ShowSnackbar({
-            severity: error.error.status,
-            message: error.error.message,
+            severity: error?.error?.status || "error",
+            message: error?.error?.message || "logout failed",
           })
         );
 
@@ -294,6 +294,39 @@ export const RefreshToken = createAsyncThunk(
 
       return data;
     } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Google Login Thunk -------------
+export const GoogleLogin = createAsyncThunk(
+  "auth/google",
+  async (token, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/auth/google", {
+        code: token.access_token,
+      });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      // update user data
+      dispatch(updateUser(data.user));
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
       return rejectWithValue(error.error);
     }
   }

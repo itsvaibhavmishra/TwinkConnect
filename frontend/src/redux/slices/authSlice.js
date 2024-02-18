@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   AddOtpEmail,
   ForgorPassword,
+  GoogleLogin,
   LoginUser,
   LogoutUser,
   RefreshToken,
@@ -49,6 +50,28 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(LoginUser.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+        state.error = true;
+      })
+
+      // --------- Google Login Builder ---------
+
+      .addCase(GoogleLogin.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(GoogleLogin.fulfilled, (state, action) => {
+        // check if user is verified
+        if (action.payload.user) {
+          state.isLoggedIn = true;
+        } else {
+          state.isLoggedIn = false;
+        }
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(GoogleLogin.rejected, (state, action) => {
         state.isLoggedIn = false;
         state.isLoading = false;
         state.error = true;

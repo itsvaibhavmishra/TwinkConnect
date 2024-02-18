@@ -10,6 +10,7 @@ import otp from "../Templates/Mail/otp.js";
 import { formatRemainingTime, transporter } from "../services/mailer.js";
 import { generateToken, verifyToken } from "../services/tokenService.js";
 import reset from "../Templates/Mail/reset.js";
+import { generateLoginTokens } from "../services/userService.js";
 
 // -------------------------- Login auth --------------------------
 export const login = async (req, res, next) => {
@@ -42,30 +43,8 @@ export const login = async (req, res, next) => {
       return;
     }
 
-    // generating user token
-    const access_token = await generateToken(
-      { userId: user._id },
-      "1d",
-      process.env.JWT_ACCESS_SECRET
-    );
-    const refresh_token = await generateToken(
-      { userId: user._id },
-      "30d",
-      process.env.JWT_REFRESH_SECRET
-    );
-
-    // store access token to cookies
-    res.cookie("accessToken", access_token, {
-      httpOnly: true,
-      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-    });
-
-    // store refresh token to cookies
-    res.cookie("refreshToken", refresh_token, {
-      httpOnly: true,
-      path: "/api/auth/refresh-token",
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
+    // generating login tokens
+    const access_token = await generateLoginTokens(user, res);
 
     return res.status(200).json({
       status: "success",
@@ -299,30 +278,8 @@ export const verifyOTP = async (req, res, next) => {
 
     await user.save({ new: true, validateModifiedOnly: true });
 
-    // generating user token
-    const access_token = await generateToken(
-      { userId: user._id },
-      "1d",
-      process.env.JWT_ACCESS_SECRET
-    );
-    const refresh_token = await generateToken(
-      { userId: user._id },
-      "30d",
-      process.env.JWT_REFRESH_SECRET
-    );
-
-    // store access token to cookies
-    res.cookie("accessToken", access_token, {
-      httpOnly: true,
-      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-    });
-
-    // store refresh token to cookies
-    res.cookie("refreshToken", refresh_token, {
-      httpOnly: true,
-      path: "/api/auth/refreshToken",
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
+    // generating login tokens
+    const access_token = await generateLoginTokens(user, res);
 
     // grant access to login
     return res.status(200).json({
