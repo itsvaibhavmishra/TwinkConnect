@@ -45,6 +45,12 @@ const userSchema = mongoose.Schema(
 
     // Users friends
     friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+
+    // Socials Added
+    socialsConnected: {
+      type: [String],
+      enum: ["google", "github", "linkedin"],
+    },
   },
   {
     timestamps: true,

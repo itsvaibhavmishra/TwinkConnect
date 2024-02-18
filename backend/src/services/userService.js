@@ -3,6 +3,7 @@ import sizeOf from "image-size";
 import validator from "validator";
 
 import { UserModel } from "../models/index.js";
+import { generateToken } from "./tokenService.js";
 
 // Validate avatar with allowed format, size and dimension
 export const validateAvatar = async (avatar) => {
@@ -70,4 +71,33 @@ export const searchForUsers = async (keyword, page) => {
   }
 
   return { users, totalCount };
+};
+
+// generate login tokens
+export const generateLoginTokens = async (user, res) => {
+  const access_token = await generateToken(
+    { userId: user._id },
+    "1d",
+    process.env.JWT_ACCESS_SECRET
+  );
+  const refresh_token = await generateToken(
+    { userId: user._id },
+    "30d",
+    process.env.JWT_REFRESH_SECRET
+  );
+
+  // store access token to cookies
+  res.cookie("accessToken", access_token, {
+    httpOnly: true,
+    maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+  });
+
+  // store refresh token to cookies
+  res.cookie("refreshToken", refresh_token, {
+    httpOnly: true,
+    path: "/api/auth/refresh-token",
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  });
+
+  return access_token;
 };
