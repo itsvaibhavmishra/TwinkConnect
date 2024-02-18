@@ -19,4 +19,8 @@ router.use("/message", messageRouter);
 
 router.use("/friends", friendsRouter);
 
+router.get("/start-server", (req, res) => {
+  res.send("Welcome to TwinkChat 😺");
+});
+
 export default router;

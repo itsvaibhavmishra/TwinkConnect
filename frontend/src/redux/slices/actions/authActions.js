@@ -331,3 +331,22 @@ export const GoogleLogin = createAsyncThunk(
     }
   }
 );
+
+// ------------- Start Server Thunk -------------
+export const StartServer = createAsyncThunk(
+  "start/server",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      await axios.get("/start-server");
+    } catch (error) {
+      console.log(error);
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error);
+    }
+  }
+);
