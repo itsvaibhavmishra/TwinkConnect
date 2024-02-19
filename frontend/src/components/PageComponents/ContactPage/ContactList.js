@@ -188,6 +188,7 @@ const ContactList = () => {
                               : contact.latestMessage
                           }
                           isLoading={isLoading}
+                          fromContact={true}
                         />
                       ))}
                     </Stack>
@@ -210,6 +211,7 @@ const ContactList = () => {
               currentPage={page}
               onSearchPageChange={handleSearchPageChange}
               currentUser={user._id}
+              fromContact={true}
             />
           </Fragment>
         )}
