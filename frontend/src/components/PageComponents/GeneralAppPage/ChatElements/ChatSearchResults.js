@@ -16,6 +16,7 @@ const ChatSearchResults = ({
   currentPage,
   onSearchPageChange,
   currentUser,
+  fromContact,
 }) => {
   const containerRef = useRef(null);
   const debounceTimeoutRef = useRef(null);
@@ -90,6 +91,7 @@ const ChatSearchResults = ({
                   : e.latestMessage
               }
               {...e}
+              fromContact={fromContact}
             />
           ))
         ) : (

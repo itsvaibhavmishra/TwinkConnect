@@ -7,6 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 import BeatLoader from "react-spinners/BeatLoader";
+import { useNavigate } from "react-router-dom";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,7 @@ import StyledBadge from "../../../StyledBadge";
 import getAvatar from "../../../../utils/createAvatar";
 import formatTime from "../../../../utils/timeFormatter";
 import truncateText from "../../../../utils/truncateText";
+import { getOtherUser } from "../../../../utils/getOtherUser";
 
 const AllChatElement = ({
   _id,
@@ -28,25 +30,43 @@ const AllChatElement = ({
   onlineStatus,
   isLoading,
   convo_id,
+  fromContact,
 }) => {
   // using theme
   const theme = useTheme();
 
+  const navigate = useNavigate();
+
   // from redux
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const { user, onlineFriends } = useSelector((state) => state.user);
   const { activeConversation, typingConversation } = useSelector(
     (state) => state.chat
   );
 
-  const isActiveConvo =
-    (activeConversation && convo_id && activeConversation?._id === convo_id) ||
-    false;
+  const getIsActiveConvo = () => {
+    if (fromContact) {
+      const otherUser = getOtherUser(
+        activeConversation?.users,
+        user._id,
+        onlineFriends
+      );
+
+      return otherUser._id === _id;
+    } else if (activeConversation && convo_id) {
+      return activeConversation?._id === convo_id;
+    } else return false;
+  };
+
+  const isActiveConvo = getIsActiveConvo();
 
   // ----------- inner functions -----------
   const handleConversation = () => {
     if (!isActiveConvo && !isLoading) {
       dispatch(CreateOpenConversation(_id));
+      if (fromContact) {
+        navigate("/app");
+      }
     }
   };
 

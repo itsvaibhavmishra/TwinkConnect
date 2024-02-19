@@ -134,7 +134,12 @@ export default function SettingsDrawer() {
       )}
 
       <AnimatePresence>
-        <Slide direction="left" in={open} mountOnEnter unmountOnExit>
+        <Slide
+          direction={themeDirection === "ltr" ? "left" : "right"}
+          in={open}
+          mountOnEnter
+          unmountOnExit
+        >
           <RootStyle>
             <Stack
               direction="row"
