@@ -52,7 +52,7 @@ const AllChatElement = ({
         onlineFriends
       );
 
-      return otherUser._id === _id;
+      return Boolean(otherUser && otherUser._id === _id);
     } else if (activeConversation && convo_id) {
       return activeConversation?._id === convo_id;
     } else return false;
