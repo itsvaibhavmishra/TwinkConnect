@@ -12,7 +12,10 @@ import { UserPlus, MagnifyingGlass } from "phosphor-react";
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { SearchFriends } from "../../../redux/slices/actions/userActions";
-import { ClearSearch } from "../../../redux/slices/userSlice";
+import {
+  ClearSearch,
+  setShowFriendsMenu,
+} from "../../../redux/slices/userSlice";
 
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import ChatSearchResults from "../GeneralAppPage/ChatElements/ChatSearchResults";
@@ -122,7 +125,10 @@ const ContactList = () => {
       <Stack p={3} spacing={2} sx={{ height: "100%" }}>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Typography variant="h5">Contacts</Typography>
-          <IconButton>
+          <IconButton
+            onClick={() => dispatch(setShowFriendsMenu())}
+            sx={{ display: { xs: "flex", md: "none" } }}
+          >
             <UserPlus />
           </IconButton>
         </Stack>
