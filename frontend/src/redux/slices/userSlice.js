@@ -18,6 +18,8 @@ const initialState = {
     severity: null,
   },
 
+  showFriendsMenu: false,
+
   user: {
     _id: "",
     firstName: "",
@@ -47,6 +49,10 @@ const slice = createSlice({
     },
     closeSnackbar(state, action) {
       state.snackbar.open = false;
+    },
+
+    setShowFriendsMenu(state, action) {
+      state.showFriendsMenu = !state.showFriendsMenu;
     },
 
     // update user information
@@ -202,6 +208,12 @@ export function ClearSearch() {
   };
 }
 
-export const { updateUser, updateOnlineUsers, logout, user } = slice.actions;
+export const {
+  setShowFriendsMenu,
+  updateUser,
+  updateOnlineUsers,
+  logout,
+  user,
+} = slice.actions;
 
 export default slice.reducer;

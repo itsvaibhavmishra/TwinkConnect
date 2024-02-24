@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import {
-  Box,
   Stack,
   Typography,
   Divider,
@@ -12,7 +11,10 @@ import { UserPlus, MagnifyingGlass } from "phosphor-react";
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { SearchFriends } from "../../../redux/slices/actions/userActions";
-import { ClearSearch } from "../../../redux/slices/userSlice";
+import {
+  ClearSearch,
+  setShowFriendsMenu,
+} from "../../../redux/slices/userSlice";
 
 import { Search, SearchIconWrapper, StyledInputBase } from "../../Search";
 import ChatSearchResults from "../GeneralAppPage/ChatElements/ChatSearchResults";
@@ -110,19 +112,14 @@ const ContactList = () => {
   // --------------------------------------------
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-        width: { xs: "100%", md: 320 },
-        backgroundColor: theme.palette.background.default,
-        boxShadow: "0px 0px 2px #00000040",
-        overflow: "hidden",
-      }}
-    >
+    <Stack height={"100%"}>
       <Stack p={3} spacing={2} sx={{ height: "100%" }}>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Typography variant="h5">Contacts</Typography>
-          <IconButton>
+          <IconButton
+            onClick={() => dispatch(setShowFriendsMenu())}
+            sx={{ display: { xs: "flex", md: "none" } }}
+          >
             <UserPlus />
           </IconButton>
         </Stack>
@@ -216,7 +213,7 @@ const ContactList = () => {
           </Fragment>
         )}
       </Stack>
-    </Box>
+    </Stack>
   );
 };
 
