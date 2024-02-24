@@ -14,6 +14,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 const Contact = () => {
   const theme = useTheme();
   // from redux
+  const { isContactLoading } = useSelector((state) => state.contact);
   const { user, showFriendsMenu, isLoading } = useSelector(
     (state) => state.user
   );
@@ -32,7 +33,13 @@ const Contact = () => {
   return (
     <Stack
       direction={"row"}
-      sx={{ width: "100%", height: { xs: "calc(100vh - 65px)", md: "100vh" } }}
+      sx={{
+        width: "100%",
+        height: {
+          xs: "calc(100vh - 65px)",
+          md: "100vh",
+        },
+      }}
     >
       {/* Contacts area */}
       <Box
@@ -41,7 +48,6 @@ const Contact = () => {
             xs: showFriendsMenu ? "none" : "block",
             md: "block",
           },
-          position: "relative",
           height: "100%",
           width: { xs: "100%", md: 320 },
           backgroundColor: theme.palette.background.default,
@@ -63,9 +69,10 @@ const Contact = () => {
           width: { xs: "100%", md: "calc(100vw - 400px)" },
           transition: "width 0.1s ease-in-out",
           backgroundColor: theme.palette.background.paper,
+          overflow: "hidden",
         }}
       >
-        {isLoading ? <LoadingScreen fromChat={true} /> : <FriendsMenu />}
+        {isContactLoading ? <LoadingScreen fromChat={true} /> : <FriendsMenu />}
       </Box>
     </Stack>
   );

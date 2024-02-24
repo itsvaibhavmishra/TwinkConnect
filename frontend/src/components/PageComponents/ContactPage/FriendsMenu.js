@@ -1,8 +1,17 @@
 import { useState } from "react";
-import { Stack, Box, Tab, Tabs, useTheme, IconButton } from "@mui/material";
+import {
+  Stack,
+  Box,
+  Tab,
+  Tabs,
+  useTheme,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { ArrowCircleLeft } from "phosphor-react";
 
 import { FriendRequests, SearchUsers } from "./FriendsComponents";
+import { Friend_Requests } from "../../../data";
 
 // redux imports
 import { useDispatch } from "react-redux";
@@ -21,7 +30,7 @@ const FriendsMenu = () => {
   };
 
   return (
-    <Stack height={"100%"} maxHeight={"100vh"} width={"auto"}>
+    <Stack height={"100%"}>
       {/* Header */}
       <Box
         p={2}
@@ -32,39 +41,49 @@ const FriendsMenu = () => {
           position: "relative",
         }}
       >
-        {/* Tabs */}
-        <Stack alignItems={"center"}>
-          <Tabs value={tabIndex} onChange={handleTabChange}>
-            <Tab label="Friend Requests" disableRipple />
-
-            <Tab label="Search Users" disableRipple />
-          </Tabs>
-        </Stack>
-
-        {/* Close Icon */}
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: "5px",
-            top: "5px",
-            display: { xs: "flex", md: "none" },
-          }}
-          onClick={() => dispatch(setShowFriendsMenu())}
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
         >
-          <ArrowCircleLeft />
-        </IconButton>
+          <Typography variant="h5">Let's make new friends</Typography>
+          {/* Close Icon */}
+          <IconButton
+            sx={{ display: { xs: "flex", md: "none" } }}
+            onClick={() => dispatch(setShowFriendsMenu())}
+          >
+            <ArrowCircleLeft />
+          </IconButton>
+        </Stack>
       </Box>
+
+      {/* Tabs */}
+      <Stack alignItems={"center"}>
+        <Tabs value={tabIndex} onChange={handleTabChange}>
+          <Tab label="Friend Requests" disableRipple />
+
+          <Tab label="Search Users" disableRipple />
+        </Tabs>
+      </Stack>
 
       {/* Sections */}
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
         height={"100%"}
-        maxHeight={"100vh"}
         spacing={2}
         p={2}
+        sx={{
+          flexGrow: 1,
+          overflow: "scroll",
+          height: "100%",
+          overflowY: "auto",
+          overflowX: "hidden",
+          backgroundColor: theme.palette.background.paper,
+        }}
+        className="scrollbar"
       >
-        {tabIndex === 0 && <FriendRequests />}
+        {tabIndex === 0 && <FriendRequests friendRequests={Friend_Requests} />}
         {tabIndex === 1 && <SearchUsers />}
       </Stack>
     </Stack>

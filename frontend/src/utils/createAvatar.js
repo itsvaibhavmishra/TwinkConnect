@@ -26,6 +26,18 @@ export const createAvatar = (name) => {
   };
 };
 
+const getSize = (size) => {
+  if (size <= 20) {
+    return size - 5;
+  } else if (size <= 40) {
+    return size - 15;
+  } else if (size > 40 && size <= 50) {
+    return "auto";
+  } else {
+    return size - 40;
+  }
+};
+
 export default function getAvatar(avatar, name, theme, size) {
   return avatar ? (
     <Avatar src={avatar} alt={name} sx={{ width: size, height: size }} />
@@ -39,7 +51,7 @@ export default function getAvatar(avatar, name, theme, size) {
         color: "#fff",
         width: size,
         height: size,
-        fontSize: size <= 20 ? size - 5 : size - 15,
+        fontSize: getSize(size), //"auto",
       }}
       alt={name}
     >

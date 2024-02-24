@@ -68,6 +68,41 @@ const MembersList = [
   },
 ];
 
+const Friend_Requests = [
+  {
+    _id: "65432fsdfsd09fds0",
+    firstName: "Surbhi",
+    lastName: "Parashar",
+    avatar: "",
+    email: "surbhi@gmail.com",
+    createdAt: "2023-12-12T15:39:14.688+00:00",
+  },
+  {
+    _id: "65432fsdfsd09fds1",
+    firstName: "Vaibhaw",
+    lastName: "Mishra",
+    avatar: "",
+    email: "vaibhavmishra658@gmail.com",
+    createdAt: "2023-12-12T15:39:14.688+00:00",
+  },
+  {
+    _id: "65432fsdfsd09fds2",
+    firstName: "Dhananjay",
+    lastName: "Jain",
+    avatar: "",
+    email: "dhananjay@gmail.com",
+    createdAt: "2023-12-12T15:39:14.688+00:00",
+  },
+  {
+    _id: "65432fsdfsd09fds3",
+    firstName: "Vipul",
+    lastName: "Kumar",
+    avatar: "",
+    email: "vipulk0000@gmail.com",
+    createdAt: "2023-12-12T15:39:14.688+00:00",
+  },
+];
+
 const Nav_Buttons = [
   {
     index: 0,
@@ -149,4 +184,4 @@ const Actions = [
   },
 ];
 
-export { Nav_Buttons, MembersList, Profile_Menu, Actions };
+export { Nav_Buttons, MembersList, Friend_Requests, Profile_Menu, Actions };
