@@ -90,6 +90,7 @@ export const generateLoginTokens = async (user, res) => {
   res.cookie("accessToken", access_token, {
     httpOnly: true,
     maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    sameSite: "None",
   });
 
   // store refresh token to cookies
@@ -97,6 +98,7 @@ export const generateLoginTokens = async (user, res) => {
     httpOnly: true,
     path: "/api/auth/refresh-token",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    sameSite: "None",
   });
 
   return access_token;
