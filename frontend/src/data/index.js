@@ -71,18 +71,18 @@ const MembersList = [
 const Friend_Requests = [
   {
     _id: "65432fsdfsd09fds0",
-    firstName: "Surbhi",
-    lastName: "Parashar",
+    firstName: "User",
+    lastName: "1",
     avatar: "",
-    email: "surbhi@gmail.com",
+    email: "user@gmail.com",
     createdAt: "2023-12-12T15:39:14.688+00:00",
   },
   {
     _id: "65432fsdfsd09fds1",
-    firstName: "Vaibhaw",
+    firstName: "Akshat",
     lastName: "Mishra",
     avatar: "",
-    email: "vaibhavmishra658@gmail.com",
+    email: "akshat@gmail.com",
     createdAt: "2023-12-12T15:39:14.688+00:00",
   },
   {
