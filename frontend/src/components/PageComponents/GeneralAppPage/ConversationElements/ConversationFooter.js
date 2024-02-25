@@ -135,6 +135,7 @@ const ConversationFooter = ({
       px={3}
       width={"100%"}
       sx={{
+        position: "sticky",
         backgroundColor: theme.palette.background.default,
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
