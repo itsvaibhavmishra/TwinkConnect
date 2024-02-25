@@ -2,7 +2,7 @@ import { Box, Stack, Grid, Typography, useTheme } from "@mui/material";
 
 import UserCard from "./FriendsSubComps/UserCard";
 
-const FriendRequests = ({ friendRequests }) => {
+const SentRequests = ({ sentRequests }) => {
   const theme = useTheme();
 
   return (
@@ -12,17 +12,16 @@ const FriendRequests = ({ friendRequests }) => {
           variant="caption"
           sx={{ color: theme.palette.text.secondary, textAlign: "center" }}
         >
-          Below is the list of received friend requests | Click on a card to
-          visit user
+          Here's a list of users whome you have sent a request | Click on a card
+          to visit user
         </Typography>
         <Grid container spacing={3}>
-          {friendRequests.map((sender) => (
-            <UserCard sender={sender} fromSection={"FriendRequests"} />
+          {sentRequests.map((sender) => (
+            <UserCard sender={sender} fromSection={"SentRequests"} />
           ))}
         </Grid>
       </Stack>
     </Box>
   );
 };
-
-export default FriendRequests;
+export default SentRequests;
