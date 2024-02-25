@@ -14,7 +14,6 @@ import LoadingScreen from "../../components/LoadingScreen";
 const Contact = () => {
   const theme = useTheme();
   // from redux
-  const { isContactLoading } = useSelector((state) => state.contact);
   const { user, showFriendsMenu, isLoading } = useSelector(
     (state) => state.user
   );
@@ -25,7 +24,7 @@ const Contact = () => {
       dispatch(GetFriends());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user.token]);
 
   // breakpoint
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -72,7 +71,7 @@ const Contact = () => {
           overflow: "hidden",
         }}
       >
-        {isContactLoading ? <LoadingScreen fromChat={true} /> : <FriendsMenu />}
+        <FriendsMenu />
       </Box>
     </Stack>
   );

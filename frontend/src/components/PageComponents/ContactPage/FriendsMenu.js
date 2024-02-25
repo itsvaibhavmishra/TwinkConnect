@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { ArrowCircleLeft } from "phosphor-react";
 
-import { FriendRequests, SearchUsers } from "./FriendsComponents";
+import { FriendRequests, SearchUsers, SentRequests } from "./FriendsComponents";
 import { Friend_Requests } from "../../../data";
 
 // redux imports
@@ -63,6 +63,8 @@ const FriendsMenu = () => {
           <Tab label="Friend Requests" disableRipple />
 
           <Tab label="Search Users" disableRipple />
+
+          <Tab label="Sent Requests" disableRipple />
         </Tabs>
       </Stack>
 
@@ -85,6 +87,7 @@ const FriendsMenu = () => {
       >
         {tabIndex === 0 && <FriendRequests friendRequests={Friend_Requests} />}
         {tabIndex === 1 && <SearchUsers />}
+        {tabIndex === 2 && <SentRequests sentRequests={Friend_Requests} />}
       </Stack>
     </Stack>
   );
