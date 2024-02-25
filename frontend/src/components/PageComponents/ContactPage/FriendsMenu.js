@@ -58,7 +58,7 @@ const FriendsMenu = () => {
       </Box>
 
       {/* Tabs */}
-      <Stack alignItems={"center"}>
+      <Stack alignItems={"center"} p={"2"}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
           <Tab label="Friend Requests" disableRipple />
 

@@ -8,10 +8,10 @@ import {
   Button,
   useTheme,
   useMediaQuery,
-  Drawer,
 } from "@mui/material";
 
 import getAvatar from "../../../../../utils/createAvatar";
+import UserProfileDrawer from "./UserProfileDrawer";
 
 const UserCard = ({ sender, fromSection }) => {
   const theme = useTheme();
@@ -67,15 +67,27 @@ const UserCard = ({ sender, fromSection }) => {
             {/* Request Options */}
             {fromSection === "FriendRequests" ? (
               <Stack direction={"row"} justifyContent={"flex-end"} spacing={1}>
-                <Button variant="text" color="error">
+                <Button
+                  variant="text"
+                  color="error"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   Reject
                 </Button>
-                <Button variant="outlined" color="success">
+                <Button
+                  variant="outlined"
+                  color="success"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   Accept
                 </Button>
               </Stack>
             ) : (
-              <Button variant="text" color="error">
+              <Button
+                variant="text"
+                color="error"
+                onClick={(e) => e.stopPropagation()}
+              >
                 Unsend Request
               </Button>
             )}
@@ -84,16 +96,11 @@ const UserCard = ({ sender, fromSection }) => {
       </Card>
 
       {/* Drawer */}
-      <Drawer anchor="right" open={openDrawer} onClose={toggleDrawer}>
-        <div
-          role="presentation"
-          onClick={toggleDrawer}
-          onKeyDown={toggleDrawer}
-        >
-          <Typography>{`${sender.firstName} ${sender.lastName}`}</Typography>
-          {/* Content of your drawer */}
-        </div>
-      </Drawer>
+      <UserProfileDrawer
+        openDrawer={openDrawer}
+        toggleDrawer={toggleDrawer}
+        userData={sender}
+      />
     </Grid>
   );
 };
