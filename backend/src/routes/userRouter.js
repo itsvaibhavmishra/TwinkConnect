@@ -3,7 +3,11 @@ import trimRequest from "trim-request";
 import multer from "multer";
 
 import { protect } from "../middlewares/authMiddleware.js";
-import { searchUsers, updateProfile } from "../controllers/userController.js";
+import {
+  getUserData,
+  searchUsers,
+  updateProfile,
+} from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
@@ -19,3 +23,6 @@ export default userRouter;
 
 // Search Users Route
 userRouter.route("/search").get(trimRequest.all, protect, searchUsers);
+
+// Get User Data Route
+userRouter.route("/getUserData").get(trimRequest.all, protect, getUserData);

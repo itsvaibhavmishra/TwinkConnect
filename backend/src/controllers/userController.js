@@ -3,6 +3,7 @@ import validator from "validator";
 
 import { deleteFile, uploadFiles } from "../services/fileUploadService.js";
 import { searchForUsers, validateAvatar } from "../services/userService.js";
+import { UserModel } from "../models/index.js";
 
 // -------------------------- Update Profile --------------------------
 export const updateProfile = async (req, res, next) => {
@@ -121,6 +122,29 @@ export const searchUsers = async (req, res, next) => {
       status: "success",
       usersFound: totalCount,
       users: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -------------------------- Get User Data --------------------------
+export const getUserData = async (req, res, next) => {
+  try {
+    const id = req.query.userId;
+
+    // check for required fields
+    if (!id) {
+      throw createHttpError.BadRequest("Query required");
+    }
+
+    const userData = await UserModel.findById(id).select(
+      "-password -passwordChangedAt -verified -onlineStatus -friends"
+    );
+
+    res.status(200).json({
+      status: "success",
+      userData: userData,
     });
   } catch (error) {
     next(error);

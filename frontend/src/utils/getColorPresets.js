@@ -31,12 +31,12 @@ export const colorPresets = [
   // BLUE PRESET
   {
     name: "blue",
-    lighterFaded: "#061B6440",
-    lighter: "#D1E9FC",
-    light: "#76B0F1",
-    main: "#2065D1",
-    dark: "#103996",
-    darker: "#061B64",
+    lighterFaded: "#0754a340",
+    lighter: "#9BCBFA",
+    light: "#5DA8F5",
+    main: "#1b8cfe",
+    dark: "#0159b2",
+    darker: "#0754a3",
 
     contrastText: "#fff",
   },

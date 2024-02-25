@@ -1,8 +1,25 @@
+import { useEffect } from "react";
 import { Drawer, Box, useTheme } from "@mui/material";
+
 import UserDrawerHeader from "./UserDrawerComps/UserDrawerHeader";
 
-const UserProfileDrawer = ({ openDrawer, toggleDrawer, userData }) => {
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { GetUserData } from "../../../../../redux/slices/actions/contactActions";
+
+const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
   const theme = useTheme();
+
+  // from redux
+  const dispatch = useDispatch();
+  const { userData, isUserDataLoading } = useSelector((state) => state.contact);
+
+  useEffect(() => {
+    if (selectedUserData._id && openDrawer === true) {
+      dispatch(GetUserData(selectedUserData._id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openDrawer]);
 
   return (
     <Drawer
@@ -21,7 +38,11 @@ const UserProfileDrawer = ({ openDrawer, toggleDrawer, userData }) => {
         }}
       >
         {/* Header */}
-        <UserDrawerHeader toggleDrawer={toggleDrawer} userData={userData} />
+        <UserDrawerHeader
+          toggleDrawer={toggleDrawer}
+          userData={userData}
+          isLoading={isUserDataLoading}
+        />
         {/* Main */}
       </Box>
     </Drawer>

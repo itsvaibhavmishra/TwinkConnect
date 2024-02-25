@@ -70,7 +70,7 @@ const MembersList = [
 
 const Friend_Requests = [
   {
-    _id: "65432fsdfsd09fds0",
+    _id: "65870774cd86e8c7c9b358eb",
     firstName: "User",
     lastName: "1",
     avatar: "",
@@ -78,7 +78,7 @@ const Friend_Requests = [
     createdAt: "2023-12-12T15:39:14.688+00:00",
   },
   {
-    _id: "65432fsdfsd09fds1",
+    _id: "65787ea22c8433b199ced18e",
     firstName: "Akshat",
     lastName: "Mishra",
     avatar: "",
@@ -86,7 +86,7 @@ const Friend_Requests = [
     createdAt: "2023-12-12T15:39:14.688+00:00",
   },
   {
-    _id: "65432fsdfsd09fds2",
+    _id: "65bbb5db34b2e8f010a59452",
     firstName: "Dhananjay",
     lastName: "Jain",
     avatar: "",
@@ -94,7 +94,7 @@ const Friend_Requests = [
     createdAt: "2023-12-12T15:39:14.688+00:00",
   },
   {
-    _id: "65432fsdfsd09fds3",
+    _id: "65d1f4411203451e7ea8b44b",
     firstName: "Vipul",
     lastName: "Kumar",
     avatar: "",

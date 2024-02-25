@@ -4,14 +4,14 @@ import {
   useTheme,
   Typography,
   IconButton,
-  Button,
+  Skeleton,
 } from "@mui/material";
 import { XCircle } from "phosphor-react";
 
 import catDoodle from "../../../../../../assets/backgrounds/catDoodle.png";
 import getAvatar from "../../../../../../utils/createAvatar";
 
-const UserDrawerHeader = ({ toggleDrawer, userData }) => {
+const UserDrawerHeader = ({ toggleDrawer, userData, isLoading }) => {
   const theme = useTheme();
 
   return (
@@ -51,26 +51,44 @@ const UserDrawerHeader = ({ toggleDrawer, userData }) => {
           variant="h2"
           sx={{
             fontWeight: 900,
-            backgroundColor: `${theme.palette.background.default}80`,
+            backgroundColor:
+              !isLoading && `${theme.palette.background.default}80`,
             borderRadius: 2,
             p: 1,
           }}
         >
-          {userData.firstName} {userData.lastName}
+          {isLoading ? (
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <Skeleton animation="wave" height={100} width="5em" />
+              <Skeleton animation="wave" height={30} width="3em" />
+            </Stack>
+          ) : (
+            `${userData?.firstName} ${userData?.lastName}`
+          )}
         </Typography>
         <Typography
           variant="body2"
           sx={{
             fontWeight: 900,
-            backgroundColor: `${theme.palette.background.default}80`,
+            backgroundColor:
+              !isLoading && `${theme.palette.background.default}80`,
             borderRadius: 2,
             p: 1,
           }}
         >
-          Hey There! I ❤️ Using TwinkChat 😸
+          {!isLoading && `${userData?.activityStatus}`}
         </Typography>
         <Box sx={{ position: "absolute", bottom: "-50px" }}>
-          {getAvatar(userData.avatar, userData.firstName, theme, 100)}
+          {isLoading ? (
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              width={100}
+              height={100}
+            />
+          ) : (
+            getAvatar(userData?.avatar, userData?.firstName, theme, 100)
+          )}
         </Box>
       </Stack>
     </Box>

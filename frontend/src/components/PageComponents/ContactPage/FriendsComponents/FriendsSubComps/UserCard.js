@@ -25,7 +25,7 @@ const UserCard = ({ sender, fromSection }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   return (
-    <Grid item xs={12} sm={12} md={6} lg={4} key={sender._id}>
+    <Grid item xs={12} sm={12} md={6} lg={4}>
       <Card
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -99,7 +99,7 @@ const UserCard = ({ sender, fromSection }) => {
       <UserProfileDrawer
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
-        userData={sender}
+        selectedUserData={sender}
       />
     </Grid>
   );
