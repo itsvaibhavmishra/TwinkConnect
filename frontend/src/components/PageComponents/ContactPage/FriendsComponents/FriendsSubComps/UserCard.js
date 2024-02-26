@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import getAvatar from "../../../../../utils/createAvatar";
-import UserProfileDrawer from "./UserProfileDrawer";
+import UserProfileDrawer from "../../../UserProfileDrawer/UserProfileDrawer";
 
 const UserCard = ({ sender, fromSection }) => {
   const theme = useTheme();

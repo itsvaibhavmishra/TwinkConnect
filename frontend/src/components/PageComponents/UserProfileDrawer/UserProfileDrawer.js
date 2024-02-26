@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { Drawer, Box, useTheme } from "@mui/material";
 
-import UserDrawerHeader from "./UserDrawerComps/UserDrawerHeader";
+import { UserDrawerHeader } from "./UserDrawerComps";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
-import { GetUserData } from "../../../../../redux/slices/actions/contactActions";
+import { GetUserData } from "../../../redux/slices/actions/contactActions";
 
 const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
   const theme = useTheme();

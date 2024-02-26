@@ -5,13 +5,13 @@ function createGradient(color1, color2) {
 }
 
 const PRIMARY = {
-  lighterFaded: "#061B6440",
+  lighterFaded: "#063d7540",
   lighterFade: "#1B8CFEBF",
-  lighter: "#D1E9FC",
-  light: "#76B0F1",
-  main: "#2065D1",
-  dark: "#103996",
-  darker: "#061B64",
+  lighter: "#9BCBFA",
+  light: "#5DA8F5",
+  main: "#1b8cfe",
+  dark: "#0159b2",
+  darker: "#0754a3",
 };
 const SECONDARY = {
   lighterFaded: "#84A9FF40",
