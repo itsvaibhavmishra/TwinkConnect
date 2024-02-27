@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { GetUserData } from "./actions/contactActions";
 
 // initial state for contacts menu
 const initialState = {
   isContactLoading: false,
+  isUserDataLoading: false,
   error: false,
 
   showFriendsMenu: false,
+
+  userData: {},
 };
 
 const slice = createSlice({
@@ -18,21 +22,21 @@ const slice = createSlice({
     },
   },
   extraReducers(builder) {
-    // builder
-    // --------- Profile Builder ---------
-    // .addCase(UpdateProfile.pending, (state, action) => {
-    //   state.isLoading = true;
-    //   state.error = false;
-    // })
-    // .addCase(UpdateProfile.fulfilled, (state, action) => {
-    //   state.user = { ...state.user, ...action.payload.user };
-    //   state.isLoading = false;
-    //   state.error = false;
-    // })
-    // .addCase(UpdateProfile.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = true;
-    // })
+    builder
+      // --------- Profile Builder ---------
+      .addCase(GetUserData.pending, (state, action) => {
+        state.isUserDataLoading = true;
+        state.error = false;
+      })
+      .addCase(GetUserData.fulfilled, (state, action) => {
+        state.userData = action.payload.userData;
+        state.isUserDataLoading = false;
+        state.error = false;
+      })
+      .addCase(GetUserData.rejected, (state, action) => {
+        state.isUserDataLoading = false;
+        state.error = true;
+      });
   },
 });
 
