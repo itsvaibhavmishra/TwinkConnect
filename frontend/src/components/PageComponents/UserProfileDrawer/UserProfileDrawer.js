@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Drawer, Box, useTheme } from "@mui/material";
 
-import { UserDrawerHeader } from "./UserDrawerComps";
+import { UserDrawerHeader, UserDrawerMain } from "./UserDrawerComps";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +33,10 @@ const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
       <Box
         width={"100%"}
         height={"100%"}
+        className={"scrollbar"}
         sx={{
           backgroundColor: theme.palette.background.default,
+          overflow: "auto",
         }}
       >
         {/* Header */}
@@ -43,7 +45,9 @@ const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
           userData={userData}
           isLoading={isUserDataLoading}
         />
+
         {/* Main */}
+        <UserDrawerMain userData={userData} isLoading={isUserDataLoading} />
       </Box>
     </Drawer>
   );
