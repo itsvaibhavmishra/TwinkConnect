@@ -6,7 +6,7 @@ import { MembersList } from "../../../../data";
 import AllChatElement from "./AllChatElement";
 
 import Lottie from "react-lottie";
-import * as SearchNotFound from "../../../../assets/Illustration/SearchNotFound.json";
+import * as SearchNotFound from "../../../../assets/Illustration/Animations/SearchNotFound.json";
 import { scrollToBottom } from "../../../../utils/scrollToBottom";
 
 const ChatSearchResults = ({

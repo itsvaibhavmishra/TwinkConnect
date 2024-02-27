@@ -17,7 +17,11 @@ const FriendRequests = ({ friendRequests }) => {
         </Typography>
         <Grid container spacing={3}>
           {friendRequests.map((sender) => (
-            <UserCard sender={sender} fromSection={"FriendRequests"} />
+            <UserCard
+              sender={sender}
+              fromSection={"FriendRequests"}
+              key={sender._id}
+            />
           ))}
         </Grid>
       </Stack>
