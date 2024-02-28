@@ -36,7 +36,8 @@ const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
         className={"scrollbar"}
         sx={{
           backgroundColor: theme.palette.background.default,
-          overflow: "auto",
+          overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         {/* Header */}

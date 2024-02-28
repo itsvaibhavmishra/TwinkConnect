@@ -8,7 +8,6 @@ import axios from "../../../utils/axios";
 export const GetUserData = createAsyncThunk(
   "user/getUserData",
   async (id, { rejectWithValue, dispatch }) => {
-    console.log(id);
     try {
       const { data } = await axios.get(`/user/getUserData/?userId=${id}`);
 
