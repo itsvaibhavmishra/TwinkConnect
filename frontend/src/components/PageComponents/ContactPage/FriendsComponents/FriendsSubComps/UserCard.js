@@ -32,6 +32,7 @@ const UserCard = ({ sender, fromSection }) => {
           transition: "all 0.3s ease",
           "&:hover": {
             backgroundColor: theme.palette.primary.lighterFaded,
+            backdropFilter: "blur(10px)",
             cursor: "pointer",
           },
         }}
@@ -97,6 +98,7 @@ const UserCard = ({ sender, fromSection }) => {
 
       {/* Drawer */}
       <UserProfileDrawer
+        isFrom={fromSection}
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
         selectedUserData={sender}

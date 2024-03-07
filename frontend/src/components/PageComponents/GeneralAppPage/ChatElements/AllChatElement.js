@@ -7,7 +7,6 @@ import {
   useTheme,
 } from "@mui/material";
 import BeatLoader from "react-spinners/BeatLoader";
-import { useNavigate } from "react-router-dom";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -31,11 +30,10 @@ const AllChatElement = ({
   isLoading,
   convo_id,
   fromContact,
+  toggleDrawer,
 }) => {
   // using theme
   const theme = useTheme();
-
-  const navigate = useNavigate();
 
   // from redux
   const dispatch = useDispatch();
@@ -44,6 +42,7 @@ const AllChatElement = ({
     (state) => state.chat
   );
 
+  // ----------- inner functions -----------
   const getIsActiveConvo = () => {
     if (fromContact) {
       const otherUser = getOtherUser(
@@ -60,12 +59,12 @@ const AllChatElement = ({
 
   const isActiveConvo = getIsActiveConvo();
 
-  // ----------- inner functions -----------
   const handleConversation = () => {
     if (!isActiveConvo && !isLoading) {
-      dispatch(CreateOpenConversation(_id));
       if (fromContact) {
-        navigate("/app");
+        toggleDrawer(_id);
+      } else {
+        dispatch(CreateOpenConversation(_id));
       }
     }
   };

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   useTheme,
   Box,
@@ -10,7 +12,10 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Lottie from "react-lottie";
 
 import { getSimpleData } from "../../../../utils/timeFormatter";
-import { useEffect, useState } from "react";
+
+// redux imports
+import { useDispatch } from "react-redux";
+import { CreateOpenConversation } from "../../../../redux/slices/actions/chatActions";
 
 const getRandomAnimation = () => {
   const randomIndex = Math.floor(Math.random() * 5) + 1;
@@ -19,10 +24,19 @@ const getRandomAnimation = () => {
   );
 };
 
-const UserDrawerMain = ({ userData, isLoading }) => {
+const UserDrawerMain = ({ userData, isLoading, isFrom }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [catAnimation, setCatAnimation] = useState(null);
+
+  const handleButtonClick = (type) => {
+    if (type === "sendMsg") {
+      dispatch(CreateOpenConversation(userData?._id));
+      if (isFrom === "Contacts") navigate("/app");
+    }
+  };
 
   useEffect(() => {
     getRandomAnimation().then((animation) => {
@@ -47,17 +61,54 @@ const UserDrawerMain = ({ userData, isLoading }) => {
             spacing={5}
           >
             {/* Action Buttons */}
-            <LoadingButton
-              loading={isLoading}
-              size="large"
-              variant="outlined"
-              color={"error"}
-            >
-              Remove Friend
-            </LoadingButton>
-            <LoadingButton loading={isLoading} size="large" variant="outlined">
-              Send Message
-            </LoadingButton>
+            {isFrom === "SentRequests" ? (
+              <LoadingButton
+                loading={isLoading}
+                size="large"
+                variant="outlined"
+                color={"error"}
+              >
+                Unsend Requsets
+              </LoadingButton>
+            ) : isFrom === "FriendRequests" ? (
+              <>
+                <LoadingButton
+                  loading={isLoading}
+                  size="large"
+                  variant="outlined"
+                  color={"error"}
+                >
+                  Reject Request
+                </LoadingButton>
+                <LoadingButton
+                  loading={isLoading}
+                  size="large"
+                  variant="outlined"
+                  color={"success"}
+                >
+                  Accept Friend
+                </LoadingButton>
+              </>
+            ) : (
+              <>
+                <LoadingButton
+                  loading={isLoading}
+                  size="large"
+                  variant="outlined"
+                  color={"error"}
+                >
+                  Remove Friend
+                </LoadingButton>
+                <LoadingButton
+                  loading={isLoading}
+                  size="large"
+                  variant="outlined"
+                  onClick={() => handleButtonClick("sendMsg")}
+                >
+                  Send Message
+                </LoadingButton>
+              </>
+            )}
           </Stack>
         </Divider>
 

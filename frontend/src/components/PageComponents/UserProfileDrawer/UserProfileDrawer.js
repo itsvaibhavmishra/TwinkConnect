@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import { Drawer, Box, useTheme } from "@mui/material";
 
 import { UserDrawerHeader, UserDrawerMain } from "./UserDrawerComps";
@@ -7,7 +8,12 @@ import { UserDrawerHeader, UserDrawerMain } from "./UserDrawerComps";
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserData } from "../../../redux/slices/actions/contactActions";
 
-const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
+const UserProfileDrawer = ({
+  openDrawer,
+  toggleDrawer,
+  selectedUserData,
+  isFrom,
+}) => {
   const theme = useTheme();
 
   // from redux
@@ -48,7 +54,11 @@ const UserProfileDrawer = ({ openDrawer, toggleDrawer, selectedUserData }) => {
         />
 
         {/* Main */}
-        <UserDrawerMain userData={userData} isLoading={isUserDataLoading} />
+        <UserDrawerMain
+          userData={userData}
+          isLoading={isUserDataLoading}
+          isFrom={isFrom}
+        />
       </Box>
     </Drawer>
   );
