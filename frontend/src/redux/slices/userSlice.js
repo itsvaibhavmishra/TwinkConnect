@@ -82,6 +82,20 @@ const slice = createSlice({
       }
     },
 
+    // remove friend based on friend's _id
+    removeFriend: (state, action) => {
+      const { friend_id } = action.payload;
+
+      // Find index of friend to remove
+      const index = state.friends.findIndex(
+        (friend) => friend._id === friend_id
+      );
+      if (index !== -1) {
+        // Remove friend from friends array
+        state.friends.splice(index, 1);
+      }
+    },
+
     // update user information
     setLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -113,25 +127,16 @@ const slice = createSlice({
   extraReducers(builder) {
     builder
       // --------- Profile Builder ---------
-      .addCase(UpdateProfile.pending, (state, action) => {
-        state.isLoading = true;
-        state.error = false;
-      })
+      .addCase(UpdateProfile.pending, handlePending)
       .addCase(UpdateProfile.fulfilled, (state, action) => {
         state.user = { ...state.user, ...action.payload.user };
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(UpdateProfile.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = true;
-      })
+      .addCase(UpdateProfile.rejected, handleRejected)
 
       // --------- Search Friends Builder ---------
-      .addCase(SearchFriends.pending, (state, action) => {
-        state.isLoading = true;
-        state.error = false;
-      })
+      .addCase(SearchFriends.pending, handlePending)
       .addCase(SearchFriends.fulfilled, (state, action) => {
         if (action.payload.usersFound === 0) {
           state.searchResults = null;
@@ -143,42 +148,38 @@ const slice = createSlice({
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(SearchFriends.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = true;
-      })
+      .addCase(SearchFriends.rejected, handleRejected)
 
       // --------- Get Friends Builder ---------
-      .addCase(GetFriends.pending, (state, action) => {
-        state.isLoading = true;
-        state.error = false;
-      })
+      .addCase(GetFriends.pending, handlePending)
       .addCase(GetFriends.fulfilled, (state, action) => {
         state.friends = action.payload.friends;
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(GetFriends.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = true;
-      })
+      .addCase(GetFriends.rejected, handleRejected)
 
       // --------- Get Online Friends Builder ---------
-      .addCase(GetOnlineFriends.pending, (state, action) => {
-        state.isLoading = true;
-        state.error = false;
-      })
+      .addCase(GetOnlineFriends.pending, handlePending)
       .addCase(GetOnlineFriends.fulfilled, (state, action) => {
         state.onlineFriends = action.payload.onlineFriends;
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(GetOnlineFriends.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = true;
-      });
+      .addCase(GetOnlineFriends.rejected, handleRejected);
   },
 });
+
+// function for pending and rejected handling
+function handlePending(state, action) {
+  state.isLoading = true;
+  state.error = false;
+}
+
+function handleRejected(state, action) {
+  state.isLoading = false;
+  state.error = true;
+}
 
 // snackbar functions
 export function ShowSnackbar({ message, severity }) {
@@ -212,6 +213,7 @@ export const {
   setShowFriendsMenu,
   updateUser,
   updateOnlineUsers,
+  removeFriend,
   logout,
   user,
 } = slice.actions;

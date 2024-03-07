@@ -220,6 +220,7 @@ const ContactList = () => {
               currentPage={page}
               onSearchPageChange={handleSearchPageChange}
               currentUser={user._id}
+              toggleDrawer={toggleDrawer}
               fromContact={true}
             />
           </Fragment>

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetUserData } from "./actions/contactActions";
+import { GetUserData, RemoveFriend } from "./actions/contactActions";
 
 // initial state for contacts menu
 const initialState = {
   isContactLoading: false,
   isUserDataLoading: false,
+  isRemoveFriendLoading: false,
   error: false,
 
   showFriendsMenu: false,
@@ -23,7 +24,7 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder
-      // --------- Profile Builder ---------
+      // --------- User Data Builder ---------
       .addCase(GetUserData.pending, (state, action) => {
         state.isUserDataLoading = true;
         state.error = false;
@@ -35,6 +36,20 @@ const slice = createSlice({
       })
       .addCase(GetUserData.rejected, (state, action) => {
         state.isUserDataLoading = false;
+        state.error = true;
+      })
+
+      // --------- Remove Frined Builder ---------
+      .addCase(RemoveFriend.pending, (state, action) => {
+        state.isRemoveFriendLoading = true;
+        state.error = false;
+      })
+      .addCase(RemoveFriend.fulfilled, (state, action) => {
+        state.isRemoveFriendLoading = false;
+        state.error = false;
+      })
+      .addCase(RemoveFriend.rejected, (state, action) => {
+        state.isRemoveFriendLoading = false;
         state.error = true;
       });
   },

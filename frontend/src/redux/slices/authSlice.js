@@ -12,6 +12,7 @@ import {
   RegisterUser,
   ResetPassword,
   SendOTP,
+  StartServer,
   VerifyOTP,
 } from "./actions/authActions";
 
@@ -36,6 +37,20 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder
+      // --------- Start Server Builder ---------
+      .addCase(StartServer.pending, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(StartServer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(StartServer.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+      })
+
       // --------- Login Builder ---------
       .addCase(LoginUser.pending, handlePending)
       .addCase(LoginUser.fulfilled, handleLoginSuccess)
@@ -128,6 +143,7 @@ const slice = createSlice({
         }, 1000);
       })
       .addCase(ResetPassword.rejected, handleRejected)
+
       // --------- Refresh Token Builder ---------
       .addCase(RefreshToken.pending, handlePending)
       .addCase(RefreshToken.fulfilled, (state, action) => {
@@ -135,10 +151,7 @@ const slice = createSlice({
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(RefreshToken.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = true;
-      });
+      .addCase(RefreshToken.rejected, handleRejected);
   },
 });
 

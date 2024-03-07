@@ -12,10 +12,12 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Lottie from "react-lottie";
 
 import { getSimpleData } from "../../../../utils/timeFormatter";
+import RemoveFriendDialog from "./UDMainComps/RemoveFriendDialog";
 
 // redux imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CreateOpenConversation } from "../../../../redux/slices/actions/chatActions";
+import { RemoveFriend } from "../../../../redux/slices/actions/contactActions";
 
 const getRandomAnimation = () => {
   const randomIndex = Math.floor(Math.random() * 5) + 1;
@@ -24,18 +26,31 @@ const getRandomAnimation = () => {
   );
 };
 
-const UserDrawerMain = ({ userData, isLoading, isFrom }) => {
+const UserDrawerMain = ({ toggleDrawer, userData, isLoading, isFrom }) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // from redux
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
+  const isCurrentUser = user?._id === userData?._id;
+
   const [catAnimation, setCatAnimation] = useState(null);
+  const [rfDialog, setRFDialog] = useState(false);
 
   const handleButtonClick = (type) => {
     if (type === "sendMsg") {
       dispatch(CreateOpenConversation(userData?._id));
       if (isFrom === "Contacts") navigate("/app");
+    } else if (type === "removeFriend") {
+      dispatch(RemoveFriend(userData?._id));
     }
+    toggleDrawer();
+  };
+
+  const toggleRFDialog = () => {
+    setRFDialog(!rfDialog);
   };
 
   useEffect(() => {
@@ -89,6 +104,15 @@ const UserDrawerMain = ({ userData, isLoading, isFrom }) => {
                   Accept Friend
                 </LoadingButton>
               </>
+            ) : isCurrentUser ? (
+              <LoadingButton
+                loading={isLoading}
+                size="large"
+                variant="outlined"
+                onClick={() => handleButtonClick("sendMsg")}
+              >
+                Message Yourself
+              </LoadingButton>
             ) : (
               <>
                 <LoadingButton
@@ -96,6 +120,7 @@ const UserDrawerMain = ({ userData, isLoading, isFrom }) => {
                   size="large"
                   variant="outlined"
                   color={"error"}
+                  onClick={toggleRFDialog}
                 >
                   Remove Friend
                 </LoadingButton>
@@ -144,6 +169,12 @@ const UserDrawerMain = ({ userData, isLoading, isFrom }) => {
           </Box>
         </Stack>
       </Stack>
+      <RemoveFriendDialog
+        open={rfDialog}
+        onClose={toggleRFDialog}
+        onConfirm={handleButtonClick}
+        userData={userData}
+      />
     </Box>
   );
 };

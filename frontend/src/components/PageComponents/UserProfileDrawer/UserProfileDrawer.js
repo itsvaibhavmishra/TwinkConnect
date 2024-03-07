@@ -55,6 +55,7 @@ const UserProfileDrawer = ({
 
         {/* Main */}
         <UserDrawerMain
+          toggleDrawer={toggleDrawer}
           userData={userData}
           isLoading={isUserDataLoading}
           isFrom={isFrom}
