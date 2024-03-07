@@ -25,11 +25,10 @@ export const GetUserData = createAsyncThunk(
   }
 );
 
-// ------------- Get Conversation Thunk -------------
+// ------------- Remove Friend Thunk -------------
 export const RemoveFriend = createAsyncThunk(
   "friends/remove-friend",
   async (friend_id, { rejectWithValue, dispatch }) => {
-    console.log(friend_id);
     try {
       const { data } = await axios.post("/friends/remove-friend", {
         friend_id,
@@ -45,6 +44,27 @@ export const RemoveFriend = createAsyncThunk(
           message: data.message,
         })
       );
+
+      return data;
+    } catch (error) {
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Get Friend Requests Thunk -------------
+export const GetFriendRequests = createAsyncThunk(
+  "friends/get-requests",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get("/friends/get-requests");
 
       return data;
     } catch (error) {
