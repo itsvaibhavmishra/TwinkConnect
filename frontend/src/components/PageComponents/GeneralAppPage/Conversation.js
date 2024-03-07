@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Stack, useMediaQuery } from "@mui/material";
+import { Stack, useMediaQuery, useTheme } from "@mui/material";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -13,9 +13,13 @@ import {
 import { GetMessages } from "../../../redux/slices/actions/chatActions";
 
 const Conversation = () => {
-  const { activeConversation, sendMsgLoading, isOptimistic } = useSelector(
-    (state) => state.chat
-  );
+  const theme = useTheme();
+  const {
+    activeConversation,
+    activeConvoFriendship,
+    sendMsgLoading,
+    isOptimistic,
+  } = useSelector((state) => state.chat);
   const { user, onlineFriends } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -51,16 +55,32 @@ const Conversation = () => {
 
       <ConversationMain />
 
-      <ConversationFooter
-        convo_id={activeConversation._id}
-        sendMsgLoading={sendMsgLoading}
-        // --------- Optimistic Approach ---------
-        isOptimistic={isOptimistic}
-        currentUser={user}
-        otherUser={otherUser}
-        activeConversation={activeConversation}
-        // ---------------------------------------
-      />
+      {activeConvoFriendship && activeConvoFriendship ? (
+        <ConversationFooter
+          convo_id={activeConversation._id}
+          sendMsgLoading={sendMsgLoading}
+          // --------- Optimistic Approach ---------
+          isOptimistic={isOptimistic}
+          currentUser={user}
+          otherUser={otherUser}
+          activeConversation={activeConversation}
+          // ---------------------------------------
+        />
+      ) : (
+        <Stack
+          py={2}
+          px={3}
+          width={"100%"}
+          sx={{
+            position: "sticky",
+            backgroundColor: theme.palette.background.default,
+            boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
+          }}
+          alignItems={"center"}
+        >
+          You are no longer friends with this user!
+        </Stack>
+      )}
     </Stack>
   );
 };
