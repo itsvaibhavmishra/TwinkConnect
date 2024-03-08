@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { Box, Stack, Grid, Typography, useTheme } from "@mui/material";
+import Lottie from "react-lottie";
 
 import UserCard from "./FriendsSubComps/UserCard";
 import { Friend_Requests } from "../../../../data";
+import NoResultsFound from "../../../../assets/Illustration/Animations/NoResultsFound.json";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -43,7 +45,26 @@ const FriendRequests = () => {
                 />
               ))
             ) : (
-              <></>
+              <Stack
+                sx={{ height: "100%", width: "100%" }}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Box sx={{ width: { xs: "25em", md: "40em" } }}>
+                  <Lottie
+                    options={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: NoResultsFound,
+                      rendererSettings: {
+                        preserveAspectRatio: "xMidYMid slice",
+                      },
+                    }}
+                    isClickToPauseDisabled={true}
+                  />
+                </Box>
+                <Typography variant="subtitle2">No Requests Found</Typography>
+              </Stack>
             )
           ) : (
             // Loading Cards
