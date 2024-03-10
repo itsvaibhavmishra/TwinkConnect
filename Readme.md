@@ -106,12 +106,12 @@ Live At: <a href=""></a>
 
 ## 👾 Installation
 
-### Server:
+### Bankend:
 
-From root directory, move to the server using command
+From root directory, move to the backend using command
 
 ```bash
-$ cd server/
+$ cd backend/
 ```
 
 Install dependencies for server
@@ -126,21 +126,21 @@ Setup .env using `.env copy` file
 $ located in backend/
 ```
 
-Start the server using nodemon
+Start the backend using nodemon
 
 ```bash
 $ npm start
 ```
 
-## Client:
+## Frontend:
 
-From root directory, move to the client using command
+From root directory, move to the frontend using command
 
 ```bash
-$ cd client/
+$ cd frontend/
 ```
 
-Install dependencies for client
+Install dependencies for frontend
 
 ```bash
 $ npm install -f
@@ -152,7 +152,7 @@ Setup .env using `.env copy` file
 $ located in frontend/
 ```
 
-Runs client on localhost(React App)
+Runs frontend on localhost(React App)
 
 ```bash
 $ npm start
