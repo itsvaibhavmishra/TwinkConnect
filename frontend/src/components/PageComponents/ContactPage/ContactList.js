@@ -21,6 +21,7 @@ import ChatSearchResults from "../GeneralAppPage/ChatElements/ChatSearchResults"
 import AllChatElement from "../GeneralAppPage/ChatElements/AllChatElement";
 import OnlineFriendsElement from "../OnlineFriendsElement/OnlineFriendsElement";
 import { MembersList } from "../../../data";
+import UserProfileDrawer from "../UserProfileDrawer/UserProfileDrawer";
 
 const ContactList = () => {
   // using theme
@@ -38,7 +39,17 @@ const ContactList = () => {
   const [usersFound, setUsersFound] = useState([]);
   const [page, setPage] = useState(1);
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState("");
+
   // -------------- inner functions --------------
+  // open close user drawer
+  const toggleDrawer = (selectedId) => {
+    setOpenDrawer(!openDrawer);
+
+    setSelectedUserId(selectedId);
+  };
+
   // function to handle searched term
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -186,6 +197,7 @@ const ContactList = () => {
                           }
                           isLoading={isLoading}
                           fromContact={true}
+                          toggleDrawer={toggleDrawer}
                         />
                       ))}
                     </Stack>
@@ -208,11 +220,19 @@ const ContactList = () => {
               currentPage={page}
               onSearchPageChange={handleSearchPageChange}
               currentUser={user._id}
+              toggleDrawer={toggleDrawer}
               fromContact={true}
             />
           </Fragment>
         )}
       </Stack>
+
+      <UserProfileDrawer
+        openDrawer={openDrawer}
+        toggleDrawer={toggleDrawer}
+        selectedUserData={{ _id: selectedUserId }}
+        isFrom={"Contacts"}
+      />
     </Stack>
   );
 };

@@ -37,10 +37,16 @@ export const createOpenConversation = async (req, res, next) => {
       receiver_id
     );
 
+    const isValidFriendShip = !(
+      !sender.friends.includes(receiver_id) ||
+      !receiver.friends.includes(sender_id)
+    );
+
     if (existing_conversation) {
       res.status(200).json({
         status: "success",
         conversation: existing_conversation,
+        isValidFriendShip,
       });
     } else {
       // check if users are friends
@@ -73,6 +79,7 @@ export const createOpenConversation = async (req, res, next) => {
       res.status(200).json({
         status: "success",
         conversation: new_conversation,
+        isValidFriendShip,
       });
     }
   } catch (error) {

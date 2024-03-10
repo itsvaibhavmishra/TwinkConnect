@@ -1,9 +1,28 @@
+import { useEffect } from "react";
 import { Box, Stack, Grid, Typography, useTheme } from "@mui/material";
+import Lottie from "react-lottie";
 
 import UserCard from "./FriendsSubComps/UserCard";
+import { Friend_Requests } from "../../../../data";
+import NoResultsFound from "../../../../assets/Illustration/Animations/NoResultsFound.json";
 
-const FriendRequests = ({ friendRequests }) => {
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { GetFriendRequests } from "../../../../redux/slices/actions/contactActions";
+
+const FriendRequests = () => {
   const theme = useTheme();
+
+  // from redux
+  const dispatch = useDispatch();
+  const { friendRequests, isRequestsLoading } = useSelector(
+    (state) => state.contact
+  );
+
+  useEffect(() => {
+    dispatch(GetFriendRequests());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box height={"100%"} width={"100%"} p={2}>
@@ -16,13 +35,48 @@ const FriendRequests = ({ friendRequests }) => {
           visit user
         </Typography>
         <Grid container spacing={3}>
-          {friendRequests.map((sender) => (
-            <UserCard
-              sender={sender}
-              fromSection={"FriendRequests"}
-              key={sender._id}
-            />
-          ))}
+          {!isRequestsLoading ? (
+            friendRequests.length !== 0 ? (
+              friendRequests.map((sender) => (
+                <UserCard
+                  sender={sender}
+                  fromSection={"FriendRequests"}
+                  key={sender._id}
+                />
+              ))
+            ) : (
+              <Stack
+                sx={{ height: "100%", width: "100%" }}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Box sx={{ width: { xs: "25em", md: "40em" } }}>
+                  <Lottie
+                    options={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: NoResultsFound,
+                      rendererSettings: {
+                        preserveAspectRatio: "xMidYMid slice",
+                      },
+                    }}
+                    isClickToPauseDisabled={true}
+                  />
+                </Box>
+                <Typography variant="subtitle2">No Requests Found</Typography>
+              </Stack>
+            )
+          ) : (
+            // Loading Cards
+            Friend_Requests.map((sender) => (
+              <UserCard
+                key={sender._id}
+                sender={sender}
+                fromSection={"FriendRequests"}
+                isLoading={isRequestsLoading}
+              />
+            ))
+          )}
         </Grid>
       </Stack>
     </Box>

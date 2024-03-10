@@ -1,7 +1,37 @@
-import React from "react";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Lottie from "react-lottie";
+
+import Cat404 from "../assets/Illustration/Animations/Cat404.json";
 
 const Page404 = () => {
-  return <>404</>;
+  return (
+    <Stack
+      sx={{
+        height: {
+          xs: "calc(100vh - 65px)",
+          md: "100vh",
+        },
+        width: "100%",
+      }}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
+      <Box sx={{ width: { xs: "30em", md: "50em" } }}>
+        <Lottie
+          options={{
+            loop: true,
+            autoplay: true,
+            animationData: Cat404,
+            rendererSettings: {
+              preserveAspectRatio: "xMidYMid slice",
+            },
+          }}
+          isClickToPauseDisabled={true}
+        />
+      </Box>
+    </Stack>
+  );
 };
 
 export default Page404;

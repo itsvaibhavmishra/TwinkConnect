@@ -15,6 +15,7 @@ const initialState = {
 
   conversations: [],
   activeConversation: null,
+  activeConvoFriendship: null,
   notifications: [],
 
   messages: [],
@@ -33,6 +34,7 @@ const slice = createSlice({
     // close active conversation
     closeActiveConversation: (state, action) => {
       state.activeConversation = null;
+      state.activeConvoFriendship = null;
       state.messages = [];
     },
 
@@ -40,6 +42,7 @@ const slice = createSlice({
     clearConversation: (state, action) => {
       state.conversations = [];
       state.activeConversation = null;
+      state.activeConvoFriendship = null;
       state.messages = [];
       state.typingConversation = [];
     },
@@ -107,6 +110,7 @@ const slice = createSlice({
       })
       .addCase(CreateOpenConversation.fulfilled, (state, action) => {
         state.activeConversation = action.payload.conversation;
+        state.activeConvoFriendship = action.payload.isValidFriendShip;
         state.isLoading = false;
         state.error = false;
       })

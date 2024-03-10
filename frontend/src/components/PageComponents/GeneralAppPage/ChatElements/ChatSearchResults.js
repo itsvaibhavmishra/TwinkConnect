@@ -17,6 +17,7 @@ const ChatSearchResults = ({
   onSearchPageChange,
   currentUser,
   fromContact,
+  toggleDrawer,
 }) => {
   const containerRef = useRef(null);
   const debounceTimeoutRef = useRef(null);
@@ -91,6 +92,7 @@ const ChatSearchResults = ({
                   : e.latestMessage
               }
               {...e}
+              toggleDrawer={toggleDrawer}
               fromContact={fromContact}
             />
           ))
