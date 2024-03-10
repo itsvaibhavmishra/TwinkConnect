@@ -190,6 +190,7 @@ const Sidebar = () => {
                 e.index === selected ? (
                   <Box
                     p={0.8}
+                    key={e.index}
                     sx={{
                       backgroundColor: theme.palette.primary.main,
                       borderRadius: 5,
