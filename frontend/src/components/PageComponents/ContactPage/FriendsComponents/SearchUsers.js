@@ -7,7 +7,7 @@ import ChillingVibes from "../../../../assets/Illustration/Animations/ChillingVi
 import { Search, SearchIconWrapper, StyledInputBase } from "../../../Search";
 
 // redux imports
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const SearchUsers = () => {
   // from redux
@@ -15,22 +15,22 @@ const SearchUsers = () => {
 
   // states
   const [searchTerm, setSearchTerm] = useState("");
-  const [prevSearchTerm, setPrevSearchTerm] = useState("");
-  const [usersFound, setUsersFound] = useState([]);
-  const [page, setPage] = useState(1);
+  // const [prevSearchTerm, setPrevSearchTerm] = useState("");
+  // const [usersFound, setUsersFound] = useState([]);
+  // const [page, setPage] = useState(1);
 
   // -------------- inner functions --------------
   // function to handle searched term
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    setPage(1);
+    // setPage(1);
   };
 
   // using debounce method to dispatch action after search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm !== "") {
-        const searchData = { keyword: searchTerm, page: 0 };
+        // const searchData = { keyword: searchTerm, page: 0 };
         // dispatch(SearchFriends(searchData));
       } else {
         // dispatch(ClearSearch());
@@ -43,12 +43,12 @@ const SearchUsers = () => {
   }, [dispatch, searchTerm]);
 
   // function to handle page change
-  const handleSearchPageChange = () => {
-    // Increment the page count and dispatch SearchFriends with the new page
-    setPage((prevpage) => prevpage + 1);
-    const searchData = { keyword: searchTerm, page: page };
-    // dispatch(SearchFriends(searchData));
-  };
+  // const handleSearchPageChange = () => {
+  //   // Increment the page count and dispatch SearchFriends with the new page
+  //   setPage((prevpage) => prevpage + 1);
+  //   const searchData = { keyword: searchTerm, page: page };
+  //   // dispatch(SearchFriends(searchData));
+  // };
 
   // After the searchResults are updated, set them to usersFound
   // useEffect(() => {
