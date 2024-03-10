@@ -71,7 +71,7 @@ const FriendRequests = () => {
             Friend_Requests.map((sender) => (
               <UserCard
                 key={sender._id}
-                sender={sender}
+                thisUser={sender}
                 fromSection={"FriendRequests"}
                 isLoading={isRequestsLoading}
               />

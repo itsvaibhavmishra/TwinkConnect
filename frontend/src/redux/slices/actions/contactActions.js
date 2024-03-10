@@ -79,3 +79,27 @@ export const GetFriendRequests = createAsyncThunk(
     }
   }
 );
+
+// ------------- Search Users Thunk -------------
+export const SearchForUsers = createAsyncThunk(
+  "user/search",
+  async (searchData, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `/user/search/?search=${searchData.keyword}&page=${
+          searchData.page || 0
+        }`
+      );
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);

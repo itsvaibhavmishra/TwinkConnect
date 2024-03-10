@@ -5,16 +5,16 @@ import {
   CardContent,
   Stack,
   Typography,
-  Button,
   useTheme,
   useMediaQuery,
   Skeleton,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import getAvatar from "../../../../../utils/createAvatar";
 import UserProfileDrawer from "../../../UserProfileDrawer/UserProfileDrawer";
 
-const UserCard = ({ sender, fromSection, isLoading }) => {
+const UserCard = ({ thisUser, fromSection, isLoading }) => {
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -52,8 +52,8 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
                 />
               ) : (
                 getAvatar(
-                  sender.avatar,
-                  sender.firstName,
+                  thisUser?.avatar,
+                  thisUser?.firstName,
                   theme,
                   isSmallScreen ? 60 : 80
                 )
@@ -65,7 +65,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
                   {isLoading ? (
                     <Skeleton animation="wave" width={100} />
                   ) : (
-                    `${sender.firstName} ${sender.lastName}`
+                    `${thisUser?.firstName} ${thisUser?.lastName}`
                   )}
                 </Typography>
                 <Typography
@@ -78,7 +78,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
                   {isLoading ? (
                     <Skeleton animation="wave" width={150} />
                   ) : (
-                    sender.email
+                    thisUser?.email
                   )}
                 </Typography>
               </Stack>
@@ -86,29 +86,43 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
             {/* Request Options */}
             {fromSection === "FriendRequests" ? (
               <Stack direction={"row"} justifyContent={"flex-end"} spacing={1}>
-                <Button
+                <LoadingButton
+                  loading={isLoading}
                   variant="text"
                   color="error"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Reject
-                </Button>
-                <Button
+                </LoadingButton>
+                <LoadingButton
+                  loading={isLoading}
                   variant="outlined"
                   color="success"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Accept
-                </Button>
+                </LoadingButton>
               </Stack>
-            ) : (
-              <Button
+            ) : fromSection === "SearchUsers" ? (
+              <LoadingButton
+                loading={isLoading}
                 variant="text"
-                color="error"
+                color="success"
                 onClick={(e) => e.stopPropagation()}
               >
-                Unsend Request
-              </Button>
+                Send Request
+              </LoadingButton>
+            ) : (
+              fromSection === "SentRequests" && (
+                <LoadingButton
+                  loading={isLoading}
+                  variant="text"
+                  color="error"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Unsend Request
+                </LoadingButton>
+              )
             )}
           </Stack>
         </CardContent>
@@ -119,7 +133,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
         isFrom={fromSection}
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
-        selectedUserData={sender}
+        selectedUserData={thisUser}
       />
     </Grid>
   );

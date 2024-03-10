@@ -29,6 +29,8 @@ const FriendsMenu = () => {
     setTabIndex(newValue);
   };
 
+  const isSearchTab = tabIndex === 1;
+
   return (
     <Stack height={"100%"}>
       {/* Header */}
@@ -76,16 +78,16 @@ const FriendsMenu = () => {
         spacing={2}
         p={2}
         sx={{
-          flexGrow: 1,
+          flexGrow: !isSearchTab ? 1 : 0,
           overflow: "scroll",
           height: "100%",
-          overflowY: "auto",
+          overflowY: !isSearchTab ? "auto" : "hidden",
           overflowX: "hidden",
           backgroundColor: theme.palette.background.paper,
         }}
         className="scrollbar"
       >
-        {tabIndex === 0 && <FriendRequests friendRequests={Friend_Requests} />}
+        {tabIndex === 0 && <FriendRequests />}
         {tabIndex === 1 && <SearchUsers />}
         {tabIndex === 2 && <SentRequests sentRequests={Friend_Requests} />}
       </Stack>

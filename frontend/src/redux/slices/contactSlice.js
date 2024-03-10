@@ -3,6 +3,7 @@ import {
   GetFriendRequests,
   GetUserData,
   RemoveFriend,
+  SearchForUsers,
 } from "./actions/contactActions";
 
 // initial state for contacts menu
@@ -11,8 +12,12 @@ const initialState = {
   isUserDataLoading: false,
   isRemoveFriendLoading: false,
   isRequestsLoading: false,
+  isSearchLoading: false,
 
   error: false,
+
+  searchedUsersList: [],
+  searchedUsersCount: null,
 
   showFriendsMenu: false,
 
@@ -28,6 +33,12 @@ const slice = createSlice({
     // toggle friends menu
     setShowFriendsMenu(state, action) {
       state.showFriendsMenu = !state.showFriendsMenu;
+    },
+
+    // update user information
+    clearSearchUsers: (state, action) => {
+      state.searchedUsersList = [];
+      state.searchedUsersCount = null;
     },
   },
   extraReducers(builder) {
@@ -56,7 +67,23 @@ const slice = createSlice({
         state.isRequestsLoading = false;
         state.error = false;
       })
-      .addCase(GetFriendRequests.rejected, handleRejected("isRequestsLoading"));
+      .addCase(GetFriendRequests.rejected, handleRejected("isRequestsLoading"))
+
+      // --------- Search Users Builder ---------
+      .addCase(SearchForUsers.pending, handlePending("isSearchLoading"))
+      .addCase(SearchForUsers.fulfilled, (state, action) => {
+        if (action.payload.usersFound === 0) {
+          state.searchedUsersList = null;
+          state.searchedUsersCount = null;
+        } else {
+          state.searchedUsersList = action.payload.users;
+          state.searchedUsersCount = action.payload.usersFound;
+        }
+
+        state.isSearchLoading = false;
+        state.error = false;
+      })
+      .addCase(SearchForUsers.rejected, handleRejected("isSearchLoading"));
   },
 });
 
@@ -75,6 +102,6 @@ function handleRejected(actionName) {
   };
 }
 
-export const { setShowFriendsMenu } = slice.actions;
+export const { setShowFriendsMenu, clearSearchUsers } = slice.actions;
 
 export default slice.reducer;
