@@ -5,21 +5,68 @@ import {
   CardContent,
   Stack,
   Typography,
-  Button,
   useTheme,
   useMediaQuery,
   Skeleton,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import getAvatar from "../../../../../utils/createAvatar";
 import UserProfileDrawer from "../../../UserProfileDrawer/UserProfileDrawer";
 
-const UserCard = ({ sender, fromSection, isLoading }) => {
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import {
+  AcceptRejectRequest,
+  SendRequest,
+  UnsendRequest,
+} from "../../../../../redux/slices/actions/contactActions";
+
+const UserCard = ({ thisUser, fromSection, isLoading }) => {
   const theme = useTheme();
+
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isActionsLoading, setIsActionsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const { sentRequests } = useSelector((state) => state.contact);
+
+  const sentRequest = sentRequests?.find(
+    (request) => request.receiverId === thisUser?._id
+  );
+  const isRequestSent = sentRequest
+    ? sentRequest.isSent
+    : thisUser?.requestSent;
+
+  const handleButtonClick = async (e, type) => {
+    e.stopPropagation();
+
+    // Friend Requests Handler
+    if (fromSection === "FriendRequests") {
+      setIsActionsLoading(true);
+      await dispatch(AcceptRejectRequest({ sender_id: thisUser?._id, type }));
+      setIsActionsLoading(false);
+    }
+
+    // Send Request Handler
+    else if (type === "sendRequest" && !isRequestSent) {
+      setIsActionsLoading(true);
+      await dispatch(SendRequest(thisUser?._id));
+      setIsActionsLoading(false);
+    }
+
+    // Unsend Request Handler
+    else if (type === "unsendRequest" && isRequestSent) {
+      setIsActionsLoading(true);
+      await dispatch(UnsendRequest(thisUser?._id));
+      setIsActionsLoading(false);
+    }
+  };
 
   const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer);
+    if (!isLoading && !isActionsLoading) {
+      setOpenDrawer(!openDrawer);
+    }
   };
 
   // breakpoint
@@ -34,7 +81,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
           "&:hover": {
             backgroundColor: theme.palette.primary.lighterFaded,
             backdropFilter: "blur(10px)",
-            cursor: "pointer",
+            cursor: !isLoading && !isActionsLoading ? "pointer" : "default",
           },
         }}
         onClick={toggleDrawer}
@@ -52,8 +99,8 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
                 />
               ) : (
                 getAvatar(
-                  sender.avatar,
-                  sender.firstName,
+                  thisUser?.avatar,
+                  thisUser?.firstName,
                   theme,
                   isSmallScreen ? 60 : 80
                 )
@@ -65,7 +112,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
                   {isLoading ? (
                     <Skeleton animation="wave" width={100} />
                   ) : (
-                    `${sender.firstName} ${sender.lastName}`
+                    `${thisUser?.firstName} ${thisUser?.lastName}`
                   )}
                 </Typography>
                 <Typography
@@ -78,7 +125,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
                   {isLoading ? (
                     <Skeleton animation="wave" width={150} />
                   ) : (
-                    sender.email
+                    thisUser?.email
                   )}
                 </Typography>
               </Stack>
@@ -86,29 +133,48 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
             {/* Request Options */}
             {fromSection === "FriendRequests" ? (
               <Stack direction={"row"} justifyContent={"flex-end"} spacing={1}>
-                <Button
+                <LoadingButton
+                  loading={isLoading}
                   variant="text"
                   color="error"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => handleButtonClick(e, "reject")}
                 >
                   Reject
-                </Button>
-                <Button
+                </LoadingButton>
+                <LoadingButton
+                  loading={isLoading}
                   variant="outlined"
                   color="success"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => handleButtonClick(e, "accept")}
                 >
                   Accept
-                </Button>
+                </LoadingButton>
               </Stack>
-            ) : (
-              <Button
+            ) : fromSection === "SearchUsers" ? (
+              <LoadingButton
+                loading={isLoading || isActionsLoading}
                 variant="text"
-                color="error"
-                onClick={(e) => e.stopPropagation()}
+                color={!isRequestSent ? "success" : "error"}
+                onClick={(e) =>
+                  handleButtonClick(
+                    e,
+                    !isRequestSent ? "sendRequest" : "unsendRequest"
+                  )
+                }
               >
-                Unsend Request
-              </Button>
+                {!isRequestSent ? "Send Request" : "Unsend Request"}
+              </LoadingButton>
+            ) : (
+              fromSection === "SentRequests" && (
+                <LoadingButton
+                  loading={isLoading}
+                  variant="text"
+                  color="error"
+                  onClick={(e) => handleButtonClick(e, "unsendRequest")}
+                >
+                  Unsend Request
+                </LoadingButton>
+              )
             )}
           </Stack>
         </CardContent>
@@ -119,7 +185,7 @@ const UserCard = ({ sender, fromSection, isLoading }) => {
         isFrom={fromSection}
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
-        selectedUserData={sender}
+        selectedUserData={thisUser}
       />
     </Grid>
   );

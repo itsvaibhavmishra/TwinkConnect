@@ -24,7 +24,7 @@ const Contact = () => {
       dispatch(GetFriends());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.token]);
+  }, [user.token, showFriendsMenu]);
 
   // breakpoint
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));

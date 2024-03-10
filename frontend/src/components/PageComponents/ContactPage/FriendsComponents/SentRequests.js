@@ -18,7 +18,7 @@ const SentRequests = ({ sentRequests }) => {
         <Grid container spacing={3}>
           {sentRequests.map((sender) => (
             <UserCard
-              sender={sender}
+              thisUser={sender}
               fromSection={"SentRequests"}
               key={sender._id}
             />

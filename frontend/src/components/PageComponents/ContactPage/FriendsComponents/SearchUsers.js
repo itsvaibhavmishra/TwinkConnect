@@ -7,33 +7,38 @@ import ChillingVibes from "../../../../assets/Illustration/Animations/ChillingVi
 import { Search, SearchIconWrapper, StyledInputBase } from "../../../Search";
 
 // redux imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SearchForUsers } from "../../../../redux/slices/actions/contactActions";
+import { clearSearchUsers } from "../../../../redux/slices/contactSlice";
+import UsersSearchResults from "./FriendsSubComps/UsersSearchResults";
 
 const SearchUsers = () => {
   // from redux
   const dispatch = useDispatch();
+  const { searchedUsersList, searchedUsersCount, isSearchLoading } =
+    useSelector((state) => state.contact);
 
   // states
   const [searchTerm, setSearchTerm] = useState("");
-  // const [prevSearchTerm, setPrevSearchTerm] = useState("");
-  // const [usersFound, setUsersFound] = useState([]);
-  // const [page, setPage] = useState(1);
+  const [prevSearchTerm, setPrevSearchTerm] = useState("");
+  const [usersFound, setUsersFound] = useState([]);
+  const [page, setPage] = useState(1);
 
   // -------------- inner functions --------------
   // function to handle searched term
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    // setPage(1);
+    setPage(1);
   };
 
   // using debounce method to dispatch action after search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm !== "") {
-        // const searchData = { keyword: searchTerm, page: 0 };
-        // dispatch(SearchFriends(searchData));
+        const searchData = { keyword: searchTerm, page: 0 };
+        dispatch(SearchForUsers(searchData));
       } else {
-        // dispatch(ClearSearch());
+        dispatch(clearSearchUsers());
       }
     }, 500);
 
@@ -43,38 +48,38 @@ const SearchUsers = () => {
   }, [dispatch, searchTerm]);
 
   // function to handle page change
-  // const handleSearchPageChange = () => {
-  //   // Increment the page count and dispatch SearchFriends with the new page
-  //   setPage((prevpage) => prevpage + 1);
-  //   const searchData = { keyword: searchTerm, page: page };
-  //   // dispatch(SearchFriends(searchData));
-  // };
+  const handleSearchPageChange = () => {
+    // Increment the page count and dispatch SearchFriends with the new page
+    setPage((prevpage) => prevpage + 1);
+    const searchData = { keyword: searchTerm, page: page };
+    dispatch(SearchForUsers(searchData));
+  };
 
   // After the searchResults are updated, set them to usersFound
-  // useEffect(() => {
-  //   if (searchResults?.length > 0) {
-  //     if (
-  //       prevSearchTerm === searchTerm &&
-  //       JSON.stringify(usersFound) !== JSON.stringify(searchResults) &&
-  //       usersFound
-  //     ) {
-  //       setUsersFound((prevUsersFound) => [
-  //         ...prevUsersFound,
-  //         ...searchResults,
-  //       ]);
-  //     } else {
-  //       setUsersFound(searchResults);
-  //     }
-  //   } else if (searchResults === null) {
-  //     setUsersFound(null);
-  //   } else {
-  //     setUsersFound([]);
-  //   }
+  useEffect(() => {
+    if (searchedUsersList?.length > 0) {
+      if (
+        prevSearchTerm === searchTerm &&
+        JSON.stringify(usersFound) !== JSON.stringify(searchedUsersList) &&
+        usersFound
+      ) {
+        setUsersFound((prevUsersFound) => [
+          ...prevUsersFound,
+          ...searchedUsersList,
+        ]);
+      } else {
+        setUsersFound(searchedUsersList);
+      }
+    } else if (searchedUsersList === null) {
+      setUsersFound(null);
+    } else {
+      setUsersFound([]);
+    }
 
-  //   // Update prevSearchTerm
-  //   setPrevSearchTerm(searchTerm);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [searchResults]);
+    // Update prevSearchTerm
+    setPrevSearchTerm(searchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchedUsersList]);
 
   // --------------------------------------------
 
@@ -86,7 +91,11 @@ const SearchUsers = () => {
           variant="caption"
           sx={{ color: theme.palette.text.secondary, textAlign: "center" }}
         >
-          Search users via their name or email
+          Search users via their name or email{" "}
+          {searchedUsersCount &&
+            `| Search Result: ${
+              searchedUsersCount > 0 && `: ${searchedUsersCount}`
+            }`}
         </Typography>
 
         {/* Search  */}
@@ -124,7 +133,15 @@ const SearchUsers = () => {
               </Box>
             </Stack>
           ) : (
-            <></>
+            // Search Results
+
+            <UsersSearchResults
+              isLoading={isSearchLoading}
+              searchResults={usersFound}
+              searchCount={searchedUsersCount}
+              currentPage={page}
+              onSearchPageChange={handleSearchPageChange}
+            />
           )}
         </Grid>
       </Stack>
