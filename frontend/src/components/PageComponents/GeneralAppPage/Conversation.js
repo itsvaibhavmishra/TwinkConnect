@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -29,25 +29,11 @@ const Conversation = () => {
     onlineFriends
   );
 
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
-
   useEffect(() => {
     dispatch(GetMessages(activeConversation?._id));
-    const handleBackNavigation = (event) => {
-      if (activeConversation && isSmallScreen) {
-        event.preventDefault();
-        console.log("User tried to go back from active conversation");
-      }
-    };
-
-    window.addEventListener("popstate", handleBackNavigation);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackNavigation);
-    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeConversation]);
+  }, [activeConversation?._id]);
 
   return (
     <Stack height={"100%"} maxHeight={"100vh"} width={"auto"}>

@@ -3,7 +3,7 @@ import { Stack, useMediaQuery } from "@mui/material";
 import { Navigate } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
-import { setSession } from "../../utils/jwt";
+// import { setSession } from "../../utils/jwt";
 import { connectSocket, socket } from "../../utils/socket";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -100,9 +100,9 @@ const DashboardLayout = () => {
   if (!isLoggedIn || !user) {
     return <Navigate to={"/auth/login"} />;
   }
-  if (user.token) {
-    setSession(user.token, dispatch);
-  }
+  // if (user.token) {
+  //   setSession(user.token, dispatch);
+  // }
 
   return (
     <Stack direction={isSmallScreen ? "column-reverse" : "row"}>

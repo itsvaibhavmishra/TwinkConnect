@@ -448,7 +448,7 @@ export const refreshToken = async (req, res, next) => {
   try {
     const refresh_token = req.cookies.refreshToken;
 
-    if (!refresh_token) throw createHttpError.Unauthorized("Please login");
+    if (!refresh_token) throw createHttpError.Forbidden("Please login");
 
     const check = await verifyToken(
       refresh_token,

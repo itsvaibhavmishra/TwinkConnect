@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "../../utils/axios";
 
 import {
   GetFriends,
@@ -58,6 +59,7 @@ const slice = createSlice({
     // update user information
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
+      axios.defaults.headers.common.Authorization = `Bearer ${action.payload.token}`;
     },
 
     // update online users
