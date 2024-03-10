@@ -58,17 +58,15 @@ export const sendRequest = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       message: "Friend request sent successfully",
-      data: {
-        sender: {
-          _id: sender._id,
-          firstName: sender.firstName,
-          lastName: sender.lastName,
-        },
-        receiver: {
-          _id: receiver._id,
-          firstName: receiver.firstName,
-          lastName: receiver.lastName,
-        },
+      sender: {
+        _id: sender._id,
+        firstName: sender.firstName,
+        lastName: sender.lastName,
+      },
+      receiver: {
+        _id: receiver._id,
+        firstName: receiver.firstName,
+        lastName: receiver.lastName,
       },
     });
   } catch (error) {
@@ -109,8 +107,9 @@ export const cancelRequest = async (req, res, next) => {
     await friendRequest.deleteOne();
 
     res.status(200).json({
-      status: "success",
+      status: "info",
       message: "Friend request canceled",
+      receiver_id,
     });
   } catch (error) {
     next(error);

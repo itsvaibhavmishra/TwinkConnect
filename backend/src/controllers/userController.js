@@ -110,6 +110,7 @@ export const searchUsers = async (req, res, next) => {
     const keyword = req.query.search;
     const page = req.query.page || "0";
 
+    const currentUser_id = req.user?._id;
     const friends_ids = req.user?.friends;
 
     // check for required fields
@@ -121,7 +122,8 @@ export const searchUsers = async (req, res, next) => {
     const { users, totalCount } = await searchForUsers(
       keyword,
       page,
-      friends_ids
+      friends_ids,
+      currentUser_id
     );
 
     res.status(200).json({

@@ -4,6 +4,8 @@ import {
   GetUserData,
   RemoveFriend,
   SearchForUsers,
+  SendRequest,
+  UnsendRequest,
 } from "./actions/contactActions";
 
 // initial state for contacts menu
@@ -13,6 +15,7 @@ const initialState = {
   isRemoveFriendLoading: false,
   isRequestsLoading: false,
   isSearchLoading: false,
+  isSendRequestLoading: false,
 
   error: false,
 
@@ -20,6 +23,8 @@ const initialState = {
   searchedUsersCount: null,
 
   showFriendsMenu: false,
+
+  sentRequests: [],
 
   friendRequests: [],
 
@@ -80,10 +85,50 @@ const slice = createSlice({
           state.searchedUsersCount = action.payload.usersFound;
         }
 
+        state.sentRequests = [];
+        state.isSendRequestLoading = false;
         state.isSearchLoading = false;
         state.error = false;
       })
-      .addCase(SearchForUsers.rejected, handleRejected("isSearchLoading"));
+      .addCase(SearchForUsers.rejected, handleRejected("isSearchLoading"))
+
+      // --------- Send Request Builder ---------
+      .addCase(SendRequest.pending, handlePending("isSendRequestLoading"))
+      .addCase(SendRequest.fulfilled, (state, action) => {
+        const receiverId = action.payload.receiver._id;
+        const index = state.sentRequests.findIndex(
+          (request) => request.receiverId === receiverId
+        );
+
+        if (index !== -1) {
+          state.sentRequests[index].isSent = true;
+        } else {
+          state.sentRequests.push({ receiverId, isSent: true });
+        }
+        state.isSendRequestLoading = false;
+        state.error = false;
+      })
+
+      .addCase(SendRequest.rejected, handleRejected("isSendRequestLoading"))
+
+      // --------- Unsend Request Builder ---------
+      .addCase(UnsendRequest.pending, handlePending("isSendRequestLoading"))
+      .addCase(UnsendRequest.fulfilled, (state, action) => {
+        const receiverId = action.payload.receiver_id;
+        const index = state.sentRequests.findIndex(
+          (request) => request.receiverId === receiverId
+        );
+
+        if (index !== -1) {
+          state.sentRequests[index].isSent = false;
+        } else {
+          state.sentRequests.push({ receiverId, isSent: false });
+        }
+        state.isSendRequestLoading = false;
+        state.error = false;
+      })
+
+      .addCase(UnsendRequest.rejected, handleRejected("isSendRequestLoading"));
   },
 });
 

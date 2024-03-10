@@ -103,3 +103,63 @@ export const SearchForUsers = createAsyncThunk(
     }
   }
 );
+
+// ------------- Send Request Thunk -------------
+export const SendRequest = createAsyncThunk(
+  "friends/send-request",
+  async (receiver_id, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/friends/send-request", {
+        receiver_id,
+      });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Unsend Request Thunk -------------
+export const UnsendRequest = createAsyncThunk(
+  "friends/cancel-request",
+  async (receiver_id, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/friends/cancel-request", {
+        receiver_id,
+      });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);

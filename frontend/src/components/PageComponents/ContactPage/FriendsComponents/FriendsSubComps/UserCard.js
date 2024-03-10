@@ -14,12 +14,60 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import getAvatar from "../../../../../utils/createAvatar";
 import UserProfileDrawer from "../../../UserProfileDrawer/UserProfileDrawer";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SendRequest,
+  UnsendRequest,
+} from "../../../../../redux/slices/actions/contactActions";
+
 const UserCard = ({ thisUser, fromSection, isLoading }) => {
   const theme = useTheme();
+
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isActionsLoading, setIsActionsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const { sentRequests } = useSelector((state) => state.contact);
+
+  const sentRequest = sentRequests?.find(
+    (request) => request.receiverId === thisUser?._id
+  );
+  const isRequestSent = sentRequest
+    ? sentRequest.isSent
+    : thisUser?.requestSent;
+
+  const handleButtonClick = async (e, type) => {
+    e.stopPropagation();
+
+    // Friend Requests Handler
+    if (fromSection === "FriendRequests") {
+      if (type === "rejectRequest") {
+        alert("Reject Cliecked!");
+      } else if (type === "acceptRequest") {
+        alert("Accept Cliecked!");
+      }
+    }
+
+    // Send Request Handler
+    else if (type === "sendRequest" && !isRequestSent) {
+      setIsActionsLoading(true);
+      await dispatch(SendRequest(thisUser?._id));
+      setIsActionsLoading(false);
+    }
+
+    // Unsend Request Handler
+    else if (type === "unsendRequest" && isRequestSent) {
+      setIsActionsLoading(true);
+      await dispatch(UnsendRequest(thisUser?._id));
+      setIsActionsLoading(false);
+    }
+  };
 
   const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer);
+    if (!isLoading && !isActionsLoading) {
+      setOpenDrawer(!openDrawer);
+    }
   };
 
   // breakpoint
@@ -34,7 +82,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
           "&:hover": {
             backgroundColor: theme.palette.primary.lighterFaded,
             backdropFilter: "blur(10px)",
-            cursor: "pointer",
+            cursor: !isLoading && !isActionsLoading ? "pointer" : "default",
           },
         }}
         onClick={toggleDrawer}
@@ -90,7 +138,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   loading={isLoading}
                   variant="text"
                   color="error"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => handleButtonClick(e, "rejectRequest")}
                 >
                   Reject
                 </LoadingButton>
@@ -98,19 +146,24 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   loading={isLoading}
                   variant="outlined"
                   color="success"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => handleButtonClick(e, "acceptRequest")}
                 >
                   Accept
                 </LoadingButton>
               </Stack>
             ) : fromSection === "SearchUsers" ? (
               <LoadingButton
-                loading={isLoading}
+                loading={isLoading || isActionsLoading}
                 variant="text"
-                color="success"
-                onClick={(e) => e.stopPropagation()}
+                color={!isRequestSent ? "success" : "error"}
+                onClick={(e) =>
+                  handleButtonClick(
+                    e,
+                    !isRequestSent ? "sendRequest" : "unsendRequest"
+                  )
+                }
               >
-                Send Request
+                {!isRequestSent ? "Send Request" : "Unsend Request"}
               </LoadingButton>
             ) : (
               fromSection === "SentRequests" && (
@@ -118,7 +171,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   loading={isLoading}
                   variant="text"
                   color="error"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => handleButtonClick(e, "unsendRequest")}
                 >
                   Unsend Request
                 </LoadingButton>

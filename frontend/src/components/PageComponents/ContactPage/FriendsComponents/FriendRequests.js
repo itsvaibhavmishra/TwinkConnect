@@ -39,9 +39,9 @@ const FriendRequests = () => {
             friendRequests.length !== 0 ? (
               friendRequests.map((sender) => (
                 <UserCard
-                  sender={sender}
+                  thisUser={sender?.sender}
                   fromSection={"FriendRequests"}
-                  key={sender._id}
+                  key={sender?.sender?._id}
                 />
               ))
             ) : (
