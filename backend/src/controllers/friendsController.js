@@ -198,6 +198,7 @@ export const removeFriend = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       message: "Friend removed successfully",
+      friend_id: friend_id,
     });
   } catch (error) {
     next(error);

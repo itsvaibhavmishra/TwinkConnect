@@ -7,13 +7,4 @@ axios.defaults.baseURL =
 // Set credentials to true
 axios.defaults.withCredentials = true;
 
-// axios error handling
-axios.interceptors.response.use(
-  (response) => response,
-  (error) =>
-    Promise.reject(
-      (error.response && error.response.data) || "Axios - Something went wrong"
-    )
-);
-
 export default axios;

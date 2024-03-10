@@ -17,7 +17,11 @@ const SentRequests = ({ sentRequests }) => {
         </Typography>
         <Grid container spacing={3}>
           {sentRequests.map((sender) => (
-            <UserCard sender={sender} fromSection={"SentRequests"} />
+            <UserCard
+              sender={sender}
+              fromSection={"SentRequests"}
+              key={sender._id}
+            />
           ))}
         </Grid>
       </Stack>

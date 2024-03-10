@@ -118,6 +118,6 @@ export const socketSendMessage = async (socket, user_id, messageData) => {
     return { message: populatedMessage };
   } catch (error) {
     console.log(error);
-    socket.errorHandler("Error storing message");
+    socket.errorHandler(error.message);
   }
 };

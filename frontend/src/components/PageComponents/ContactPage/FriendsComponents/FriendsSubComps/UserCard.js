@@ -8,12 +8,13 @@ import {
   Button,
   useTheme,
   useMediaQuery,
+  Skeleton,
 } from "@mui/material";
 
 import getAvatar from "../../../../../utils/createAvatar";
 import UserProfileDrawer from "../../../UserProfileDrawer/UserProfileDrawer";
 
-const UserCard = ({ sender, fromSection }) => {
+const UserCard = ({ sender, fromSection, isLoading }) => {
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -32,6 +33,7 @@ const UserCard = ({ sender, fromSection }) => {
           transition: "all 0.3s ease",
           "&:hover": {
             backgroundColor: theme.palette.primary.lighterFaded,
+            backdropFilter: "blur(10px)",
             cursor: "pointer",
           },
         }}
@@ -41,17 +43,30 @@ const UserCard = ({ sender, fromSection }) => {
           <Stack spacing={1.5}>
             <Stack direction={"row"} spacing={2} alignItems={"center"}>
               {/* Avatar */}
-              {getAvatar(
-                sender.avatar,
-                sender.firstName,
-                theme,
-                isSmallScreen ? 60 : 80
+              {isLoading ? (
+                <Skeleton
+                  animation="wave"
+                  variant="circular"
+                  width={isSmallScreen ? 60 : 80}
+                  height={isSmallScreen ? 60 : 80}
+                />
+              ) : (
+                getAvatar(
+                  sender.avatar,
+                  sender.firstName,
+                  theme,
+                  isSmallScreen ? 60 : 80
+                )
               )}
 
               {/* Name and Email */}
               <Stack>
                 <Typography variant="h6">
-                  {sender.firstName} {sender.lastName}
+                  {isLoading ? (
+                    <Skeleton animation="wave" width={100} />
+                  ) : (
+                    `${sender.firstName} ${sender.lastName}`
+                  )}
                 </Typography>
                 <Typography
                   variant="caption"
@@ -60,7 +75,11 @@ const UserCard = ({ sender, fromSection }) => {
                     wordBreak: "break-word",
                   }}
                 >
-                  {sender.email}
+                  {isLoading ? (
+                    <Skeleton animation="wave" width={150} />
+                  ) : (
+                    sender.email
+                  )}
                 </Typography>
               </Stack>
             </Stack>
@@ -97,6 +116,7 @@ const UserCard = ({ sender, fromSection }) => {
 
       {/* Drawer */}
       <UserProfileDrawer
+        isFrom={fromSection}
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
         selectedUserData={sender}
