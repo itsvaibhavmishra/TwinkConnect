@@ -110,13 +110,19 @@ export const searchUsers = async (req, res, next) => {
     const keyword = req.query.search;
     const page = req.query.page || "0";
 
+    const friends_ids = req.user?.friends;
+
     // check for required fields
     if (!keyword) {
       throw createHttpError.BadRequest("Query required");
     }
 
     // get list of users matching keyword
-    const { users, totalCount } = await searchForUsers(keyword, page);
+    const { users, totalCount } = await searchForUsers(
+      keyword,
+      page,
+      friends_ids
+    );
 
     res.status(200).json({
       status: "success",

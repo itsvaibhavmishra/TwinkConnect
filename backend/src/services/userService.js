@@ -29,46 +29,45 @@ export const validateAvatar = async (avatar) => {
 };
 
 // search users
-export const searchForUsers = async (keyword, page) => {
+export const searchForUsers = async (keyword, page, friends_ids) => {
+  const pageSize = 10; // maximum users to display at once
   let users = [];
   let totalCount = 0;
-  const pageSize = 10; // maximum users to display at once
 
-  // identifying keyword (email/name)
+  // Build the search criteria
+  const searchCriteria = {};
+
   if (validator.isEmail(keyword)) {
-    users = await UserModel.find({
-      email: keyword,
-      verified: true,
-    })
-      .select("-password -passwordChangedAt -verified -friends")
-      .limit(pageSize)
-      .skip(page * pageSize);
-
-    totalCount = await UserModel.countDocuments({
-      email: keyword,
-      verified: true,
-    });
+    // If the keyword is an email address, search by email
+    searchCriteria.email = keyword;
   } else {
-    // find user with keyword (firstName or lastName)
-    const regex = new RegExp(keyword, "i"); // 'i' for case-insensitive
-
-    users = await UserModel.find({
-      $or: [
-        { firstName: regex, verified: true },
-        { lastName: regex, verified: true },
-      ],
-    })
-      .select("-password -passwordChangedAt -verified -friends")
-      .limit(pageSize)
-      .skip(page * pageSize);
-
-    totalCount = await UserModel.countDocuments({
-      $or: [
-        { firstName: regex, verified: true },
-        { lastName: regex, verified: true },
-      ],
-    });
+    // If the keyword is not an email, search by combined firstName and lastName
+    const combinedNameRegex = new RegExp(keyword, "i"); // 'i' for case-insensitive
+    searchCriteria.$or = [
+      { firstName: combinedNameRegex },
+      { lastName: combinedNameRegex },
+      {
+        $expr: {
+          $regexMatch: {
+            input: { $concat: ["$firstName", " ", "$lastName"] },
+            regex: combinedNameRegex,
+          },
+        },
+      },
+    ];
   }
+
+  // Exclude friends of the current user
+  searchCriteria._id = { $nin: friends_ids };
+
+  // Perform the search
+  users = await UserModel.find(searchCriteria)
+    .select("_id firstName lastName email avatar activityStatus onlineStatus")
+    .limit(pageSize)
+    .skip(page * pageSize);
+
+  // Get the total count for pagination
+  totalCount = await UserModel.countDocuments(searchCriteria);
 
   return { users, totalCount };
 };
