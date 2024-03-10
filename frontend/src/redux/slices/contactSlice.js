@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  AcceptRejectRequest,
   GetFriendRequests,
   GetUserData,
   RemoveFriend,
+  SearchForUsers,
+  SendRequest,
+  UnsendRequest,
 } from "./actions/contactActions";
 
 // initial state for contacts menu
@@ -11,10 +15,18 @@ const initialState = {
   isUserDataLoading: false,
   isRemoveFriendLoading: false,
   isRequestsLoading: false,
+  isSearchLoading: false,
+  isSendRequestLoading: false,
+  isAcptRejtLoading: false,
 
   error: false,
 
+  searchedUsersList: [],
+  searchedUsersCount: null,
+
   showFriendsMenu: false,
+
+  sentRequests: [],
 
   friendRequests: [],
 
@@ -28,6 +40,12 @@ const slice = createSlice({
     // toggle friends menu
     setShowFriendsMenu(state, action) {
       state.showFriendsMenu = !state.showFriendsMenu;
+    },
+
+    // update user information
+    clearSearchUsers: (state, action) => {
+      state.searchedUsersList = [];
+      state.searchedUsersCount = null;
     },
   },
   extraReducers(builder) {
@@ -56,7 +74,79 @@ const slice = createSlice({
         state.isRequestsLoading = false;
         state.error = false;
       })
-      .addCase(GetFriendRequests.rejected, handleRejected("isRequestsLoading"));
+      .addCase(GetFriendRequests.rejected, handleRejected("isRequestsLoading"))
+
+      // --------- Search Users Builder ---------
+      .addCase(SearchForUsers.pending, handlePending("isSearchLoading"))
+      .addCase(SearchForUsers.fulfilled, (state, action) => {
+        if (action.payload.usersFound === 0) {
+          state.searchedUsersList = null;
+          state.searchedUsersCount = null;
+        } else {
+          state.searchedUsersList = action.payload.users;
+          state.searchedUsersCount = action.payload.usersFound;
+        }
+
+        state.sentRequests = [];
+        state.isSendRequestLoading = false;
+        state.isSearchLoading = false;
+        state.error = false;
+      })
+      .addCase(SearchForUsers.rejected, handleRejected("isSearchLoading"))
+
+      // --------- Send Request Builder ---------
+      .addCase(SendRequest.pending, handlePending("isSendRequestLoading"))
+      .addCase(SendRequest.fulfilled, (state, action) => {
+        const receiverId = action.payload.receiver._id;
+        const index = state.sentRequests.findIndex(
+          (request) => request.receiverId === receiverId
+        );
+
+        if (index !== -1) {
+          state.sentRequests[index].isSent = true;
+        } else {
+          state.sentRequests.push({ receiverId, isSent: true });
+        }
+        state.isSendRequestLoading = false;
+        state.error = false;
+      })
+
+      .addCase(SendRequest.rejected, handleRejected("isSendRequestLoading"))
+
+      // --------- Unsend Request Builder ---------
+      .addCase(UnsendRequest.pending, handlePending("isSendRequestLoading"))
+      .addCase(UnsendRequest.fulfilled, (state, action) => {
+        const receiverId = action.payload.receiver_id;
+        const index = state.sentRequests.findIndex(
+          (request) => request.receiverId === receiverId
+        );
+
+        if (index !== -1) {
+          state.sentRequests[index].isSent = false;
+        } else {
+          state.sentRequests.push({ receiverId, isSent: false });
+        }
+        state.isSendRequestLoading = false;
+        state.error = false;
+      })
+
+      .addCase(UnsendRequest.rejected, handleRejected("isSendRequestLoading"))
+
+      // --------- Accept/Reject Request Builder ---------
+      .addCase(AcceptRejectRequest.pending, handlePending("isAcptRejtLoading"))
+      .addCase(AcceptRejectRequest.fulfilled, (state, action) => {
+        const sender_id = action.payload.sender_id;
+        state.friendRequests = state.friendRequests.filter(
+          (request) => request?.sender?._id !== sender_id
+        );
+        state.isAcptRejtLoading = false;
+        state.error = false;
+      })
+
+      .addCase(
+        AcceptRejectRequest.rejected,
+        handleRejected("isAcptRejtLoading")
+      );
   },
 });
 
@@ -75,6 +165,6 @@ function handleRejected(actionName) {
   };
 }
 
-export const { setShowFriendsMenu } = slice.actions;
+export const { setShowFriendsMenu, clearSearchUsers } = slice.actions;
 
 export default slice.reducer;

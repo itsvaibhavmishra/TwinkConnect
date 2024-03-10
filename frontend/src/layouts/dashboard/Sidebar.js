@@ -188,27 +188,20 @@ const Sidebar = () => {
             >
               {Nav_Buttons.map((e) =>
                 e.index === selected ? (
-                  <Tooltip
-                    title={capitalize(e.address)}
-                    placement="right"
+                  <Box
+                    p={0.8}
                     key={e.index}
+                    sx={{
+                      backgroundColor: theme.palette.primary.main,
+                      borderRadius: 5,
+                    }}
                   >
-                    <Box
-                      p={0.8}
-                      sx={{
-                        backgroundColor: theme.palette.primary.main,
-                        borderRadius: 5,
-                      }}
-                    >
-                      <Link to={e.address}>
-                        <IconButton
-                          sx={{ width: "max-content", color: "#fff" }}
-                        >
-                          {e.icon}
-                        </IconButton>
-                      </Link>
-                    </Box>
-                  </Tooltip>
+                    <Link to={e.address}>
+                      <IconButton sx={{ width: "max-content", color: "#fff" }}>
+                        {e.icon}
+                      </IconButton>
+                    </Link>
+                  </Box>
                 ) : (
                   <Tooltip
                     title={capitalize(e.address)}

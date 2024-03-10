@@ -21,8 +21,8 @@ const UserProfileDrawer = ({
   const { userData, isUserDataLoading } = useSelector((state) => state.contact);
 
   useEffect(() => {
-    if (selectedUserData._id && openDrawer === true) {
-      dispatch(GetUserData(selectedUserData._id));
+    if (selectedUserData?._id && openDrawer === true) {
+      dispatch(GetUserData(selectedUserData?._id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openDrawer]);

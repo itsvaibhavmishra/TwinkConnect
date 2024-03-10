@@ -3,7 +3,6 @@ import { Stack, useMediaQuery } from "@mui/material";
 import { Navigate } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
-// import { setSession } from "../../utils/jwt";
 import { connectSocket, socket } from "../../utils/socket";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -25,13 +24,8 @@ const DashboardLayout = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.user);
 
+  // get conversations and friends
   useEffect(() => {
-    // start server
-    dispatch(StartServer());
-
-    // toggle approach between Optimistic & Pessimistic (true means use optimistic)
-    dispatch(setIsOptimistic({ isOptimistic: true }));
-
     if (user.token) {
       // get all conversations
       dispatch(GetConversations());
@@ -39,6 +33,15 @@ const DashboardLayout = () => {
       // get online friends
       dispatch(GetOnlineFriends());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user._id]);
+
+  useEffect(() => {
+    // start server
+    dispatch(StartServer());
+
+    // toggle approach between Optimistic & Pessimistic (true means use optimistic)
+    dispatch(setIsOptimistic({ isOptimistic: true }));
 
     // socket connection
     if ((!socket || !socket.connected) && user._id) {
@@ -100,9 +103,6 @@ const DashboardLayout = () => {
   if (!isLoggedIn || !user) {
     return <Navigate to={"/auth/login"} />;
   }
-  // if (user.token) {
-  //   setSession(user.token, dispatch);
-  // }
 
   return (
     <Stack direction={isSmallScreen ? "column-reverse" : "row"}>

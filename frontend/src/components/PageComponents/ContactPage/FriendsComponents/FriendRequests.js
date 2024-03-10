@@ -18,11 +18,12 @@ const FriendRequests = () => {
   const { friendRequests, isRequestsLoading } = useSelector(
     (state) => state.contact
   );
+  const { showFriendsMenu } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(GetFriendRequests());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [showFriendsMenu]);
 
   return (
     <Box height={"100%"} width={"100%"} p={2}>
@@ -39,9 +40,9 @@ const FriendRequests = () => {
             friendRequests.length !== 0 ? (
               friendRequests.map((sender) => (
                 <UserCard
-                  sender={sender}
+                  thisUser={sender?.sender}
                   fromSection={"FriendRequests"}
-                  key={sender._id}
+                  key={sender?.sender?._id}
                 />
               ))
             ) : (
@@ -71,7 +72,7 @@ const FriendRequests = () => {
             Friend_Requests.map((sender) => (
               <UserCard
                 key={sender._id}
-                sender={sender}
+                thisUser={sender}
                 fromSection={"FriendRequests"}
                 isLoading={isRequestsLoading}
               />

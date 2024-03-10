@@ -3,7 +3,7 @@ import trimRequest from "trim-request";
 
 import { protect } from "../middlewares/authMiddleware.js";
 import {
-  acceptRequest,
+  acceptRejectRequest,
   cancelRequest,
   getFriends,
   getOnlineFriends,
@@ -27,8 +27,8 @@ friendsRouter
 
 // Accept Friend Request
 friendsRouter
-  .route("/accept-request")
-  .post(trimRequest.all, protect, acceptRequest);
+  .route("/accept-reject-request")
+  .post(trimRequest.all, protect, acceptRejectRequest);
 
 // Remove Friend
 friendsRouter
