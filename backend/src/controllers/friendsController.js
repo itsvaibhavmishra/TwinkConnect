@@ -116,15 +116,17 @@ export const cancelRequest = async (req, res, next) => {
   }
 };
 
-// ----------------------- Accept Request -----------------------
-export const acceptRequest = async (req, res, next) => {
+// ----------------------- Accept/Reject Request -----------------------
+export const acceptRejectRequest = async (req, res, next) => {
   try {
     const receiver_id = req.user._id;
-    const { sender_id } = req.body;
+    const { sender_id, action_type } = req.body;
 
     // check for required fields
-    if (!sender_id) {
-      throw createHttpError.BadRequest("Required Field: sender_id");
+    if (!sender_id || !action_type) {
+      throw createHttpError.BadRequest(
+        "Required Fields: sender_id, action_type"
+      );
     }
 
     // check if sender is same as receiver
@@ -146,18 +148,27 @@ export const acceptRequest = async (req, res, next) => {
     // remove the friend request
     await friendRequest.deleteOne();
 
-    // update friends list for both sender and receiver
-    await UserModel.findByIdAndUpdate(sender_id, {
-      $push: { friends: receiver_id },
-    });
-    await UserModel.findByIdAndUpdate(receiver_id, {
-      $push: { friends: sender_id },
-    });
+    if (action_type.toLowerCase() === "reject") {
+      res.status(200).json({
+        status: "info",
+        message: "Friend request rejected",
+        sender_id,
+      });
+    } else {
+      // update friends list for both sender and receiver
+      await UserModel.findByIdAndUpdate(sender_id, {
+        $push: { friends: receiver_id },
+      });
+      await UserModel.findByIdAndUpdate(receiver_id, {
+        $push: { friends: sender_id },
+      });
 
-    res.status(200).json({
-      status: "success",
-      message: "Friend request accepted",
-    });
+      res.status(200).json({
+        status: "success",
+        message: "Friend request accepted",
+        sender_id,
+      });
+    }
   } catch (error) {
     next(error);
   }

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  AcceptRejectRequest,
   GetFriendRequests,
   GetUserData,
   RemoveFriend,
@@ -16,6 +17,7 @@ const initialState = {
   isRequestsLoading: false,
   isSearchLoading: false,
   isSendRequestLoading: false,
+  isAcptRejtLoading: false,
 
   error: false,
 
@@ -128,7 +130,23 @@ const slice = createSlice({
         state.error = false;
       })
 
-      .addCase(UnsendRequest.rejected, handleRejected("isSendRequestLoading"));
+      .addCase(UnsendRequest.rejected, handleRejected("isSendRequestLoading"))
+
+      // --------- Accept/Reject Request Builder ---------
+      .addCase(AcceptRejectRequest.pending, handlePending("isAcptRejtLoading"))
+      .addCase(AcceptRejectRequest.fulfilled, (state, action) => {
+        const sender_id = action.payload.sender_id;
+        state.friendRequests = state.friendRequests.filter(
+          (request) => request?.sender?._id !== sender_id
+        );
+        state.isAcptRejtLoading = false;
+        state.error = false;
+      })
+
+      .addCase(
+        AcceptRejectRequest.rejected,
+        handleRejected("isAcptRejtLoading")
+      );
   },
 });
 

@@ -17,6 +17,7 @@ import UserProfileDrawer from "../../../UserProfileDrawer/UserProfileDrawer";
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
 import {
+  AcceptRejectRequest,
   SendRequest,
   UnsendRequest,
 } from "../../../../../redux/slices/actions/contactActions";
@@ -42,11 +43,9 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
 
     // Friend Requests Handler
     if (fromSection === "FriendRequests") {
-      if (type === "rejectRequest") {
-        alert("Reject Cliecked!");
-      } else if (type === "acceptRequest") {
-        alert("Accept Cliecked!");
-      }
+      setIsActionsLoading(true);
+      await dispatch(AcceptRejectRequest({ sender_id: thisUser?._id, type }));
+      setIsActionsLoading(false);
     }
 
     // Send Request Handler
@@ -138,7 +137,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   loading={isLoading}
                   variant="text"
                   color="error"
-                  onClick={(e) => handleButtonClick(e, "rejectRequest")}
+                  onClick={(e) => handleButtonClick(e, "reject")}
                 >
                   Reject
                 </LoadingButton>
@@ -146,7 +145,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   loading={isLoading}
                   variant="outlined"
                   color="success"
-                  onClick={(e) => handleButtonClick(e, "acceptRequest")}
+                  onClick={(e) => handleButtonClick(e, "accept")}
                 >
                   Accept
                 </LoadingButton>

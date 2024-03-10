@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ShowSnackbar, removeFriend } from "../userSlice";
 
 import axios from "../../../utils/axios";
+import { GetFriends } from "./userActions";
 
 // ------------- Get Conversation Thunk -------------
 export const GetUserData = createAsyncThunk(
@@ -142,6 +143,41 @@ export const UnsendRequest = createAsyncThunk(
       const { data } = await axios.post("/friends/cancel-request", {
         receiver_id,
       });
+
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: data.status,
+          message: data.message,
+        })
+      );
+
+      return data;
+    } catch (error) {
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// ------------- Accept/Reject Request Thunk -------------
+export const AcceptRejectRequest = createAsyncThunk(
+  "friends/accept-reject-request",
+  async (values, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.post("/friends/accept-reject-request", {
+        sender_id: values.sender_id,
+        action_type: values.type,
+      });
+
+      if (values.type === "accept") {
+        dispatch(GetFriends());
+      }
 
       // show snackbar
       dispatch(

@@ -18,11 +18,12 @@ const FriendRequests = () => {
   const { friendRequests, isRequestsLoading } = useSelector(
     (state) => state.contact
   );
+  const { showFriendsMenu } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(GetFriendRequests());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [showFriendsMenu]);
 
   return (
     <Box height={"100%"} width={"100%"} p={2}>
