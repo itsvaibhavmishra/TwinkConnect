@@ -17,7 +17,7 @@ const Page404 = () => {
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <Box sx={{ width: { xs: "30em", md: "50em" } }}>
+      <Box sx={{ width: "auto" }}>
         <Lottie
           options={{
             loop: true,

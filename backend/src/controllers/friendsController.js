@@ -308,11 +308,61 @@ export const getRequests = async (req, res, next) => {
     // find friend requests where the current user is the recipient
     const friendRequests = await FriendRequestModel.find({
       recipient: user_id,
-    }).populate("sender", "_id firstName lastName avatar email");
+    }).populate("sender", "_id firstName lastName avatar activityStatus email");
 
     res.status(200).json({
       status: "success",
       friendRequests,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ----------------------- Get Sent Requests -----------------------
+export const getSentRequests = async (req, res, next) => {
+  try {
+    const user_id = req.user._id;
+
+    // Aggregate pipeline to fetch sent requests and add requestSent field
+    const sentRequests = await FriendRequestModel.aggregate([
+      {
+        $match: { sender: user_id },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "recipient",
+          foreignField: "_id",
+          as: "recipient",
+        },
+      },
+      { $unwind: "$recipient" },
+      {
+        // Add extra fields
+        $addFields: {
+          "recipient.isSent": true,
+          "recipient.receiver_id": "$recipient._id",
+        },
+      },
+      {
+        // Project only recipient object
+        $project: {
+          _id: "$recipient._id",
+          firstName: "$recipient.firstName",
+          lastName: "$recipient.lastName",
+          avatar: "$recipient.avatar",
+          activityStatus: "$recipient.activityStatus",
+          email: "$recipient.email",
+          isSent: "$recipient.isSent",
+          receiverId: "$recipient.receiver_id",
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: "success",
+      sentRequests,
     });
   } catch (error) {
     next(error);

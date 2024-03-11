@@ -134,7 +134,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
             {fromSection === "FriendRequests" ? (
               <Stack direction={"row"} justifyContent={"flex-end"} spacing={1}>
                 <LoadingButton
-                  loading={isLoading}
+                  loading={isLoading || isActionsLoading}
                   variant="text"
                   color="error"
                   onClick={(e) => handleButtonClick(e, "reject")}
@@ -142,7 +142,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   Reject
                 </LoadingButton>
                 <LoadingButton
-                  loading={isLoading}
+                  loading={isLoading || isActionsLoading}
                   variant="outlined"
                   color="success"
                   onClick={(e) => handleButtonClick(e, "accept")}
@@ -150,7 +150,8 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   Accept
                 </LoadingButton>
               </Stack>
-            ) : fromSection === "SearchUsers" ? (
+            ) : fromSection === "SearchUsers" ||
+              fromSection === "SentRequests" ? (
               <LoadingButton
                 loading={isLoading || isActionsLoading}
                 variant="text"
@@ -165,16 +166,14 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                 {!isRequestSent ? "Send Request" : "Unsend Request"}
               </LoadingButton>
             ) : (
-              fromSection === "SentRequests" && (
-                <LoadingButton
-                  loading={isLoading}
-                  variant="text"
-                  color="error"
-                  onClick={(e) => handleButtonClick(e, "unsendRequest")}
-                >
-                  Unsend Request
-                </LoadingButton>
-              )
+              <LoadingButton
+                loading={isLoading}
+                variant="text"
+                color="primary"
+                onClick={toggleDrawer}
+              >
+                View User
+              </LoadingButton>
             )}
           </Stack>
         </CardContent>
@@ -186,6 +185,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
         selectedUserData={thisUser}
+        isRequestSent={isRequestSent}
       />
     </Grid>
   );

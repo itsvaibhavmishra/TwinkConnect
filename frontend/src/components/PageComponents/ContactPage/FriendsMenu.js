@@ -11,7 +11,6 @@ import {
 import { ArrowCircleLeft } from "phosphor-react";
 
 import { FriendRequests, SearchUsers, SentRequests } from "./FriendsComponents";
-import { Friend_Requests } from "../../../data";
 
 // redux imports
 import { useDispatch } from "react-redux";
@@ -89,7 +88,7 @@ const FriendsMenu = () => {
       >
         {tabIndex === 0 && <FriendRequests />}
         {tabIndex === 1 && <SearchUsers />}
-        {tabIndex === 2 && <SentRequests sentRequests={Friend_Requests} />}
+        {tabIndex === 2 && <SentRequests />}
       </Stack>
     </Stack>
   );

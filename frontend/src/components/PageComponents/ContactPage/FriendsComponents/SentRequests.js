@@ -1,9 +1,29 @@
+import { useEffect } from "react";
 import { Box, Stack, Grid, Typography, useTheme } from "@mui/material";
+import Lottie from "react-lottie";
 
 import UserCard from "./FriendsSubComps/UserCard";
+import { Friend_Requests } from "../../../../data";
+import HangingBuddy from "../../../../assets/Illustration/Animations/HangingBuddy.json";
 
-const SentRequests = ({ sentRequests }) => {
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { GetSentRequests } from "../../../../redux/slices/actions/contactActions";
+
+const SentRequests = () => {
   const theme = useTheme();
+
+  // from redux
+  const dispatch = useDispatch();
+  const { sentRequests, isSentRequestsLoading } = useSelector(
+    (state) => state.contact
+  );
+  const { showFriendsMenu } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(GetSentRequests());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showFriendsMenu]);
 
   return (
     <Box height={"100%"} width={"100%"} p={2}>
@@ -16,16 +36,52 @@ const SentRequests = ({ sentRequests }) => {
           to visit user
         </Typography>
         <Grid container spacing={3}>
-          {sentRequests.map((sender) => (
-            <UserCard
-              thisUser={sender}
-              fromSection={"SentRequests"}
-              key={sender._id}
-            />
-          ))}
+          {!isSentRequestsLoading ? (
+            sentRequests?.length !== 0 ? (
+              sentRequests?.map((recipient) => (
+                <UserCard
+                  thisUser={recipient}
+                  fromSection={"SentRequests"}
+                  key={recipient?._id}
+                />
+              ))
+            ) : (
+              <Stack
+                sx={{ height: "100%", width: "100%" }}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Box sx={{ width: { xs: "25em", md: "30em" } }}>
+                  <Lottie
+                    options={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: HangingBuddy,
+                      rendererSettings: {
+                        preserveAspectRatio: "xMidYMid slice",
+                      },
+                    }}
+                    isClickToPauseDisabled={true}
+                  />
+                </Box>
+                <Typography variant="subtitle2">No Requests Found</Typography>
+              </Stack>
+            )
+          ) : (
+            // Loading Cards
+            Friend_Requests.map((sender) => (
+              <UserCard
+                key={sender._id}
+                thisUser={sender}
+                fromSection={"SentRequests"}
+                isLoading={isSentRequestsLoading}
+              />
+            ))
+          )}
         </Grid>
       </Stack>
     </Box>
   );
 };
+
 export default SentRequests;
