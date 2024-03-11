@@ -13,12 +13,15 @@ const UserProfileDrawer = ({
   toggleDrawer,
   selectedUserData,
   isFrom,
+  isRequestSent,
 }) => {
   const theme = useTheme();
 
   // from redux
   const dispatch = useDispatch();
-  const { userData, isUserDataLoading } = useSelector((state) => state.contact);
+  const { userData, isUserDataLoading, isSent } = useSelector(
+    (state) => state.contact
+  );
 
   useEffect(() => {
     if (selectedUserData?._id && openDrawer === true) {
@@ -59,6 +62,7 @@ const UserProfileDrawer = ({
           userData={userData}
           isLoading={isUserDataLoading}
           isFrom={isFrom}
+          isRequestSent={isRequestSent}
         />
       </Box>
     </Drawer>

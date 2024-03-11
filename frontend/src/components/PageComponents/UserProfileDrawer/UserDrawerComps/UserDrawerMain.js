@@ -17,7 +17,11 @@ import RemoveFriendDialog from "./UDMainComps/RemoveFriendDialog";
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
 import { CreateOpenConversation } from "../../../../redux/slices/actions/chatActions";
-import { RemoveFriend } from "../../../../redux/slices/actions/contactActions";
+import {
+  RemoveFriend,
+  SendRequest,
+  UnsendRequest,
+} from "../../../../redux/slices/actions/contactActions";
 
 const getRandomAnimation = () => {
   const randomIndex = Math.floor(Math.random() * 5) + 1;
@@ -26,7 +30,13 @@ const getRandomAnimation = () => {
   );
 };
 
-const UserDrawerMain = ({ toggleDrawer, userData, isLoading, isFrom }) => {
+const UserDrawerMain = ({
+  toggleDrawer,
+  userData,
+  isLoading,
+  isFrom,
+  isRequestSent,
+}) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -38,15 +48,43 @@ const UserDrawerMain = ({ toggleDrawer, userData, isLoading, isFrom }) => {
 
   const [catAnimation, setCatAnimation] = useState(null);
   const [rfDialog, setRFDialog] = useState(false);
+  const [isActionsLoading, setIsActionsLoading] = useState(false);
 
-  const handleButtonClick = (type) => {
+  const handleButtonClick = async (type) => {
+    // Send Msg / Remove Friend Handler
     if (type === "sendMsg") {
       dispatch(CreateOpenConversation(userData?._id));
       if (isFrom === "Contacts") navigate("/app");
+      toggleDrawer();
     } else if (type === "removeFriend") {
       dispatch(RemoveFriend(userData?._id));
+      toggleDrawer();
     }
-    toggleDrawer();
+
+    // Friend Request Handler
+    else if (isFrom === "FriendRequests") {
+      if (type === "accept") {
+        // dispatch accept request
+      } else if (type === "reject") {
+        // dispatch reject request
+      }
+      toggleDrawer();
+    }
+
+    // Send/Unsend Request Handler
+    else if (isFrom === "SearchUsers" || isFrom === "SentRequests") {
+      if (isRequestSent) {
+        // dispatch unsend request
+        setIsActionsLoading(true);
+        await dispatch(UnsendRequest(userData?._id));
+        setIsActionsLoading(false);
+      } else {
+        // dispatch send request
+        setIsActionsLoading(true);
+        await dispatch(SendRequest(userData?._id));
+        setIsActionsLoading(false);
+      }
+    }
   };
 
   const toggleRFDialog = () => {
@@ -76,35 +114,7 @@ const UserDrawerMain = ({ toggleDrawer, userData, isLoading, isFrom }) => {
             spacing={5}
           >
             {/* Action Buttons */}
-            {isFrom === "SentRequests" ? (
-              <LoadingButton
-                loading={isLoading}
-                size="large"
-                variant="outlined"
-                color={"error"}
-              >
-                Unsend Requsets
-              </LoadingButton>
-            ) : isFrom === "FriendRequests" ? (
-              <>
-                <LoadingButton
-                  loading={isLoading}
-                  size="large"
-                  variant="outlined"
-                  color={"error"}
-                >
-                  Reject Request
-                </LoadingButton>
-                <LoadingButton
-                  loading={isLoading}
-                  size="large"
-                  variant="outlined"
-                  color={"success"}
-                >
-                  Accept Friend
-                </LoadingButton>
-              </>
-            ) : isCurrentUser ? (
+            {isCurrentUser ? (
               <LoadingButton
                 loading={isLoading}
                 size="large"
@@ -113,6 +123,37 @@ const UserDrawerMain = ({ toggleDrawer, userData, isLoading, isFrom }) => {
               >
                 Message Yourself
               </LoadingButton>
+            ) : isFrom === "SearchUsers" || isFrom === "SentRequests" ? (
+              <LoadingButton
+                loading={isActionsLoading || isLoading}
+                size="large"
+                variant="outlined"
+                color={isRequestSent ? "error" : "success"}
+                onClick={() => handleButtonClick("send_unsend")}
+              >
+                {isRequestSent ? "Unsend Requset" : "Send Requset"}
+              </LoadingButton>
+            ) : isFrom === "FriendRequests" ? (
+              <>
+                <LoadingButton
+                  loading={isLoading}
+                  size="large"
+                  variant="outlined"
+                  color={"error"}
+                  onClick={() => handleButtonClick("reject")}
+                >
+                  Reject Request
+                </LoadingButton>
+                <LoadingButton
+                  loading={isLoading}
+                  size="large"
+                  variant="outlined"
+                  color={"success"}
+                  onClick={() => handleButtonClick("accept")}
+                >
+                  Accept Friend
+                </LoadingButton>
+              </>
             ) : (
               <>
                 <LoadingButton
