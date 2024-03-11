@@ -134,7 +134,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
             {fromSection === "FriendRequests" ? (
               <Stack direction={"row"} justifyContent={"flex-end"} spacing={1}>
                 <LoadingButton
-                  loading={isLoading}
+                  loading={isLoading || isActionsLoading}
                   variant="text"
                   color="error"
                   onClick={(e) => handleButtonClick(e, "reject")}
@@ -142,7 +142,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   Reject
                 </LoadingButton>
                 <LoadingButton
-                  loading={isLoading}
+                  loading={isLoading || isActionsLoading}
                   variant="outlined"
                   color="success"
                   onClick={(e) => handleButtonClick(e, "accept")}
@@ -185,6 +185,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
         selectedUserData={thisUser}
+        isRequestSent={isRequestSent}
       />
     </Grid>
   );
