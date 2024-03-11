@@ -37,8 +37,8 @@ const FriendRequests = () => {
         </Typography>
         <Grid container spacing={3}>
           {!isRequestsLoading ? (
-            friendRequests.length !== 0 ? (
-              friendRequests.map((sender) => (
+            friendRequests?.length !== 0 ? (
+              friendRequests?.map((sender) => (
                 <UserCard
                   thisUser={sender?.sender}
                   fromSection={"FriendRequests"}
