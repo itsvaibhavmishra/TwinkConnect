@@ -19,9 +19,7 @@ const UserProfileDrawer = ({
 
   // from redux
   const dispatch = useDispatch();
-  const { userData, isUserDataLoading, isSent } = useSelector(
-    (state) => state.contact
-  );
+  const { userData, isUserDataLoading } = useSelector((state) => state.contact);
 
   useEffect(() => {
     if (selectedUserData?._id && openDrawer === true) {
