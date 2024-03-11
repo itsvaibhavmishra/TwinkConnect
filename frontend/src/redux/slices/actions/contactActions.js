@@ -81,6 +81,27 @@ export const GetFriendRequests = createAsyncThunk(
   }
 );
 
+// ------------- Get Sent Requests Thunk -------------
+export const GetSentRequests = createAsyncThunk(
+  "friends/get-sent-requests",
+  async (arg, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get("/friends/get-sent-requests");
+
+      return data;
+    } catch (error) {
+      // show snackbar
+      dispatch(
+        ShowSnackbar({
+          severity: error.error.status,
+          message: error.error.message,
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
 // ------------- Search Users Thunk -------------
 export const SearchForUsers = createAsyncThunk(
   "user/search",

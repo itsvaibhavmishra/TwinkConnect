@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   AcceptRejectRequest,
   GetFriendRequests,
+  GetSentRequests,
   GetUserData,
   RemoveFriend,
   SearchForUsers,
@@ -18,6 +19,7 @@ const initialState = {
   isSearchLoading: false,
   isSendRequestLoading: false,
   isAcptRejtLoading: false,
+  isSentRequestsLoading: false,
 
   error: false,
 
@@ -146,6 +148,19 @@ const slice = createSlice({
       .addCase(
         AcceptRejectRequest.rejected,
         handleRejected("isAcptRejtLoading")
+      )
+
+      // --------- Get Sent Request Builder ---------
+      .addCase(GetSentRequests.pending, handlePending("isSentRequestsLoading"))
+      .addCase(GetSentRequests.fulfilled, (state, action) => {
+        state.sentRequests = action.payload.sentRequests;
+        state.isSentRequestsLoading = false;
+        state.error = false;
+      })
+
+      .addCase(
+        GetSentRequests.rejected,
+        handleRejected("isSentRequestsLoading")
       );
   },
 });

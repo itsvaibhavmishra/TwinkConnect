@@ -150,7 +150,8 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                   Accept
                 </LoadingButton>
               </Stack>
-            ) : fromSection === "SearchUsers" ? (
+            ) : fromSection === "SearchUsers" ||
+              fromSection === "SentRequests" ? (
               <LoadingButton
                 loading={isLoading || isActionsLoading}
                 variant="text"
@@ -165,16 +166,14 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                 {!isRequestSent ? "Send Request" : "Unsend Request"}
               </LoadingButton>
             ) : (
-              fromSection === "SentRequests" && (
-                <LoadingButton
-                  loading={isLoading}
-                  variant="text"
-                  color="error"
-                  onClick={(e) => handleButtonClick(e, "unsendRequest")}
-                >
-                  Unsend Request
-                </LoadingButton>
-              )
+              <LoadingButton
+                loading={isLoading}
+                variant="text"
+                color="primary"
+                onClick={toggleDrawer}
+              >
+                View User
+              </LoadingButton>
             )}
           </Stack>
         </CardContent>

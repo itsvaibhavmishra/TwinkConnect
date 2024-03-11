@@ -8,6 +8,7 @@ import {
   getFriends,
   getOnlineFriends,
   getRequests,
+  getSentRequests,
   removeFriend,
   searchFriends,
   sendRequest,
@@ -25,7 +26,7 @@ friendsRouter
   .route("/cancel-request")
   .post(trimRequest.all, protect, cancelRequest);
 
-// Accept Friend Request
+// Accept/Reject Friend Request
 friendsRouter
   .route("/accept-reject-request")
   .post(trimRequest.all, protect, acceptRejectRequest);
@@ -48,5 +49,10 @@ friendsRouter.route("/search").get(trimRequest.all, protect, searchFriends);
 
 // Get List of Friend Requests
 friendsRouter.route("/get-requests").get(trimRequest.all, protect, getRequests);
+
+// Get List of Friend Requests
+friendsRouter
+  .route("/get-sent-requests")
+  .get(trimRequest.all, protect, getSentRequests);
 
 export default friendsRouter;
