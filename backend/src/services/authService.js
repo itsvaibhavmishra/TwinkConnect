@@ -13,6 +13,5 @@ export const verifyreCAPTCHA = async (recaptchaToken) => {
     }
   );
 
-  console.log(data);
   return data;
 };
