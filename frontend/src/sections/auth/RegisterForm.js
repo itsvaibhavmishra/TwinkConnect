@@ -1,5 +1,6 @@
+import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import * as Yup from "yup";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -24,6 +25,7 @@ const RegisterForm = () => {
 
   // hide and show password controller
   const [showPassword, setShowPassword] = useState(false);
+  const recaptchaRef = useRef(null);
 
   //  Register Schema
   const RegisterSchema = Yup.object().shape({
@@ -69,7 +71,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     try {
       // api request to backend for registering user using redux
-      dispatch(RegisterUser(data));
+      dispatch(RegisterUser({ ...data, recaptchaRef }));
     } catch (error) {
       console.error(error);
     }
@@ -109,6 +111,14 @@ const RegisterForm = () => {
             ),
           }}
         />
+
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          size="invisible"
+          sitekey={process.env.REACT_APP_RECAPTCHA_CLIENT}
+          theme="dark"
+        />
+
         <LoadingButton
           loading={isLoading}
           fullWidth
