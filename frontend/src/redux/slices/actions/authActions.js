@@ -10,10 +10,14 @@ import { socket } from "../../../utils/socket";
 // ------------- Login Thunk -------------
 export const LoginUser = createAsyncThunk(
   "auth/login",
-  async (formValues, { rejectWithValue, dispatch }) => {
+  async ({ recaptchaRef, ...formValues }, { rejectWithValue, dispatch }) => {
     try {
+      // generate recaptcha token
+      const recaptchaToken = await recaptchaRef.current.executeAsync();
+
       const { data } = await axios.post("/auth/login", {
         ...formValues,
+        recaptchaToken,
       });
 
       // show snackbar
@@ -87,10 +91,17 @@ export const LogoutUser = createAsyncThunk(
 // ------------- Register Thunk -------------
 export const RegisterUser = createAsyncThunk(
   "auth/register",
-  async (formValues, { rejectWithValue, dispatch, getState }) => {
+  async (
+    { recaptchaRef, ...formValues },
+    { rejectWithValue, dispatch, getState }
+  ) => {
     try {
+      // generate recaptcha token
+      const recaptchaToken = await recaptchaRef.current.executeAsync();
+
       const { data } = await axios.post("/auth/register", {
         ...formValues,
+        recaptchaToken,
       });
 
       // update otp email
@@ -126,10 +137,17 @@ export const RegisterUser = createAsyncThunk(
 // ------------- Verify OTP Thunk -------------
 export const VerifyOTP = createAsyncThunk(
   "auth/verify-otp",
-  async (formValues, { rejectWithValue, dispatch, getState }) => {
+  async (
+    { recaptchaRef, ...formValues },
+    { rejectWithValue, dispatch, getState }
+  ) => {
     try {
+      // generate recaptcha token
+      const recaptchaToken = await recaptchaRef.current.executeAsync();
+
       const { data } = await axios.post("/auth/verify-otp", {
         ...formValues,
+        recaptchaToken,
       });
 
       // update user data
@@ -217,12 +235,19 @@ export const AddOtpEmail = createAsyncThunk(
 );
 
 // ------------- Forgot Password Thunk -------------
-export const ForgorPassword = createAsyncThunk(
+export const ForgotPassword = createAsyncThunk(
   "auth/forgot-password",
-  async (formValues, { rejectWithValue, dispatch, getState }) => {
+  async (
+    { recaptchaRef, ...formValues },
+    { rejectWithValue, dispatch, getState }
+  ) => {
+    // generate recaptcha token
+    const recaptchaToken = await recaptchaRef.current.executeAsync();
+
     try {
       const { data } = await axios.post("/auth/forgot-password", {
         ...formValues,
+        recaptchaToken,
       });
 
       // show snackbar

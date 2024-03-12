@@ -11,15 +11,22 @@ import { formatRemainingTime, transporter } from "../services/mailer.js";
 import { generateToken, verifyToken } from "../services/tokenService.js";
 import reset from "../Templates/Mail/reset.js";
 import { generateLoginTokens } from "../services/userService.js";
+import { verifyreCAPTCHA } from "../services/authService.js";
 
 // -------------------------- Login auth --------------------------
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, recaptchaToken } = req.body;
 
     // check for empty fields
     if (!email || !password) {
       throw createHttpError.BadRequest("Required fields: email & password");
+    }
+
+    const reCAPTCHA = await verifyreCAPTCHA(recaptchaToken);
+
+    if (!reCAPTCHA.success) {
+      throw createHttpError.BadRequest("reCAPTCHA failed, please try again");
     }
 
     const user = await UserModel.findOne({ email: email }).select("+password");
@@ -68,13 +75,19 @@ export const login = async (req, res, next) => {
 // -------------------------- Register auth --------------------------
 export const register = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, recaptchaToken } = req.body;
 
     // check for empty fields
     if (!firstName || !lastName || !email || !password) {
       throw createHttpError.BadRequest(
         "Required fields: firstName, lastName, email & password"
       );
+    }
+
+    const reCAPTCHA = await verifyreCAPTCHA(recaptchaToken);
+
+    if (!reCAPTCHA.success) {
+      throw createHttpError.BadRequest("reCAPTCHA failed, please try again");
     }
 
     const filteredBody = filterObj(
@@ -228,10 +241,16 @@ export const sendOtp = async (req, res, next) => {
 // -------------------------- Verifying OTP --------------------------
 export const verifyOTP = async (req, res, next) => {
   try {
-    const { email, otp } = req.body;
+    const { email, otp, recaptchaToken } = req.body;
 
     if (!email || !otp) {
       throw createHttpError.BadGateway("Required fields: email & otp");
+    }
+
+    const reCAPTCHA = await verifyreCAPTCHA(recaptchaToken);
+
+    if (!reCAPTCHA.success) {
+      throw createHttpError.BadRequest("reCAPTCHA failed, please try again");
     }
 
     const user = await UserModel.findOne({ email });
@@ -304,12 +323,20 @@ export const verifyOTP = async (req, res, next) => {
 // -------------------------- Forgot Password --------------------------
 export const forgotPassword = async (req, res, next) => {
   try {
+    const { email, recaptchaToken } = req.body;
+
     // check for empty fields
-    if (!req.body.email) {
+    if (!email) {
       throw createHttpError.BadRequest("Required field: email");
     }
 
-    const user = await UserModel.findOne({ email: req.body.email });
+    const reCAPTCHA = await verifyreCAPTCHA(recaptchaToken);
+
+    if (!reCAPTCHA.success) {
+      throw createHttpError.BadRequest("reCAPTCHA failed, please try again");
+    }
+
+    const user = await UserModel.findOne({ email: email });
 
     if (!user) {
       throw createHttpError.NotFound("Email is not registered");

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import {
   AddOtpEmail,
-  ForgorPassword,
+  ForgotPassword,
   GithubLogin,
   GoogleLogin,
   LinkedinLogin,
@@ -126,12 +126,12 @@ const slice = createSlice({
       .addCase(AddOtpEmail.rejected, handleRejected)
 
       // --------- Forgot Password Builder ---------
-      .addCase(ForgorPassword.pending, handlePending)
-      .addCase(ForgorPassword.fulfilled, (state, action) => {
+      .addCase(ForgotPassword.pending, handlePending)
+      .addCase(ForgotPassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
       })
-      .addCase(ForgorPassword.rejected, handleRejected)
+      .addCase(ForgotPassword.rejected, handleRejected)
 
       // --------- Reset Password Builder ---------
       .addCase(ResetPassword.pending, handlePending)

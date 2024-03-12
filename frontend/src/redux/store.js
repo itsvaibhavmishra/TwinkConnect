@@ -6,6 +6,13 @@ import {
 import { persistStore, persistReducer } from "redux-persist";
 import { rootPersistConfig, rootReducer } from "./rootReducer";
 
+const isProduction = process.env.REACT_APP_NODE !== "local";
+
+// If it's production, exclude Redux DevTools Extension
+const devToolsOptions = {
+  devTools: !isProduction,
+};
+
 const store = configureStore({
   reducer: persistReducer(rootPersistConfig, rootReducer),
   middleware: (getDefaultMiddleware) =>
@@ -13,6 +20,7 @@ const store = configureStore({
       serializableCheck: false,
       immutableCheck: false,
     }),
+  ...devToolsOptions,
 });
 
 const persistor = persistStore(store);
