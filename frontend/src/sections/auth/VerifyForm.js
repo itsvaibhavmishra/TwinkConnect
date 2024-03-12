@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -68,6 +70,7 @@ export const EmailForm = () => {
           Please enter email and click Add Email first
         </Typography>
       )}
+
       <Stack
         direction={"row"}
         justifyContent={"center"}
@@ -135,6 +138,8 @@ const VerifyForm = () => {
   const { otpEmail } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const recaptchaRef = useRef(null);
+
   //  OTP Schema
   const VerifySchema = Yup.object().shape({
     otp1: Yup.string().required("Required"),
@@ -170,6 +175,7 @@ const VerifyForm = () => {
         VerifyOTP({
           email: otpEmail,
           otp: `${data.otp1}${data.otp2}${data.otp3}${data.otp4}${data.otp5}${data.otp6}`,
+          recaptchaRef,
         })
       );
     } catch (error) {
@@ -185,6 +191,13 @@ const VerifyForm = () => {
           disabled={!otpEmail}
           keyName="otp"
           inputs={["otp1", "otp2", "otp3", "otp4", "otp5", "otp6"]}
+        />
+
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          size="invisible"
+          sitekey={process.env.REACT_APP_RECAPTCHA_CLIENT}
+          theme="dark"
         />
 
         <LoadingButton
