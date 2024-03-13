@@ -111,7 +111,7 @@ const Sidebar = () => {
           {/* Sidebar Logo */}
           <Box
             sx={{
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: theme.palette.primary.lighterFaded,
               height: 54,
               width: 54,
               borderRadius: 1.5,
