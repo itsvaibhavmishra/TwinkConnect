@@ -497,10 +497,10 @@ export const refreshToken = async (req, res, next) => {
 
     // store access token to cookies
     res.cookie("accessToken", access_token, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-      sameSite: "None",
+      SameSite: "None",
     });
 
     return res.status(200).json({
