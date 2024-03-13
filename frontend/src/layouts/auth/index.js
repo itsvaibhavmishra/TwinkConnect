@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Container, Stack, IconButton, Grow, Tooltip } from "@mui/material";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Trash } from "phosphor-react";
 
-import Logo from "../../assets/icons/logo/TwinkChat.png";
+import Logo from "../../assets/icons/logo/TwinkChatSub.png";
 import { StartServer } from "../../redux/slices/actions/authActions";
 
 const AuthLayout = () => {
@@ -45,19 +45,27 @@ const AuthLayout = () => {
     return <Navigate to={"/"} />;
   }
 
+  const welcomeScreen = window.location.pathname === "/auth/welcome";
+
   return (
-    <Container sx={{ pt: 5 }} maxWidth="sm">
-      <Stack spacing={5}>
+    <Container
+      sx={{ pt: welcomeScreen ? 0 : 5 }}
+      maxWidth={welcomeScreen ? "xl" : "sm"}
+    >
+      <Stack spacing={5} display={welcomeScreen ? "none" : "flex"}>
         <Stack
           direction={"column"}
           alignItems={"center"}
           sx={{ width: "100%" }}
         >
-          <img
-            src={Logo}
-            alt={"TwinkChat Logo"}
-            style={{ height: 120, width: 120 }}
-          />
+          <Link to={"/auth/welcome"}>
+            <Stack
+              component="img"
+              src={Logo}
+              alt={"TwinkChat Logo"}
+              sx={{ height: 120, width: 120 }}
+            />
+          </Link>
         </Stack>
 
         {/* Trash icon button with tooltip */}

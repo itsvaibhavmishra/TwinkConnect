@@ -30,6 +30,7 @@ export default function Router() {
       element: <AuthLayout />,
       children: [
         { element: <Navigate to={DEFAULT_AUTH} replace />, index: true },
+        { path: "welcome", element: <WelcomePage /> },
         { path: "login", element: <LoginPage /> },
         { path: "register", element: <RegisterPage /> },
         { path: "verify", element: <VerifyPage /> },
@@ -61,6 +62,7 @@ const ProfilePage = Loadable(lazy(() => import("../pages/dashboard/Profile")));
 const ContactPage = Loadable(lazy(() => import("../pages/dashboard/Contact")));
 
 // auth pages
+const WelcomePage = Loadable(lazy(() => import("../pages/auth/WelcomePage")));
 const LoginPage = Loadable(lazy(() => import("../pages/auth/Login")));
 const RegisterPage = Loadable(lazy(() => import("../pages/auth/Register")));
 const VerifyPage = Loadable(lazy(() => import("../pages/auth/Verify")));
