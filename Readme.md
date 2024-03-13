@@ -25,12 +25,15 @@ Live At: <a href=""></a>
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/static/v1?style=for-the-badge&message=GitHub&color=181717&logo=GitHub&logoColor=FFFFFF&label=)
 ![NodeMailer](https://img.shields.io/static/v1?style=for-the-badge&message=NodeMailer&color=1CB674&logo=Node.js&logoColor=FFFFFF&label=)
+![Google Analytics](https://img.shields.io/static/v1?style=for-the-badge&message=Google+Analytics&color=E37400&logo=Google+Analytics&logoColor=FFFFFF&label=)
 
 ## 📃 Features List
 
 #### 👦🏻 User Features
 
     - Real-time one-to-one chat
+
+    - reCAPTCHA support
 
     - Robust authentication system with dynamic flow
 
@@ -83,6 +86,8 @@ Live At: <a href=""></a>
 <b>Frontend:</b>
 
     - Custom axios setup for easier API calling
+
+    - Custom error interceptors for axios error handlings
 
     - Redux toolkit with persist
 
