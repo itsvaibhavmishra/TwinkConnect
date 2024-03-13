@@ -3,7 +3,7 @@
 A Real-Time web-based Chat App built using MERN Stack.
 { Development in Progress }
 
-![TwinkChat](https://i.imgur.com/jT6YADg.png)
+![TwinkChat](https://i.imgur.com/QzOJEC1.png)
 
 ## ✅ Site Status
 
