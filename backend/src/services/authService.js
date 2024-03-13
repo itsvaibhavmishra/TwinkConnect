@@ -35,7 +35,7 @@ export const generateLoginTokens = async (user, res) => {
     httpOnly: true,
     secure: true,
     maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-    sameSite: "None",
+    sameSite: "none",
     priority: "high",
   });
 
@@ -45,7 +45,7 @@ export const generateLoginTokens = async (user, res) => {
     secure: true,
     path: "/api/auth/refresh-token",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    sameSite: "None",
+    sameSite: "none",
     priority: "high",
   });
 
