@@ -10,7 +10,7 @@ import otp from "../Templates/Mail/otp.js";
 import { formatRemainingTime, transporter } from "../services/mailer.js";
 import { generateToken, verifyToken } from "../services/tokenService.js";
 import reset from "../Templates/Mail/reset.js";
-import { generateLoginTokens } from "../services/userService.js";
+import { generateLoginTokens } from "../services/authService.js";
 import { verifyreCAPTCHA } from "../services/authService.js";
 
 // -------------------------- Login auth --------------------------
@@ -494,6 +494,14 @@ export const refreshToken = async (req, res, next) => {
       "1d",
       process.env.JWT_ACCESS_SECRET
     );
+
+    // store access token to cookies
+    res.cookie("accessToken", access_token, {
+      httpOnly: false,
+      secure: true,
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+      sameSite: "None",
+    });
 
     return res.status(200).json({
       status: "success",
