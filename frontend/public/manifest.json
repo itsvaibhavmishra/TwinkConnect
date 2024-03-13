@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Twink-Chat | MERN",
+  "name": "MERN Chat App by Vaibhaw Mishra",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,7 +9,14 @@
     }
   ],
   "start_url": ".",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "orientation": "any",
+  "lang": "en",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [],
+  "categories": ["mern", "chat-app", "twinkchat", "communication", "chat"]
 }
