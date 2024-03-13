@@ -54,7 +54,7 @@ const WelcomePage = () => {
               },
             }}
           >
-            Join Now To Connect With Us!
+            Join Now To Chatting With Your Friends!
           </Button>
         </Box>
 
