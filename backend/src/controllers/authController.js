@@ -500,7 +500,8 @@ export const refreshToken = async (req, res, next) => {
       httpOnly: true,
       secure: true,
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-      SameSite: "None",
+      sameSite: "none",
+      priority: "high",
     });
 
     return res.status(200).json({
