@@ -3,7 +3,6 @@ import sizeOf from "image-size";
 import validator from "validator";
 
 import { FriendRequestModel, UserModel } from "../models/index.js";
-import { generateToken } from "./tokenService.js";
 
 // Validate avatar with allowed format, size and dimension
 export const validateAvatar = async (avatar) => {
