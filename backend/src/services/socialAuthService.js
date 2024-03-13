@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 
 import { UserModel } from "../models/index.js";
 import { generatePassword } from "../utils/generatePassword.js";
-import { generateLoginTokens } from "./userService.js";
+import { generateLoginTokens } from "./authService.js";
 
 const userData = (user, access_token) => {
   return {
