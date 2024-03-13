@@ -101,7 +101,7 @@ const DashboardLayout = () => {
   }, [user._id, user.token]);
 
   if (!isLoggedIn || !user) {
-    return <Navigate to={"/auth/login"} />;
+    return <Navigate to={"/auth/welcome"} />;
   }
 
   return (

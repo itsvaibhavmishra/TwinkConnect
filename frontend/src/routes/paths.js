@@ -14,13 +14,13 @@ export const PATH_DASHBOARD = {
 export const PATH_AUTH = {
   root: ROOTS_DASHBOARD,
   general: {
-    login: path(ROOTS_DASHBOARD, "auth/login"),
+    welcome: path(ROOTS_DASHBOARD, "auth/welcome"),
   },
 };
 
 export const PATH_DOCS = {
   root: ROOTS_DASHBOARD,
   general: {
-    login: path(ROOTS_DASHBOARD, "docs/tnc"),
+    tnc: path(ROOTS_DASHBOARD, "docs/tnc"),
   },
 };
