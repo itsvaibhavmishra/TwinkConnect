@@ -17,6 +17,7 @@ const WelcomePage = () => {
           alignItems: "center",
           backgroundColor: (theme) => theme.palette.background.paper,
           borderRadius: { xs: "20px 20px 0px 0px", md: "20px" },
+          minHeight: { xs: 480, md: 430 },
         }}
         px={4}
       >

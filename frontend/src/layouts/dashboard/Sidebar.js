@@ -123,10 +123,11 @@ const Sidebar = () => {
               target="_blank"
               rel={"noreferrer"}
             >
-              <img
+              <Box
+                component={"img"}
                 src={TwinkLogo}
                 alt="TwinkChat_Logo"
-                style={{ padding: "2px 0px" }}
+                sx={{ padding: "2px 0px" }}
               />
             </a>
           </Box>
