@@ -12,10 +12,11 @@ const DocsLayout = () => {
           alignItems={"center"}
           sx={{ width: "100%" }}
         >
-          <img
+          <Stack
+            component={"img"}
             src={Logo}
             alt={"TwinkChat Logo"}
-            style={{ height: 120, width: 120 }}
+            sx={{ height: 120, width: 120 }}
           />
         </Stack>
       </Stack>
