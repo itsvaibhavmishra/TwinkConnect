@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
     },
     activityStatus: {
       type: String,
-      default: "Hey There! I ❤️ Using TwinkChat 😸",
+      default: "Hey There! I ❤️ Using TwinkConnect 😸",
     },
     onlineStatus: {
       type: String,

@@ -1,7 +1,7 @@
 import { Stack, Typography, Box, Button, Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import CatLogo from "../../assets/icons/logo/TwinkChat.png";
+import CatLogo from "../../assets/icons/logo/TwinkConnect.png";
 
 const WelcomePage = () => {
   return (
@@ -23,10 +23,11 @@ const WelcomePage = () => {
       >
         <Box>
           <Typography
+            component="h1"
             variant="h1"
             sx={{ fontSize: { xs: 35, md: 45 }, textAlign: "center" }}
           >
-            Welcome to TwinkChat 😺
+            Welcome to TwinkConnect 😺
           </Typography>
           <Typography
             variant="subtitle2"
@@ -63,7 +64,7 @@ const WelcomePage = () => {
         <Box
           component="img"
           src={CatLogo}
-          alt={"TwinkChat Logo"}
+          alt={"TwinkConnect Logo"}
           sx={{ width: { xs: 300, md: 400 }, height: "100%" }}
         />
       </Stack>
@@ -85,20 +86,24 @@ const WelcomePage = () => {
       <Box mt={10}>
         <Stack spacing={2}>
           <Divider>
-            <Typography variant="h2" sx={{ fontSize: { xs: 25, md: 35 } }}>
-              What is TwinkChat?
+            <Typography
+              component="h2"
+              variant="h2"
+              sx={{ fontSize: { xs: 25, md: 35 } }}
+            >
+              What is TwinkConnect?
             </Typography>
           </Divider>
           <Typography variant="body1">
-            TwinkChat is a real-time web-based chat application developed by
+            TwinkConnect is a real-time web-based chat application developed by
             Vaibhaw Mishra. Boasting not only a visually appealing UI but also
-            packed with an array of enticing features, TwinkChat is designed to
-            provide with the best user experience. Powered by the dynamic MERN
-            stack and enriched with the sleek design elements of Material-UI
-            (MUI), this application delivers a seamless chatting experience.
-            From connecting with friends to instant messaging system, TwinkChat
-            ensures not just connectivity but a symphony of interactivity and
-            speed for its users.
+            packed with an array of enticing features, TwinkConnect is designed
+            to provide with the best user experience. Powered by the dynamic
+            MERN stack and enriched with the sleek design elements of
+            Material-UI (MUI), this application delivers a seamless chatting
+            experience. From connecting with friends to instant messaging
+            system, TwinkConnect ensures not just connectivity but a symphony of
+            interactivity and speed for its users.
           </Typography>
         </Stack>
       </Box>

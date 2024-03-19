@@ -1,14 +1,14 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "TwinkChat Backend",
+  "description": "TwinkConnect Backend",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "nodemon server.js"
   },
   "keywords": [
-    "TwinkChat",
+    "TwinkConnect",
     "Chat",
     "ChatApp",
     "MERN",
