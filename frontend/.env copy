@@ -1,5 +1,10 @@
+# Welcome to TwinkConnect by Vaibhaw Mishra | Please make sure to atleast include all the Required env's
+
+# Required
 REACT_APP_NODE = "local"
-REACT_APP_API_ORIGIN = 'http://localhost:8000/api'
+
+# Required (change with your backend url)
+REACT_APP_API_ORIGIN = 'http://localhost:8000/api' 
 
 # Google Analytics ID (Can be skipped)
 REACT_APP_GA_ID = ''
@@ -11,5 +16,5 @@ REACT_APP_GITHUB_AUTH_CLIENT_ID = ""
 
 REACT_APP_LINKEDIN_AUTH_CLIENT_ID = ""
 
-# Google reCAPTCHA Client ID (Cannot be skipped)
+# Google reCAPTCHA Client ID (Cannot be skipped-Required)
 REACT_APP_RECAPTCHA_CLIENT = ""

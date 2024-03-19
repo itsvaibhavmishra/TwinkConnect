@@ -50,7 +50,7 @@ app.use(compression()); // gzip compression
 
 // Index Route
 app.get("/", (req, res) => {
-  res.send("Welcome to TwinkChat Backend😺");
+  res.send("Welcome to TwinkConnect Backend😺");
 });
 
 // using api routes
