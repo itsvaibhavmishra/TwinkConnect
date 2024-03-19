@@ -1,21 +1,22 @@
+# Required
 PORT = 8000
 MONGODB_URI = ""
 JWT_ACCESS_SECRET = ""
 JWT_REFRESH_SECRET = ""
 
-# Origin
+# Origin - (Required-Change with your frontend url)
 FRONT_URL = "http://localhost:3000"
 
-# Nodemailer Config
+# Nodemailer Config (Can be skipped | required for otp and reset password)
 MAIL_USER = ''
 MAIL_PASS = ''
 
-# Cloudinary Config
+# Cloudinary Config (Can be skipped but required for image uploads)
 CLOUDINARY_CLOUD_NAME = ""
 CLOUDINARY_API_KEY = ""
 CLOUDINARY_API_SECRET = ""
 
-# ----Social Auths----
+# ----Social Auths---- (Can be skipped)
 # GitHub OAuth
 GITHUB_AUTH_CLIENT_ID = ""
 GITHUB_AUTH_CLIENT_SECRET = ""

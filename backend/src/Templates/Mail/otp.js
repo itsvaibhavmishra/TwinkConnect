@@ -96,10 +96,10 @@ export default (name, otp) => {
   </head>
   <body>
         <div class="container">
-          <div class="header">Welcome to TwinkChat</div>
+          <div class="header">Welcome to TwinkConnect</div>
           <div class="logo">
-            <a href="https://twinkchat.netlify.app/">
-              <img src="https://i.imgur.com/bteRwiD.jpg" alt="TwinkChat Logo" />
+            <a href="https://twinkconnect.netlify.app/">
+              <img src="https://i.imgur.com/bteRwiD.jpg" alt="TwinkConnect Logo" />
             </a>
           </div>
           <div class="otp-content">
