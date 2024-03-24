@@ -18,14 +18,6 @@ const Loadable = (Component) => (props) => {
 export default function Router() {
   return useRoutes([
     {
-      path: "/docs",
-      element: <DocsLayout />,
-      children: [
-        { element: <Navigate to={DEFAULT_DOCS} replace />, index: true },
-        { path: "tnc", element: <TnCPage /> },
-      ],
-    },
-    {
       path: "/auth",
       element: <AuthLayout />,
       children: [
@@ -36,6 +28,14 @@ export default function Router() {
         { path: "verify", element: <VerifyPage /> },
         { path: "forgot-password", element: <ForgotPasswordPage /> },
         { path: "reset-password", element: <ResetPasswordPage /> },
+      ],
+    },
+    {
+      path: "/docs",
+      element: <DocsLayout />,
+      children: [
+        { element: <Navigate to={DEFAULT_DOCS} replace />, index: true },
+        { path: "tnc", element: <TnCPage /> },
       ],
     },
     {
