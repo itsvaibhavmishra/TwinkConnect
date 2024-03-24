@@ -65,7 +65,7 @@ const WelcomePage = () => {
           component="img"
           src={CatLogo}
           alt={"TwinkConnect Logo"}
-          sx={{ width: { xs: 300, md: 400 }, height: "100%" }}
+          sx={{ width: { xs: 200, md: 400 }, height: "100%" }}
         />
       </Stack>
       <Stack alignItems={"center"}>
