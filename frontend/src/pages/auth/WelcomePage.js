@@ -16,17 +16,17 @@ const WelcomePage = () => {
     {
       bg: "#2b3137",
       link: "https://github.com/itsvaibhavmishra",
-      icon: <GithubLogo color="#fafbfc" weight="duotone" />,
+      icon: <GithubLogo color="#fafbfc" weight="duotone" alt="github" />,
     },
     {
       bg: "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)",
       link: "https://instagram.com/itsvaibhavmishra",
-      icon: <InstagramLogo color="#fff" />,
+      icon: <InstagramLogo color="#fff" alt="instagram" />,
     },
     {
       bg: "#0A66C2",
       link: "https://www.linkedin.com/in/itsvaibhavmishra",
-      icon: <LinkedinLogo color="#fff" />,
+      icon: <LinkedinLogo color="#fff" alt="linkedin" />,
     },
   ];
 
@@ -56,6 +56,7 @@ const WelcomePage = () => {
             Welcome to TwinkConnect 😺
           </Typography>
           <Typography
+            component="h2"
             variant="subtitle2"
             color="primary"
             sx={{ textAlign: "center", mb: { xs: 2, md: 0 } }}
