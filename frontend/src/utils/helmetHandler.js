@@ -1,4 +1,3 @@
-// HelmetHandler.js
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -7,7 +6,19 @@ const HelmetHandler = () => {
   const location = useLocation();
 
   const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    // Replace underscores and dashes with spaces
+    str = str.replace(/[_-]/g, " ");
+
+    // Split the string by spaces
+    const words = str.split(" ");
+
+    // Capitalize the first character of each word
+    const capitalizedWords = words.map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+
+    // Join the words back together with spaces
+    return capitalizedWords.join(" ");
   };
 
   const canonicalUrl = window.location.origin + location.pathname;
