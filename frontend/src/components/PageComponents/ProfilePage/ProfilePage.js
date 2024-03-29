@@ -15,9 +15,11 @@ const ProfilePage = () => {
         }}
         className="scrollbar"
       >
-        <Stack p={4} spacing={5}>
+        <Stack p={3} spacing={5}>
           {/* Header */}
-          <Typography variant="h4">My Profile</Typography>
+          <Typography component={"h1"} variant="h5">
+            My Profile
+          </Typography>
 
           {/* Form Section */}
           <ProfileForm />

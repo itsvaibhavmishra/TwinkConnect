@@ -163,7 +163,7 @@ const ProfileForm = () => {
             justifyContent={"center"}
             spacing={1.5}
           >
-            <Typography variant="caption" color={"#aaa"}>
+            <Typography component={"h2"} variant="caption" color={"#aaa"}>
               Active
             </Typography>
             <StyledBadge variant="dot" usecolor="" />

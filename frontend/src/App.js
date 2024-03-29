@@ -8,6 +8,7 @@ import MuiAlert from "@mui/material/Alert";
 
 import { useDispatch, useSelector } from "react-redux";
 import { HideSnackbar } from "./redux/slices/userSlice";
+import HelmetHandler from "./utils/helmetHandler";
 
 import ReactGA from "react-ga4";
 
@@ -66,6 +67,8 @@ function App() {
           <Router />
         </ThemeSettings>
       </ThemeProvider>
+
+      <HelmetHandler />
 
       {/* snackbar from mui */}
       <Snackbar
