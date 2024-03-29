@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Stack, IconButton, Grow, Tooltip } from "@mui/material";
 import { Navigate, Outlet, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Trash } from "phosphor-react";
+import { ArrowsCounterClockwise } from "phosphor-react";
 
 import Logo from "../../assets/icons/logo/TwinkConnectSub.png";
 import { StartServer } from "../../redux/slices/actions/authActions";
@@ -81,7 +81,7 @@ const AuthLayout = () => {
               }}
             >
               <IconButton onClick={handleClearData}>
-                <Trash color="#fff" />
+                <ArrowsCounterClockwise color="#fff" />
               </IconButton>
             </Stack>
           </Tooltip>
