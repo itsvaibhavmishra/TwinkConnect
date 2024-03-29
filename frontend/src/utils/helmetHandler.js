@@ -34,7 +34,7 @@ const HelmetHandler = () => {
       case "auth":
         if (lastSegment === "welcome") {
           return {
-            title: "Welcome to TwinkConnect | By Vaibhaw Mishra",
+            title: "TwinkConnect | Real-Time MERN Chat App by Vaibhaw Mishra",
             description:
               "Welcome to TwinkConnect, a Real-Time web based Chat App developed by Vaibhaw Mishra with advanced features. Make friends, connect and enjoy your stay.",
             keywords:
