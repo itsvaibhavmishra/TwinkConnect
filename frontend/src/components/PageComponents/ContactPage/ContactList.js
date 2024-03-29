@@ -126,7 +126,9 @@ const ContactList = () => {
     <Stack height={"100%"}>
       <Stack p={3} spacing={2} sx={{ height: "100%" }}>
         <Stack direction={"row"} justifyContent={"space-between"}>
-          <Typography variant="h5">Contacts</Typography>
+          <Typography component={"h1"} variant="h5">
+            Contacts
+          </Typography>
           <IconButton
             onClick={() => dispatch(setShowFriendsMenu())}
             sx={{ display: { xs: "flex", md: "none" } }}
@@ -155,7 +157,11 @@ const ContactList = () => {
             <OnlineFriendsElement fromContact={true} />
             <Divider />
 
-            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+            <Typography
+              component={"h2"}
+              variant="subtitle2"
+              sx={{ color: "#676767" }}
+            >
               All Contacts
             </Typography>
 

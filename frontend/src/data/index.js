@@ -107,27 +107,27 @@ const Nav_Buttons = [
   {
     index: 0,
     icon: <UserCircle size={28} />,
-    address: "profile", // route to /app
+    address: "profile", // route to /profile
   },
   {
     index: 1,
     icon: <ChatCircleDots />,
-    address: "app", // route to /group
+    address: "app", // route to /app
   },
   {
     index: 2,
     icon: <Users />,
-    address: "group", // route to /call
+    address: "group", // route to /group
   },
   {
     index: 3,
     icon: <UserList />,
-    address: "contact", // route to /call
+    address: "contact", // route to /contact
   },
   {
-    index: 5,
+    index: 4,
     icon: <Gear />,
-    address: "settings", // route to /call
+    address: "settings", // route to /settings
   },
 ];
 

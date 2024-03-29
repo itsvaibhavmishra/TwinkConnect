@@ -92,7 +92,9 @@ const ChatsList = () => {
 
   return (
     <Stack p={3} spacing={2} sx={{ height: "100%" }}>
-      <Typography variant="h5">Chats</Typography>
+      <Typography component={"h1"} variant="h5">
+        Chats
+      </Typography>
 
       {/* Search section */}
       <Stack sx={{ width: "100%" }}>
@@ -115,7 +117,11 @@ const ChatsList = () => {
 
           <Divider />
 
-          <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+          <Typography
+            component={"h2"}
+            variant="subtitle2"
+            sx={{ color: "#676767" }}
+          >
             Recent Chats
           </Typography>
 
