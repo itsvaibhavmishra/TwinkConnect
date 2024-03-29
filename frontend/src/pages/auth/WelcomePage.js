@@ -1,9 +1,35 @@
-import { Stack, Typography, Box, Button, Divider } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  Box,
+  Button,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import { GithubLogo, InstagramLogo, LinkedinLogo } from "phosphor-react";
 
 import CatLogo from "../../assets/icons/logo/TwinkConnect.png";
 
 const WelcomePage = () => {
+  const SocialArray = [
+    {
+      bg: "#2b3137",
+      link: "https://github.com/itsvaibhavmishra",
+      icon: <GithubLogo color="#fafbfc" weight="duotone" />,
+    },
+    {
+      bg: "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)",
+      link: "https://instagram.com/itsvaibhavmishra",
+      icon: <InstagramLogo color="#fff" />,
+    },
+    {
+      bg: "#0A66C2",
+      link: "https://www.linkedin.com/in/itsvaibhavmishra",
+      icon: <LinkedinLogo color="#fff" />,
+    },
+  ];
+
   return (
     <Box widht={"100%"} sx={{ py: 4 }}>
       <Stack
@@ -58,6 +84,28 @@ const WelcomePage = () => {
           >
             Join Now To Start Chatting With Your Friends!
           </Button>
+
+          <Stack direction={"row"} justifyContent={"center"} spacing={2} mt={2}>
+            {SocialArray.map((e) => (
+              <Box
+                sx={{
+                  borderRadius: 20,
+                  width: 40,
+                  height: 40,
+                  background: e.bg,
+                }}
+              >
+                <IconButton
+                  component={"a"}
+                  href={e.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {e.icon}
+                </IconButton>
+              </Box>
+            ))}
+          </Stack>
         </Box>
 
         {/* Image and enclosed Box */}
