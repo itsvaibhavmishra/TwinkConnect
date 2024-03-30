@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Please leave a ⭐ if you like my work.
+> Please leave a ⭐ if you like this project.
 
 # TwinkConnect 😺
 
