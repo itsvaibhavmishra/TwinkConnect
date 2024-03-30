@@ -175,6 +175,9 @@ $ npm run build
 
 ## 🪜 Folder Structure
 
+<details>
+  <summary>View Structure</summary>
+
 ```
 ├── backend/
 │   ├── src/
@@ -532,6 +535,7 @@ $ npm run build
 ├── Readme.md
 ```
 
+</details>
 <br/>
 
 <div align="center">
