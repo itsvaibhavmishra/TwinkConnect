@@ -1,3 +1,5 @@
+> Please leave a ⭐ if you like my work.
+
 # TwinkConnect 😺
 
 A Real-Time web-based Chat App built using MERN Stack.
@@ -174,7 +176,360 @@ $ npm run build
 ## 🪜 Folder Structure
 
 ```
-Coming Soon
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── authController.js
+│   │   │   ├── conversationController.js
+│   │   │   ├── friendsController.js
+│   │   │   ├── messageController.js
+│   │   │   ├── socialController.js
+│   │   │   ├── userController.js
+│   │   ├── middlewares/
+│   │   │   ├── authMiddleware.js
+│   │   │   ├── socketMiddleware.js
+│   │   ├── models/
+│   │   │   ├── conversationModel.js
+│   │   │   ├── friendRequestModel.js
+│   │   │   ├── index.js
+│   │   │   ├── messageModel.js
+│   │   │   ├── userModel.js
+│   │   ├── routes/
+│   │   │   ├── authRouter.js
+│   │   │   ├── conversationRouter.js
+│   │   │   ├── friendsRouter.js
+│   │   │   ├── index.js
+│   │   │   ├── messageRouter.js
+│   │   │   ├── userRouter.js
+│   │   ├── services/
+│   │   │   ├── authService.js
+│   │   │   ├── conversationService.js
+│   │   │   ├── fileUploadService.js
+│   │   │   ├── friendsService.js
+│   │   │   ├── mailer.js
+│   │   │   ├── messageService.js
+│   │   │   ├── socialAuthService.js
+│   │   │   ├── tokenService.js
+│   │   │   ├── userService.js
+│   │   ├── Templates/
+│   │   │   ├── Mail/
+│   │   │   │   ├── otp.js
+│   │   │   │   ├── reset.js
+│   │   ├── utils/
+│   │   │   ├── checkDispose.js
+│   │   │   ├── filterObj.js
+│   │   │   ├── generatePassword.js
+│   │   │   ├── tokenGenerator.js
+│   ├── .env copy
+│   ├── app.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+│   ├── socket.js
+│   ├── vercel.json
+├── frontend/
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo.ico
+│   │   ├── manifest.json
+│   │   ├── robots.txt
+│   │   ├── sitemap.xml
+│   │   ├── _redirects
+│   ├── src/
+│   │   ├── assets/
+│   │   │   ├── backgrounds/
+│   │   │   │   ├── catDoodle.png
+│   │   │   │   ├── catDoodle2.png
+│   │   │   │   ├── catDoodle3.png
+│   │   │   ├── icons/
+│   │   │   │   ├── flags/
+│   │   │   │   │   ├── flag_am.svg
+│   │   │   │   │   ├── flag_en.png
+│   │   │   │   │   ├── flag_en.svg
+│   │   │   │   │   ├── flag_fr.png
+│   │   │   │   │   ├── flag_fr.svg
+│   │   │   │   │   ├── flag_hi.png
+│   │   │   │   │   ├── flag_hi.svg
+│   │   │   │   │   ├── flag_ja.svg
+│   │   │   │   │   ├── flag_vn.svg
+│   │   │   │   ├── logo/
+│   │   │   │   │   ├── TwinkConnect-old.png
+│   │   │   │   │   ├── TwinkConnect.png
+│   │   │   │   │   ├── TwinkConnectSub.png
+│   │   │   │   │   ├── VaibhawMishra.ico
+│   │   │   ├── Illustration/
+│   │   │   │   ├── Animations/
+│   │   │   │   │   ├── Cat404.json
+│   │   │   │   │   ├── CatAnimation1.json
+│   │   │   │   │   ├── CatAnimation2.json
+│   │   │   │   │   ├── CatAnimation3.json
+│   │   │   │   │   ├── CatAnimation4.json
+│   │   │   │   │   ├── CatAnimation5.json
+│   │   │   │   │   ├── ChillingVibes.json
+│   │   │   │   │   ├── HangingBuddy.json
+│   │   │   │   │   ├── NoResultsFound.json
+│   │   │   │   │   ├── SearchNotFound.json
+│   │   │   │   ├── NoChat.js
+│   │   ├── components/
+│   │   │   ├── animate/
+│   │   │   │   ├── varients/
+│   │   │   │   │   ├── actions.js
+│   │   │   │   │   ├── background.js
+│   │   │   │   │   ├── bounce.js
+│   │   │   │   │   ├── container.js
+│   │   │   │   │   ├── fade.js
+│   │   │   │   │   ├── flip.js
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   ├── path.js
+│   │   │   │   │   ├── rotate.js
+│   │   │   │   │   ├── scale.js
+│   │   │   │   │   ├── slide.js
+│   │   │   │   │   ├── transition.js
+│   │   │   │   │   ├── zoom.js
+│   │   │   │   ├── DialogAnimate.js
+│   │   │   │   ├── FabButtonAnimate.js
+│   │   │   │   ├── features.js
+│   │   │   │   ├── IconButtonAnimate.js
+│   │   │   │   ├── index.js
+│   │   │   │   ├── MotionContainer.js
+│   │   │   │   ├── MotionLazyContainer.js
+│   │   │   │   ├── MotionViewport.js
+│   │   │   │   ├── TextAnimate.js
+│   │   │   ├── hook-form/
+│   │   │   │   ├── FormProvider.js
+│   │   │   │   ├── index.js
+│   │   │   │   ├── RHFOtp.js
+│   │   │   │   ├── RHFTextField.js
+│   │   │   │   ├── RHFUpload.js
+│   │   │   ├── Image/
+│   │   │   │   ├── getRatio.js
+│   │   │   │   ├── Image.js
+│   │   │   │   ├── index.js
+│   │   │   ├── PageComponents/
+│   │   │   │   ├── ContactPage/
+│   │   │   │   │   ├── FriendsComponents/
+│   │   │   │   │   │   ├── FriendsSubComps/
+│   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   ├── UserCard.js
+│   │   │   │   │   │   │   ├── UsersSearchResults.js
+│   │   │   │   │   │   ├── FriendRequests.js
+│   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   ├── SearchUsers.js
+│   │   │   │   │   │   ├── SentRequests.js
+│   │   │   │   │   ├── ContactList.js
+│   │   │   │   │   ├── FriendsMenu.js
+│   │   │   │   │   ├── index.js
+│   │   │   │   ├── GeneralAppPage/
+│   │   │   │   │   ├── ChatElements/
+│   │   │   │   │   │   ├── AllChatElement.js
+│   │   │   │   │   │   ├── ChatSearchResults.js
+│   │   │   │   │   │   ├── OnlineChatElement.js
+│   │   │   │   │   ├── ConversationElements/
+│   │   │   │   │   │   ├── ConvoSubElements/
+│   │   │   │   │   │   │   ├── ChatInput.js
+│   │   │   │   │   │   │   ├── MessageContainer.js
+│   │   │   │   │   │   ├── ConversationFooter.js
+│   │   │   │   │   │   ├── ConversationHeader.js
+│   │   │   │   │   │   ├── ConversationMain.js
+│   │   │   │   │   │   ├── index.js
+│   │   │   │   │   ├── ChatsList.js
+│   │   │   │   │   ├── Conversation.js
+│   │   │   │   │   ├── index.js
+│   │   │   │   ├── OnlineFriendsElement/
+│   │   │   │   │   ├── OnlineFriendsElement.js
+│   │   │   │   ├── ProfilePage/
+│   │   │   │   │   ├── ProfilePage.js
+│   │   │   │   ├── UserProfileDrawer/
+│   │   │   │   │   ├── UserDrawerComps/
+│   │   │   │   │   │   ├── UDMainComps/
+│   │   │   │   │   │   │   ├── RemoveFriendDialog.js
+│   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   ├── UserDrawerHeader.js
+│   │   │   │   │   │   ├── UserDrawerMain.js
+│   │   │   │   │   ├── UserProfileDrawer.js
+│   │   │   ├── Search/
+│   │   │   │   ├── index.js
+│   │   │   │   ├── Search.js
+│   │   │   │   ├── SearchIconWrapper.js
+│   │   │   │   ├── StyledInputBase.js
+│   │   │   ├── settings/
+│   │   │   │   ├── drawer/
+│   │   │   │   │   ├── BoxMask.js
+│   │   │   │   │   ├── Developer.js
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   ├── SettingColorPresets.js
+│   │   │   │   │   ├── SettingContrast.js
+│   │   │   │   │   ├── SettingDirection.js
+│   │   │   │   │   ├── SettingFullscreen.js
+│   │   │   │   │   ├── SettingLayout.js
+│   │   │   │   │   ├── SettingMode.js
+│   │   │   │   │   ├── SettingStretch.js
+│   │   │   │   │   ├── ToggleButton.js
+│   │   │   │   ├── index.js
+│   │   │   │   ├── ThemeColorPresets.js
+│   │   │   │   ├── ThemeContrast.js
+│   │   │   │   ├── ThemeLocalization.js
+│   │   │   │   ├── ThemeRtlLayout.js
+│   │   │   ├── upload/
+│   │   │   │   ├── preview/
+│   │   │   │   │   ├── AvatarCropper.js
+│   │   │   │   │   ├── AvatarPreview.js
+│   │   │   │   │   ├── cropImage.js
+│   │   │   │   ├── index.js
+│   │   │   │   ├── UploadAvatar.js
+│   │   │   ├── AntSwitch.js
+│   │   │   ├── Iconify.js
+│   │   │   ├── LoadingScreen.js
+│   │   │   ├── NoData.js
+│   │   │   ├── StyledBadge.js
+│   │   │   ├── ThemeSwitch.js
+│   │   ├── contexts/
+│   │   │   ├── SettingsContext.js
+│   │   ├── data/
+│   │   │   ├── index.js
+│   │   ├── hooks/
+│   │   │   ├── useLocales.js
+│   │   │   ├── useLocalStorage.js
+│   │   │   ├── useResponsive.js
+│   │   │   ├── useSettings.js
+│   │   ├── layouts/
+│   │   │   ├── auth/
+│   │   │   │   ├── index.js
+│   │   │   ├── dashboard/
+│   │   │   │   ├── index.js
+│   │   │   │   ├── Sidebar.js
+│   │   │   ├── docs/
+│   │   │   │   ├── index.js
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── ForgotPassword.js
+│   │   │   │   ├── Login.js
+│   │   │   │   ├── Register.js
+│   │   │   │   ├── ResetPassword.js
+│   │   │   │   ├── Verify.js
+│   │   │   │   ├── WelcomePage.js
+│   │   │   ├── dashboard/
+│   │   │   │   ├── Contact.js
+│   │   │   │   ├── GeneralApp.js
+│   │   │   │   ├── GroupChat.js
+│   │   │   │   ├── Profile.js
+│   │   │   │   ├── Settings.js
+│   │   │   ├── docs/
+│   │   │   │   ├── TnC.js
+│   │   │   ├── 404.js
+│   │   ├── redux/
+│   │   │   ├── slices/
+│   │   │   │   ├── actions/
+│   │   │   │   │   ├── authActions.js
+│   │   │   │   │   ├── chatActions.js
+│   │   │   │   │   ├── contactActions.js
+│   │   │   │   │   ├── userActions.js
+│   │   │   │   ├── authSlice.js
+│   │   │   │   ├── chatSlice.js
+│   │   │   │   ├── contactSlice.js
+│   │   │   │   ├── index.js
+│   │   │   │   ├── userSlice.js
+│   │   │   ├── rootReducer.js
+│   │   │   ├── store.js
+│   │   ├── routes/
+│   │   │   ├── index.js
+│   │   │   ├── paths.js
+│   │   ├── sections/
+│   │   │   ├── auth/
+│   │   │   │   ├── AuthSocial.js
+│   │   │   │   ├── ForgotPasswordForm.js
+│   │   │   │   ├── LoginForm.js
+│   │   │   │   ├── RegisterForm.js
+│   │   │   │   ├── ResetPasswordForm.js
+│   │   │   │   ├── VerifyForm.js
+│   │   │   ├── settings/
+│   │   │   │   ├── ProfileForm.js
+│   │   │   │   ├── Shortcuts.js
+│   │   │   │   ├── ThemeDialog.js
+│   │   ├── theme/
+│   │   │   ├── overrides/
+│   │   │   │   ├── Accordion.js
+│   │   │   │   ├── Alert.js
+│   │   │   │   ├── Autocomplete.js
+│   │   │   │   ├── Avatar.js
+│   │   │   │   ├── Backdrop.js
+│   │   │   │   ├── Badge.js
+│   │   │   │   ├── Breadcrumbs.js
+│   │   │   │   ├── Button.js
+│   │   │   │   ├── ButtonGroup.js
+│   │   │   │   ├── Card.js
+│   │   │   │   ├── Checkbox.js
+│   │   │   │   ├── Chip.js
+│   │   │   │   ├── ControlLabel.js
+│   │   │   │   ├── CssBaseline.js
+│   │   │   │   ├── CustomIcons.js
+│   │   │   │   ├── DataGrid.js
+│   │   │   │   ├── Dialog.js
+│   │   │   │   ├── Drawer.js
+│   │   │   │   ├── Fab.js
+│   │   │   │   ├── index.js
+│   │   │   │   ├── Input.js
+│   │   │   │   ├── Link.js
+│   │   │   │   ├── List.js
+│   │   │   │   ├── LoadingButton.js
+│   │   │   │   ├── Menu.js
+│   │   │   │   ├── Pagination.js
+│   │   │   │   ├── Paper.js
+│   │   │   │   ├── Popover.js
+│   │   │   │   ├── Progress.js
+│   │   │   │   ├── Radio.js
+│   │   │   │   ├── Rating.js
+│   │   │   │   ├── Select.js
+│   │   │   │   ├── Skeleton.js
+│   │   │   │   ├── Slider.js
+│   │   │   │   ├── Stepper.js
+│   │   │   │   ├── SvgIcon.js
+│   │   │   │   ├── Switch.js
+│   │   │   │   ├── Table.js
+│   │   │   │   ├── Tabs.js
+│   │   │   │   ├── Timeline.js
+│   │   │   │   ├── ToggleButton.js
+│   │   │   │   ├── Tooltip.js
+│   │   │   │   ├── TreeView.js
+│   │   │   │   ├── Typography.js
+│   │   │   ├── breakpoints.js
+│   │   │   ├── index.js
+│   │   │   ├── palette.js
+│   │   │   ├── shadows.js
+│   │   │   ├── typography.js
+│   │   ├── utils/
+│   │   │   ├── axios.js
+│   │   │   ├── axiosInterceptors.js
+│   │   │   ├── createAvatar.js
+│   │   │   ├── cssStyles.js
+│   │   │   ├── flattenArray.js
+│   │   │   ├── formatNumber.js
+│   │   │   ├── formatTime.js
+│   │   │   ├── getColorName.js
+│   │   │   ├── getColorPresets.js
+│   │   │   ├── getFileData.js
+│   │   │   ├── getFontValue.js
+│   │   │   ├── getOtherUser.js
+│   │   │   ├── helmetHandler.js
+│   │   │   ├── jwt.js
+│   │   │   ├── scrollToBottom.js
+│   │   │   ├── socialLoginHelpers.js
+│   │   │   ├── socket.js
+│   │   │   ├── timeFormatter.js
+│   │   │   ├── truncateText.js
+│   │   │   ├── uuidv4.js
+│   │   ├── App.js
+│   │   ├── config.js
+│   │   ├── index.css
+│   │   ├── index.js
+│   ├── .env copy
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+├── .gitignore
+├── LICENSE
+├── Readme.md
 ```
 
 <br/>
