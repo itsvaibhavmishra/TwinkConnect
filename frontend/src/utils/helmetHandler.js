@@ -73,7 +73,6 @@ const HelmetHandler = () => {
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      {/* Add any other meta tags or elements as needed */}
     </Helmet>
   );
 };
