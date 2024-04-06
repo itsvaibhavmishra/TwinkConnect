@@ -21,7 +21,7 @@ const HelmetHandler = () => {
     return capitalizedWords.join(" ");
   };
 
-  const canonicalUrl = window.location.origin + location.pathname;
+  const canonicalUrl = /*window.location.origin +*/ location.pathname;
 
   const getPageMetadata = () => {
     const pathSegments = location.pathname.split("/");
