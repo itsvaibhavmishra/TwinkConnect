@@ -10,7 +10,7 @@ const ForgotPassword = () => {
     <Stack spacing={2} sx={{ my: 5, position: "realative" }}>
       {/* Head section */}
       <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography variant="h3" paragraph>
+        <Typography component={"h1"} variant="h3" paragraph>
           Forgot your Password?
         </Typography>
       </Stack>

@@ -9,7 +9,9 @@ const Login = () => {
     <Stack spacing={2} sx={{ my: 5, position: "realative" }}>
       {/* Head section */}
       <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography variant="h4">Login to TwinkConnect</Typography>
+        <Typography component={"h1"} variant="h4">
+          Login to TwinkConnect
+        </Typography>
         <Stack direction={"row"} spacing={0.5}>
           <Typography variant="body2">New User?</Typography>
           <Link to="/auth/register" component={RouterLink} variant="subtitle2">
