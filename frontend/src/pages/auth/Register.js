@@ -8,7 +8,9 @@ const Register = () => {
   return (
     <Stack spacing={2} sx={{ my: 5, position: "realative" }}>
       <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography variant="h4">Let's Get You Registered</Typography>
+        <Typography component={"h1"} variant="h4">
+          Let's Get You Registered
+        </Typography>
         <Stack direction={"row"} spacing={0.5}>
           <Typography variant="body2">Already Registered?</Typography>
           <Link to="/auth/login" component={RouterLink} variant="subtitle2">

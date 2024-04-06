@@ -23,7 +23,9 @@ const ResetPassword = () => {
     <Stack spacing={2} sx={{ my: 5, position: "realative" }}>
       {/* Head section */}
       <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography variant="h4">Reset Password</Typography>
+        <Typography component={"h1"} variant="h4">
+          Reset Password
+        </Typography>
       </Stack>
       <Typography sx={{ color: "text.secondary", mb: 5 }}>
         Please set your new password

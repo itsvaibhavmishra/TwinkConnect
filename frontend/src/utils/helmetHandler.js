@@ -21,7 +21,7 @@ const HelmetHandler = () => {
     return capitalizedWords.join(" ");
   };
 
-  const canonicalUrl = window.location.origin + location.pathname;
+  const canonicalUrl = /*window.location.origin +*/ location.pathname;
 
   const getPageMetadata = () => {
     const pathSegments = location.pathname.split("/");
@@ -73,7 +73,6 @@ const HelmetHandler = () => {
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      {/* Add any other meta tags or elements as needed */}
     </Helmet>
   );
 };
