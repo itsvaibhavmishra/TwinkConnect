@@ -61,6 +61,10 @@ const HelmetHandler = () => {
       default:
         return {
           title: `${capitalizedLastSegment} | TwinkConnect`,
+          description:
+            "Welcome to TwinkConnect, a Real-Time web based Chat App developed by Vaibhaw Mishra with advanced features. Make friends, connect and enjoy your stay.",
+          keywords:
+            "twinkconnect, vaibhaw mishra, chat, chat app, mern, message, welcome",
         };
     }
   };
@@ -72,7 +76,6 @@ const HelmetHandler = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     </Helmet>
   );
 };

@@ -11,8 +11,7 @@ import {
 
   // Text Field Actions
   Image,
-  Sticker,
-  Camera,
+  GameController,
   File,
   User,
 } from "phosphor-react";
@@ -146,41 +145,28 @@ const Profile_Menu = [
 
 const Actions = [
   {
-    color: "lighter",
-    contrast: "#222",
-    icon: <User size={24} />,
-    y: 382,
-    title: "Contact",
+    color: "darker",
+    contrast: "#fff",
+    icon: <GameController weight="fill" size={24} />,
+    title: "Gaming",
+  },
+  {
+    color: "dark",
+    contrast: "#fff",
+    icon: <Image weight="fill" size={24} />,
+    title: "Photo",
   },
   {
     color: "light",
     contrast: "#333",
     icon: <File size={24} />,
-    y: 312,
     title: "Document",
   },
-
   {
-    color: "main",
-    contrast: "#fff",
-    icon: <Camera size={24} />,
-    y: 242,
-    title: "Image",
-  },
-  {
-    color: "dark",
-    contrast: "#fff",
-    icon: <Sticker size={24} />,
-    y: 172,
-    title: "Stickers",
-  },
-
-  {
-    color: "darker",
-    contrast: "#fff",
-    icon: <Image size={24} />,
-    y: 102,
-    title: "Photo/Video",
+    color: "lighter",
+    contrast: "#222",
+    icon: <User size={24} />,
+    title: "Contact",
   },
 ];
 
