@@ -13,6 +13,8 @@ import { LinkSimple, Smiley } from "phosphor-react";
 
 import { Actions } from "../../../../../data";
 import { socket } from "../../../../../utils/socket";
+import actionHandler from "../../../../ChatMediaActions/actionClickHandler";
+import { useDispatch } from "react-redux";
 
 const ChatInput = ({
   openPicker,
@@ -29,6 +31,10 @@ const ChatInput = ({
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef(null);
 
+  // from redux
+  const dispatch = useDispatch();
+
+  // -------------- Inner Functions --------------
   const handlePopoverOpen = (event) => {
     setPopoverAnchor(event.currentTarget);
   };
@@ -44,6 +50,7 @@ const ChatInput = ({
     }
   };
 
+  // --------- typing handlers ---------
   const startTyping = () => {
     socket.emit("start_typing", convo_id);
     setIsTyping(true);
@@ -65,6 +72,15 @@ const ChatInput = ({
     const timer = isOptimistic ? 1000 : 5000;
     typingTimeoutRef.current = setTimeout(stopTyping, timer); // 1 seconds
   };
+  // ------------------------------------
+
+  // fn() to handle actions click
+  const handleActions = (type) => {
+    actionHandler(type.toLowerCase(), dispatch);
+
+    handlePopoverClose();
+  };
+  // ------------------------------------------
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
@@ -131,9 +147,7 @@ const ChatInput = ({
                 {Actions.map((el) => (
                   <Tooltip placement="right" title={el.title} key={el.title}>
                     <Fab
-                      onClick={() => {
-                        handlePopoverClose();
-                      }}
+                      onClick={() => handleActions(el.title)}
                       sx={{
                         backgroundColor: theme.palette.primary[el.color],
                         color: el.contrast,
