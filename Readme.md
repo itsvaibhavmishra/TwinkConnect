@@ -178,9 +178,6 @@ $ npm run build
 
 ## 🪜 Folder Structure
 
-<details>
-  <summary>Main Structure</summary>
-
   ```
 ├──backend/
 │   ├── ...
@@ -190,7 +187,6 @@ $ npm run build
 ├── LICENSE
 ├── Readme.md
   ```
-</details>
 
 <details>
   <summary>Backend</summary>
